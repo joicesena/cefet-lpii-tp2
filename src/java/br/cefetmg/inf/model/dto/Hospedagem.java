@@ -1,16 +1,61 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.cefetmg.inf.model.dto;
 
-import br.cefetmg.inf.model.bd.dao.*;
+import java.sql.Timestamp;
 
-/**
- *
- * @author Nícolas
- */
 public class Hospedagem {
+    private int seqHospedagem; 
+    private Timestamp datCheckIn; 
+    private Timestamp datCheckOut; 
+    private Double vlrPago; 
+    private String codCPF; 
+
+    public Hospedagem(int seqHospedagem, Timestamp datCheckIn, Timestamp datCheckOut, Double vlrPago, String codCPF) {
+        this.seqHospedagem = seqHospedagem;
+        this.datCheckIn = datCheckIn;
+        this.datCheckOut = datCheckOut;
+        this.vlrPago = vlrPago;
+        this.codCPF = codCPF;
+    }
+
+    public int getSeqHospedagem() {
+        return seqHospedagem;
+    }
+
+    public void setSeqHospedagem(int seqHospedagem) {
+        this.seqHospedagem = seqHospedagem;
+    }
+
+    public Timestamp getDatCheckIn() {
+        return datCheckIn;
+    }
+
+    public void setDatCheckIn(Timestamp datCheckIn) {
+        this.datCheckIn = datCheckIn;
+    }
+
+    public Timestamp getDatCheckOut() {
+        return datCheckOut;
+    }
+
+    public void setDatCheckOut(Timestamp datCheckOut) {
+        this.datCheckOut = datCheckOut;
+    }
+
+    public Double getVlrPago() {
+        return vlrPago;
+    }
+
+    public void setVlrPago(Double vlrPago) {
+        this.vlrPago = vlrPago;
+    }
+
+    public String getCodCPF() {
+        return codCPF;
+    }
+
+    public void setCodCPF(String codCPF) {
+        this.codCPF = codCPF;
+    }
+    
     
 }

@@ -1,16 +1,49 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.cefetmg.inf.model.dto;
 
-import br.cefetmg.inf.model.bd.dao.*;
-
-/**
- *
- * @author Nícolas
- */
 public class Servico {
+    private int seqServico; 
+    private String desServico; 
+    private Double vlrUnit; 
+    private String codServicoArea; 
+
+    public Servico(int seqServico, String desServico, Double vlrUnit, String codServicoArea) {
+        this.seqServico = seqServico;
+        this.desServico = desServico;
+        this.vlrUnit = vlrUnit;
+        this.codServicoArea = codServicoArea;
+    }
+
+    public int getSeqServico() {
+        return seqServico;
+    }
+
+    public void setSeqServico(int seqServico) {
+        this.seqServico = seqServico;
+    }
+
+    public String getDesServico() {
+        return desServico;
+    }
+
+    public void setDesServico(String desServico) {
+        this.desServico = desServico;
+    }
+
+    public Double getVlrUnit() {
+        return vlrUnit;
+    }
+
+    public void setVlrUnit(Double vlrUnit) {
+        this.vlrUnit = vlrUnit;
+    }
+
+    public String getCodServicoArea() {
+        return codServicoArea;
+    }
+
+    public void setCodServicoArea(String codServicoArea) {
+        this.codServicoArea = codServicoArea;
+    }
+    
     
 }

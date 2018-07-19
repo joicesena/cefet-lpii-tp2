@@ -1,16 +1,39 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.cefetmg.inf.model.dto;
 
-import br.cefetmg.inf.model.bd.dao.*;
-
-/**
- *
- * @author Nícolas
- */
 public class Quarto {
+    private int nroQuarto; 
+    private String codCategoria; 
+    private boolean idtOcupado; 
+
+    public Quarto(int nroQuarto, String codCategoria, boolean idtOcupado) {
+        this.nroQuarto = nroQuarto;
+        this.codCategoria = codCategoria;
+        this.idtOcupado = idtOcupado;
+    }
+
+    public int getNroQuarto() {
+        return nroQuarto;
+    }
+
+    public void setNroQuarto(int nroQuarto) {
+        this.nroQuarto = nroQuarto;
+    }
+
+    public String getCodCategoria() {
+        return codCategoria;
+    }
+
+    public void setCodCategoria(String codCategoria) {
+        this.codCategoria = codCategoria;
+    }
+
+    public boolean isIdtOcupado() {
+        return idtOcupado;
+    }
+
+    public void setIdtOcupado(boolean idtOcupado) {
+        this.idtOcupado = idtOcupado;
+    }
+    
     
 }
