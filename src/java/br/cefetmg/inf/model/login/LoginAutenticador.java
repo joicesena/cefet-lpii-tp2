@@ -1,6 +1,10 @@
 package br.cefetmg.inf.model.login;
 
+import br.cefetmg.inf.model.bd.util.ConnectionFactory;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class LoginAutenticador {
     private String email;
@@ -12,7 +16,7 @@ public class LoginAutenticador {
         this.senha = senha;
     }
     
-    public boolean loginValido () {
+    public boolean loginValido () throws SQLException {
         Connection conexao = new ConnectionFactory().getConnection();
         Statement stmt = conexao.createStatement();
         conexao.setAutoCommit(false);

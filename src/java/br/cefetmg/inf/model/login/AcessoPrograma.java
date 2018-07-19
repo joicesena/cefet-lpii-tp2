@@ -6,5 +6,6 @@ public class AcessoPrograma {
         // selecionar o codPrograma na tabela Programa que tem a desPrograma
         // ver se esse codPrograma está associado ao cargo na tabela CargoPrograma
             // retornar se sim ou nao
+            return true;
     }
 }
