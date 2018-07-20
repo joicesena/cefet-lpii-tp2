@@ -1,11 +1,11 @@
 package br.cefetmg.inf.model.dto;
 
-public class AreaServico {
+public class ServicoArea {
 
     private String codServicoArea;
     private String nomServicoArea;
 
-    public AreaServico(String codServicoArea, String nomServicoArea) {
+    public ServicoArea(String codServicoArea, String nomServicoArea) {
         this.codServicoArea = codServicoArea;
         this.nomServicoArea = nomServicoArea;
     }

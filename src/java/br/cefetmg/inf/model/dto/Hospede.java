@@ -4,13 +4,13 @@ public class Hospede {
 
     private String codCPF;
     private String nomHospede;
-    private String nroTelefone;
+    private String desTelefone;
     private String desEmail;
 
-    public Hospede(String codCPF, String nomHospede, String nroTelefone, String desEmail) {
+    public Hospede(String codCPF, String nomHospede, String desTelefone, String desEmail) {
         this.codCPF = codCPF;
         this.nomHospede = nomHospede;
-        this.nroTelefone = nroTelefone;
+        this.desTelefone = desTelefone;
         this.desEmail = desEmail;
     }
 
@@ -30,12 +30,12 @@ public class Hospede {
         this.nomHospede = nomHospede;
     }
 
-    public String getNroTelefone() {
-        return nroTelefone;
+    public String getDesTelefone() {
+        return desTelefone;
     }
 
-    public void setNroTelefone(String nroTelefone) {
-        this.nroTelefone = nroTelefone;
+    public void setDesTelefone(String desTelefone) {
+        this.desTelefone = desTelefone;
     }
 
     public String getDesEmail() {
