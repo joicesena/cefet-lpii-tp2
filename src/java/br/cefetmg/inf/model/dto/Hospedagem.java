@@ -16,6 +16,13 @@ public class Hospedagem {
         this.vlrPago = vlrPago;
         this.codCPF = codCPF;
     }
+    
+    public Hospedagem(Timestamp datCheckIn, Timestamp datCheckOut, Double vlrPago, String codCPF) {
+        this.datCheckIn = datCheckIn;
+        this.datCheckOut = datCheckOut;
+        this.vlrPago = vlrPago;
+        this.codCPF = codCPF;
+    }
 
     public int getSeqHospedagem() {
         return seqHospedagem;

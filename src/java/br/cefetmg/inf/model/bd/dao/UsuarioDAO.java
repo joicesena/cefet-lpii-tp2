@@ -35,13 +35,13 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         pStmt.setString(2, usuario.getNomUsuario());
         pStmt.setString(3, usuario.getCodCargo());
         pStmt.setString(4, usuario.getDesSenha());
-        pStmt.setString(5, UtilidadesBD.stringParaSHA256(usuario.getDesEmail()));
+        pStmt.setString(5, usuario.getDesEmail());
 
         pStmt.execute();
     }
 
     @Override
-    public Usuario[] busca(String coluna, String dadoBusca) throws SQLException {
+    public Usuario[] busca(String coluna, Object dadoBusca) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         int i = 0;
 
         String qry = "SELECT * FROM Usuario "
@@ -49,7 +49,12 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         Usuario[] usuarioEncontrados = new Usuario[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -65,30 +70,33 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
     }
 
     @Override
-    public void atualiza(String pK, Usuario usuarioAtualizado) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public void atualiza(Object pK, Usuario usuarioAtualizado) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String qry = "UPDATE Usuario "
                 + "SET codUsuario = ?, nomUsuario = ?, codCargo = ?, desSenha= ?, desEmail = ? "
                 + "WHERE codUsuario = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, usuarioAtualizado.getCodUsuario());
         pStmt.setString(2, usuarioAtualizado.getNomUsuario());
         pStmt.setString(3, usuarioAtualizado.getCodCargo());
         pStmt.setString(4, usuarioAtualizado.getDesSenha());
-        if(usuarioAtualizado.getDesSenha().length() != 64)
-            pStmt.setString(5, UtilidadesBD.stringParaSHA256(usuarioAtualizado.getDesEmail()));
+        pStmt.setString(5, usuarioAtualizado.getDesEmail());
+        if(pK instanceof String) 
+            pStmt.setString(6, pK.toString());
         else 
-            pStmt.setString(5, usuarioAtualizado.getDesEmail());
-        pStmt.setString(6, pK);
+            pStmt.setInt(6, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Usuario "
                 + "WHERE codUsuario = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

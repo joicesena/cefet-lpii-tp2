@@ -3,6 +3,8 @@ package br.cefetmg.inf.controller.login;
 import br.cefetmg.inf.model.login.LoginAutenticador;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,20 +17,21 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "LoginControllerServlet", urlPatterns = {"/login"})
 public class LoginControllerServlet extends HttpServlet {
+
     private String email;
     private String senha;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-            email = request.getParameter(email);
-            senha = request.getParameter(senha);
+            throws ServletException, IOException, UnsupportedEncodingException {
+        email = request.getParameter(email);
+        senha = request.getParameter(senha);
 
-            LoginAutenticador verificaLogin = new LoginAutenticador(email, senha);
+        LoginAutenticador verificaLogin = new LoginAutenticador(email, senha);
 
         try {
-            if (verificaLogin.loginValido() ) {
-                HttpSession session = request.getSession(); 
+            if (verificaLogin.loginValido()) {
+                HttpSession session = request.getSession();
                 session.setAttribute("email", email);
                 session.setAttribute("codCargo", verificaLogin.retornaCargo());
                 
@@ -38,8 +41,9 @@ public class LoginControllerServlet extends HttpServlet {
                 // retorna para a página de login
                 response.sendRedirect("login.jsp");
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException | NoSuchAlgorithmException ex) {
+            ex.printStackTrace();
         }
+
     }
 }

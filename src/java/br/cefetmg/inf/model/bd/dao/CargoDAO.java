@@ -36,7 +36,7 @@ public class CargoDAO extends BaseDAO<Cargo>{
     }
 
     @Override
-    public Cargo[] busca(String coluna, String dadoBusca) throws SQLException {
+    public Cargo[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM Cargo "
@@ -44,7 +44,12 @@ public class CargoDAO extends BaseDAO<Cargo>{
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         Cargo[] cargosEncontrados = new Cargo[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -60,25 +65,31 @@ public class CargoDAO extends BaseDAO<Cargo>{
     }
 
     @Override
-    public void atualiza(String pK, Cargo cargoAtualizado) throws SQLException {
+    public void atualiza(Object pK, Cargo cargoAtualizado) throws SQLException {
         String qry = "UPDATE Cargo "
                 + "SET codCargo = ?, nomCargo = ?, idtMaster = ? "
                 + "WHERE codCargo = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, cargoAtualizado.getCodCargo());
         pStmt.setString(2, cargoAtualizado.getNomCargo());
         pStmt.setBoolean(3, cargoAtualizado.isIdtMaster());
-        pStmt.setString(4, pK);
+        if(pK instanceof String) 
+            pStmt.setString(4, pK.toString());
+        else 
+            pStmt.setInt(4, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Cargo "
                 + "WHERE codCargo = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

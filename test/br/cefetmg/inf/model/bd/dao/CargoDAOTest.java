@@ -1,6 +1,6 @@
 package br.cefetmg.inf.model.bd.dao;
 
-import br.cefetmg.inf.model.dto.Hospede;
+import br.cefetmg.inf.model.dto.Cargo;
 import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,11 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class HospedeDAOTest {
+public class CargoDAOTest {
 
-    private final HospedeDAO hospedeDAO = HospedeDAO.getInstance();
+    private final CargoDAO cargoDAO = CargoDAO.getInstance();
 
-    public HospedeDAOTest() {
+    public CargoDAOTest() {
     }
 
     @BeforeClass
@@ -34,11 +34,11 @@ public class HospedeDAOTest {
 
     @Test
     public void testAdiciona() {
-        System.out.println("-- Testa HospedeDAO.adiciona() --");
-        Hospede novoHospede = new Hospede("11111111111", "Jao", "31988888888", "jao@email.com");
+        System.out.println("-- Testa CargoDAO.adiciona() --");
+        Cargo novoCargo = new Cargo("001", "Gerente", true);
 
         try {
-            hospedeDAO.adiciona(novoHospede);
+            cargoDAO.adiciona(novoCargo);
         } catch (SQLException e) {
             fail("--!! O teste falhou !!--");
         }
@@ -47,22 +47,21 @@ public class HospedeDAOTest {
 
     @Test
     public void testBusca() throws Exception {
-        System.out.println("--Testa HospedeDAO.busca()--");
+        System.out.println("--Testa CargoDAO.busca()--");
 
-        Hospede expResult = new Hospede("22222222222", "Joca", "31977777777", "joca@email.com");
+        Cargo expResult = new Cargo("002", "Chefe de cozinha", false);
 
         try {
-            hospedeDAO.adiciona(expResult);
+            cargoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
 
-        Hospede[] result = hospedeDAO.busca("codCPF", "22222222222");
+        Cargo[] result = cargoDAO.busca("codCargo", "002");
 
-        if((expResult.getCodCPF().equals(result[0].getCodCPF()))
-                && (expResult.getNomHospede().equals(result[0].getNomHospede()))
-                && (expResult.getDesTelefone().equals(result[0].getDesTelefone()))
-                && (expResult.getDesEmail().equals(result[0].getDesEmail())))
+        if((expResult.getCodCargo().equals(result[0].getCodCargo()))
+                && (expResult.getNomCargo().equals(result[0].getNomCargo()))
+                && (expResult.isIdtMaster()== result[0].isIdtMaster()))
         {
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
@@ -73,18 +72,18 @@ public class HospedeDAOTest {
     
     @Test
     public void testAtualiza() throws Exception {
-        System.out.println("--Testa HospedeDAO.atualiza()--");
+        System.out.println("--Testa CargoDAO.atualiza()--");
 
-        Hospede expResult = new Hospede("33333333333", "Jonas", "31966666666", "jonas@email.com");
+        Cargo expResult = new Cargo("003", "Recepcionista", false);
 
         try {
-            hospedeDAO.adiciona(expResult);
+            cargoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            hospedeDAO.atualiza("33333333333", 
-                    new Hospede("44444444444", "Jodelson", "31955555555", "jodelson@email.com"));
+            cargoDAO.atualiza("003", 
+                    new Cargo("004", "Lançador de despesas", false));
             
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
@@ -95,17 +94,17 @@ public class HospedeDAOTest {
     
     @Test
     public void testDeleta() throws Exception {
-        System.out.println("--Testa HospedeDAO.deleta()--");
+        System.out.println("--Testa CargoDAO.deleta()--");
 
-        Hospede expResult = new Hospede("55555555555", "João", "31944444444", "joao@email.com");
+        Cargo expResult = new Cargo("005", "Cargo que vai ser apagado", false);
 
         try {
-            hospedeDAO.adiciona(expResult);
+            cargoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            hospedeDAO.deleta("55555555555");
+            cargoDAO.deleta("005");
             
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;

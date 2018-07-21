@@ -1,6 +1,6 @@
 package br.cefetmg.inf.model.bd.dao;
 
-import br.cefetmg.inf.model.dto.Hospede;
+import br.cefetmg.inf.model.dto.CategoriaQuarto;
 import java.sql.SQLException;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,11 +9,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class HospedeDAOTest {
+public class CategoriaQuartoDAOTest {
 
-    private final HospedeDAO hospedeDAO = HospedeDAO.getInstance();
+    private final CategoriaQuartoDAO categoriaQuartoDAO = CategoriaQuartoDAO.getInstance();
 
-    public HospedeDAOTest() {
+    public CategoriaQuartoDAOTest() {
     }
 
     @BeforeClass
@@ -34,11 +34,11 @@ public class HospedeDAOTest {
 
     @Test
     public void testAdiciona() {
-        System.out.println("-- Testa HospedeDAO.adiciona() --");
-        Hospede novoHospede = new Hospede("11111111111", "Jao", "31988888888", "jao@email.com");
+        System.out.println("-- Testa CategoriaQuartoDAO.adiciona() --");
+        CategoriaQuarto novoCategoriaQuarto = new CategoriaQuarto("001", "Padrão", 10.00);
 
         try {
-            hospedeDAO.adiciona(novoHospede);
+            categoriaQuartoDAO.adiciona(novoCategoriaQuarto);
         } catch (SQLException e) {
             fail("--!! O teste falhou !!--");
         }
@@ -47,22 +47,21 @@ public class HospedeDAOTest {
 
     @Test
     public void testBusca() throws Exception {
-        System.out.println("--Testa HospedeDAO.busca()--");
+        System.out.println("--Testa CategoriaQuartoDAO.busca()--");
 
-        Hospede expResult = new Hospede("22222222222", "Joca", "31977777777", "joca@email.com");
+        CategoriaQuarto expResult = new CategoriaQuarto("002", "Bom", 20.0);
 
         try {
-            hospedeDAO.adiciona(expResult);
+            categoriaQuartoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
 
-        Hospede[] result = hospedeDAO.busca("codCPF", "22222222222");
-
-        if((expResult.getCodCPF().equals(result[0].getCodCPF()))
-                && (expResult.getNomHospede().equals(result[0].getNomHospede()))
-                && (expResult.getDesTelefone().equals(result[0].getDesTelefone()))
-                && (expResult.getDesEmail().equals(result[0].getDesEmail())))
+        CategoriaQuarto[] result = categoriaQuartoDAO.busca("codCategoria", "002");
+        
+        if((expResult.getCodCategoria().equals(result[0].getCodCategoria()))
+                && (expResult.getNomCategoria().equals(result[0].getNomCategoria()))
+                && (Double.compare(expResult.getVlrDiaria(), result[0].getVlrDiaria()) == 0))
         {
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
@@ -73,18 +72,18 @@ public class HospedeDAOTest {
     
     @Test
     public void testAtualiza() throws Exception {
-        System.out.println("--Testa HospedeDAO.atualiza()--");
+        System.out.println("--Testa CategoriaQuartoDAO.atualiza()--");
 
-        Hospede expResult = new Hospede("33333333333", "Jonas", "31966666666", "jonas@email.com");
+        CategoriaQuarto expResult = new CategoriaQuarto("003", "Top", 30.00);
 
         try {
-            hospedeDAO.adiciona(expResult);
+            categoriaQuartoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            hospedeDAO.atualiza("33333333333", 
-                    new Hospede("44444444444", "Jodelson", "31955555555", "jodelson@email.com"));
+            categoriaQuartoDAO.atualiza("003", 
+                    new CategoriaQuarto("004", "TopTop", 40.00));
             
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
@@ -95,17 +94,17 @@ public class HospedeDAOTest {
     
     @Test
     public void testDeleta() throws Exception {
-        System.out.println("--Testa HospedeDAO.deleta()--");
+        System.out.println("--Testa CategoriaQuartoDAO.deleta()--");
 
-        Hospede expResult = new Hospede("55555555555", "João", "31944444444", "joao@email.com");
+        CategoriaQuarto expResult = new CategoriaQuarto("005", "HOSP TOP", 999.99);
 
         try {
-            hospedeDAO.adiciona(expResult);
+            categoriaQuartoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            hospedeDAO.deleta("55555555555");
+            categoriaQuartoDAO.deleta("005");
             
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;

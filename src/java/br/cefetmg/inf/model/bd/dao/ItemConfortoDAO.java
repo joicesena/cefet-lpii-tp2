@@ -36,7 +36,7 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
     }
 
     @Override
-    public ItemConforto[] busca(String coluna, String dadoBusca) throws SQLException {
+    public ItemConforto[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM ItemConforto "
@@ -44,7 +44,12 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         ItemConforto[] itemConfortoEncontrados = new ItemConforto[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -59,24 +64,30 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
     }
 
     @Override
-    public void atualiza(String pK, ItemConforto itemConfortoAtualizado) throws SQLException {
+    public void atualiza(Object pK, ItemConforto itemConfortoAtualizado) throws SQLException {
         String qry = "UPDATE ItemConforto "
                 + "SET codItem = ?, desItem = ?"
                 + "WHERE codItem = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, itemConfortoAtualizado.getCodItem());
         pStmt.setString(2, itemConfortoAtualizado.getDesItem());
-        pStmt.setString(4, pK);
+        if(pK instanceof String) 
+            pStmt.setString(3, pK.toString());
+        else 
+            pStmt.setInt(3, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM ItemConforto "
                 + "WHERE codItem = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

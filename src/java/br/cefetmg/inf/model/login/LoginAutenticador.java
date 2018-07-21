@@ -1,12 +1,16 @@
 package br.cefetmg.inf.model.login;
 
 import br.cefetmg.inf.model.bd.util.ConnectionFactory;
+import br.cefetmg.inf.model.bd.util.UtilidadesBD;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class LoginAutenticador {
+public final class LoginAutenticador {
+    private static Connection con;
     private String email;
     private String senha;
     private String codCargo;
@@ -16,14 +20,14 @@ public class LoginAutenticador {
         this.senha = senha;
     }
     
-    public boolean loginValido () throws SQLException {
-        Connection conexao = new ConnectionFactory().getConnection();
-        Statement stmt = conexao.createStatement();
-        conexao.setAutoCommit(false);
+    public boolean loginValido () throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        con = new ConnectionFactory().getConnection();
+        Statement stmt = con.createStatement();
         
-        String query = "SELECT * FROM Usuario WHERE desEmail = '" + email + "' AND desSenha = '" + senha + "' ";
+        senha = UtilidadesBD.stringParaSHA256(senha);
+        String qry = "SELECT * FROM Usuario WHERE desEmail = " + email + " AND desSenha = " + senha;
         
-        ResultSet rs = stmt.executeQuery(query);
+        ResultSet rs = stmt.executeQuery(qry);
         if (rs.next()) {
             codCargo = rs.getString("codCargo");
             return true;

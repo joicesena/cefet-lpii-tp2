@@ -36,7 +36,7 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
     }
 
     @Override
-    public ServicoArea[] busca(String coluna, String dadoBusca) throws SQLException {
+    public ServicoArea[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM ServicoArea "
@@ -44,7 +44,12 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         ServicoArea[] servicoAreaEncontrados = new ServicoArea[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -59,24 +64,30 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
     }
 
     @Override
-    public void atualiza(String pK, ServicoArea servicoAreaAtualizado) throws SQLException {
+    public void atualiza(Object pK, ServicoArea servicoAreaAtualizado) throws SQLException {
         String qry = "UPDATE ServicoArea "
                 + "SET codServicoArea = ?, nomServicoArea = ? "
                 + "WHERE codServicoArea = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, servicoAreaAtualizado.getCodServicoArea());
         pStmt.setString(2, servicoAreaAtualizado.getNomServicoArea());
-        pStmt.setString(3, pK);
+        if(pK instanceof String) 
+            pStmt.setString(3, pK.toString());
+        else 
+            pStmt.setInt(3, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM ServicoArea "
                 + "WHERE codServicoArea = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

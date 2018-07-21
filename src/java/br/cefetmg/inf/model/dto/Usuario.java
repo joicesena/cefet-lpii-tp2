@@ -1,5 +1,9 @@
 package br.cefetmg.inf.model.dto;
 
+import br.cefetmg.inf.model.bd.util.UtilidadesBD;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 public class Usuario {
 
     private String codUsuario;
@@ -8,11 +12,11 @@ public class Usuario {
     private String desSenha;
     private String desEmail;
 
-    public Usuario(String codUsuario, String nomUsuario, String codCargo, String desSenha, String desEmail) {
+    public Usuario(String codUsuario, String nomUsuario, String codCargo, String desSenha, String desEmail) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         this.codUsuario = codUsuario;
         this.nomUsuario = nomUsuario;
         this.codCargo = codCargo;
-        this.desSenha = desSenha;
+        this.desSenha = UtilidadesBD.stringParaSHA256(desSenha);
         this.desEmail = desEmail;
     }
 
@@ -44,8 +48,12 @@ public class Usuario {
         return desSenha;
     }
 
-    public void setDesSenha(String desSenha) {
-        this.desSenha = desSenha;
+    public void setDesSenha(String desSenha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        if(desSenha.length() == 64) {
+            this.desSenha = desSenha;
+        } else {
+            this.desSenha = UtilidadesBD.stringParaSHA256(desSenha);
+        }
     }
 
     public String getDesEmail() {

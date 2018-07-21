@@ -37,7 +37,7 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     @Override
-    public Hospede[] busca(String coluna, String dadoBusca) throws SQLException {
+    public Hospede[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM Hospede "
@@ -45,7 +45,12 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         Hospede[] hospedesEncontrados = new Hospede[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -61,26 +66,32 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     @Override
-    public void atualiza(String pK, Hospede hospedeAtualizado) throws SQLException {
+    public void atualiza(Object pK, Hospede hospedeAtualizado) throws SQLException {
         String qry = "UPDATE Hospede "
                 + "SET codCPF = ?, nomHospede = ?, desTelefone = ?, desEmail = ? "
                 + "WHERE codCPF = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, hospedeAtualizado.getCodCPF());
         pStmt.setString(2, hospedeAtualizado.getNomHospede());
         pStmt.setString(3, hospedeAtualizado.getDesTelefone());
         pStmt.setString(4, hospedeAtualizado.getDesEmail());
-        pStmt.setString(5, pK);
+        if(pK instanceof String) 
+            pStmt.setString(5, pK.toString());
+        else 
+            pStmt.setInt(5, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Hospede "
                 + "WHERE codCPF = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

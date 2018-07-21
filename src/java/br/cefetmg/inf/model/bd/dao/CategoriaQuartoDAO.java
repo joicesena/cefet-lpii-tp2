@@ -7,7 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto>{
+public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
+
     private static CategoriaQuartoDAO instancia;
 
     private CategoriaQuartoDAO() {
@@ -24,7 +25,7 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto>{
     @Override
     public void adiciona(CategoriaQuarto categoriaQuarto) throws SQLException {
         String qry = "INSERT INTO Categoria"
-                + "(codCategoria, nomCategoria, idtMaster)"
+                + "(codCategoria, nomCategoria, vlrDiaria)"
                 + " VALUES (?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -36,7 +37,7 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto>{
     }
 
     @Override
-    public CategoriaQuarto[] busca(String coluna, String dadoBusca) throws SQLException {
+    public CategoriaQuarto[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM Categoria "
@@ -44,11 +45,17 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto>{
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if (dadoBusca instanceof String) {
+            pStmt.setString(1, dadoBusca.toString());
+        } else {
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        }
+        
         ResultSet rs = pStmt.executeQuery();
 
         CategoriaQuarto[] categoriaQuartosEncontrados = new CategoriaQuarto[UtilidadesBD.contaLinhasResultSet(rs)];
-        
+
         rs.beforeFirst();
         while (rs.next()) {
             categoriaQuartosEncontrados[i] = new CategoriaQuarto(rs.getString(1), rs.getString(2),
@@ -60,25 +67,31 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto>{
     }
 
     @Override
-    public void atualiza(String pK, CategoriaQuarto categoriaQuartoAtualizado) throws SQLException {
+    public void atualiza(Object pK, CategoriaQuarto categoriaQuartoAtualizado) throws SQLException {
         String qry = "UPDATE Categoria "
                 + "SET codCategoria = ?, nomCategoria = ?, vlrDiaria = ? "
                 + "WHERE codCategoria = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, categoriaQuartoAtualizado.getCodCategoria());
         pStmt.setString(2, categoriaQuartoAtualizado.getNomCategoria());
         pStmt.setDouble(3, categoriaQuartoAtualizado.getVlrDiaria());
-        pStmt.setString(4, pK);
+        if(pK instanceof String) 
+            pStmt.setString(4, pK.toString());
+        else 
+            pStmt.setInt(4, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Categoria "
                 + "WHERE codCategoria = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

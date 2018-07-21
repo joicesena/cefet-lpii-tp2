@@ -37,7 +37,7 @@ public class QuartoDAO extends BaseDAO<Quarto> {
     }
 
     @Override
-    public Quarto[] busca(String coluna, String dadoBusca) throws SQLException {
+    public Quarto[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM Quarto "
@@ -45,7 +45,12 @@ public class QuartoDAO extends BaseDAO<Quarto> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         Quarto[] quartoEncontrados = new Quarto[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -61,25 +66,31 @@ public class QuartoDAO extends BaseDAO<Quarto> {
     }
 
     @Override
-    public void atualiza(String pK, Quarto quartoAtualizado) throws SQLException {
+    public void atualiza(Object pK, Quarto quartoAtualizado) throws SQLException {
         String qry = "UPDATE Quarto "
                 + "SET nroQuarto = ?, codCategoria = ?, idtOcupado = ? "
                 + "WHERE nroQuarto = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, quartoAtualizado.getNroQuarto());
         pStmt.setString(2, quartoAtualizado.getCodCategoria());
         pStmt.setBoolean(3, quartoAtualizado.isIdtOcupado());
-        pStmt.setInt(4, Integer.parseInt(pK));
+        if(pK instanceof String) 
+            pStmt.setString(4, pK.toString());
+        else 
+            pStmt.setInt(4, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Quarto "
                 + "WHERE nroQuarto = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

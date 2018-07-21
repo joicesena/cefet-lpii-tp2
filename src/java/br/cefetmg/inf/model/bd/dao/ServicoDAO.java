@@ -38,7 +38,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     @Override
-    public Servico[] busca(String coluna, String dadoBusca) throws SQLException {
+    public Servico[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM Servico "
@@ -46,7 +46,12 @@ public class ServicoDAO extends BaseDAO<Servico> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         Servico[] servicoEncontrados = new Servico[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -62,26 +67,32 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     @Override
-    public void atualiza(String pK, Servico servicoAtualizado) throws SQLException {
+    public void atualiza(Object pK, Servico servicoAtualizado) throws SQLException {
         String qry = "UPDATE Servico "
                 + "SET seqServico = ?, desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE seqServico = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, servicoAtualizado.getSeqServico());
         pStmt.setString(2, servicoAtualizado.getDesServico());
         pStmt.setDouble(3, servicoAtualizado.getVlrUnit());
         pStmt.setString(4, servicoAtualizado.getCodServicoArea());
-        pStmt.setInt(5, Integer.parseInt(pK));
+        if(pK instanceof String) 
+            pStmt.setString(5, pK.toString());
+        else 
+            pStmt.setInt(5, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Servico "
                 + "WHERE codServico = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }

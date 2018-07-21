@@ -25,21 +25,20 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
     @Override
     public void adiciona(Hospedagem hospedagem) throws SQLException {
         String qry = "INSERT INTO Hospedagem"
-                + "(seqHospedagem, datCheckIn, datCheckOut, vlrPago, codCPF)"
-                + " VALUES (?,?,?,?,?)";
+                + "(datCheckIn, datCheckOut, vlrPago, codCPF)"
+                + " VALUES (?,?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, hospedagem.getSeqHospedagem());
-        pStmt.setTimestamp(2, hospedagem.getDatCheckIn());
-        pStmt.setTimestamp(3, hospedagem.getDatCheckOut());
-        pStmt.setDouble(4, hospedagem.getVlrPago());
-        pStmt.setString(5, hospedagem.getCodCPF());
+        pStmt.setTimestamp(1, hospedagem.getDatCheckIn());
+        pStmt.setTimestamp(2, hospedagem.getDatCheckOut());
+        pStmt.setDouble(3, hospedagem.getVlrPago());
+        pStmt.setString(4, hospedagem.getCodCPF());
 
         pStmt.execute();
     }
 
     @Override
-    public Hospedagem[] busca(String coluna, String dadoBusca) throws SQLException {
+    public Hospedagem[] busca(String coluna, Object dadoBusca) throws SQLException {
         int i = 0;
 
         String qry = "SELECT * FROM Hospedagem "
@@ -47,7 +46,12 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, dadoBusca);
+        
+        if(dadoBusca instanceof String) 
+            pStmt.setString(1, dadoBusca.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        
         ResultSet rs = pStmt.executeQuery();
 
         Hospedagem[] hospedagemEncontrados = new Hospedagem[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -63,27 +67,32 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
     }
 
     @Override
-    public void atualiza(String pK, Hospedagem hospedagemAtualizado) throws SQLException {
+    public void atualiza(Object pK, Hospedagem hospedagemAtualizado) throws SQLException {
         String qry = "UPDATE Hospedagem "
-                + "SET seqHospedagem = ?, datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ?"
-                + "WHERE codHospedagem = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setInt(1, hospedagemAtualizado.getSeqHospedagem());
-        pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckIn());
-        pStmt.setTimestamp(3, hospedagemAtualizado.getDatCheckOut());
-        pStmt.setDouble(4, hospedagemAtualizado.getVlrPago());
-        pStmt.setString(5, hospedagemAtualizado.getCodCPF());
-        pStmt.setString(6, pK);
+                + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
+                + "WHERE seqHospedagem = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckIn());
+        pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckOut());
+        pStmt.setDouble(3, hospedagemAtualizado.getVlrPago());
+        pStmt.setString(4, hospedagemAtualizado.getCodCPF());
+        if(pK instanceof String) 
+            pStmt.setString(5, pK.toString());
+        else 
+            pStmt.setInt(5, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
 
     @Override
-    public void deleta(String pK) throws SQLException {
+    public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Hospedagem "
                 + "WHERE codHospedagem = ?";
-        PreparedStatement pStmt = con.prepareCall(qry);
-        pStmt.setString(1, pK);
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        if(pK instanceof String) 
+            pStmt.setString(1, pK.toString());
+        else 
+            pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
         pStmt.execute();
     }
