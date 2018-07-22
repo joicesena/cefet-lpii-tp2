@@ -2,10 +2,13 @@ package br.cefetmg.inf.model.bd.dao;
 
 import br.cefetmg.inf.model.bd.util.ConnectionFactory;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.dto.CategoriaQuarto;
+import br.cefetmg.inf.model.dto.ItemConforto;
+import br.cefetmg.inf.model.dto.Hospede;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Timestamp;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,12 +16,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class CategoriaQuartoDAOTest {
+public class ItemConfortoDAOTest {
 
-    private final CategoriaQuartoDAO categoriaQuartoDAO = CategoriaQuartoDAO.getInstance();
+    private final ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
+
     private final Connection con = new ConnectionFactory().getConnection();
 
-    public CategoriaQuartoDAOTest() {
+    private int i = 1;
+
+    public ItemConfortoDAOTest() {
     }
 
     @BeforeClass
@@ -37,15 +43,17 @@ public class CategoriaQuartoDAOTest {
 
     @After
     public void tearDown() {
+        i++;
     }
 
     @Test
-    public void testAdiciona() {
-        System.out.println("-- Testa CategoriaQuartoDAO.adiciona() --");
-        CategoriaQuarto novoCategoriaQuarto = new CategoriaQuarto("001", "Padrão", 10.00);
+    public void testAdiciona() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        System.out.println("-- Testa ItemConfortoDAO.adiciona() --");
+
+        ItemConforto novoItemConforto = new ItemConforto("00" + i, "Item n°" + i);
 
         try {
-            categoriaQuartoDAO.adiciona(novoCategoriaQuarto);
+            itemConfortoDAO.adiciona(novoItemConforto);
         } catch (SQLException e) {
             fail("--!! O teste falhou !!--");
         }
@@ -53,22 +61,21 @@ public class CategoriaQuartoDAOTest {
     }
 
     @Test
-    public void testBusca() throws Exception {
-        System.out.println("--Testa CategoriaQuartoDAO.busca()--");
+    public void testBusca() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        System.out.println("--Testa ItemConfortoDAO.busca()--");
 
-        CategoriaQuarto expResult = new CategoriaQuarto("002", "Bom", 20.0);
+        ItemConforto expResult = new ItemConforto("00" + i, "Item n°" + i);
 
         try {
-            categoriaQuartoDAO.adiciona(expResult);
+            itemConfortoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
 
-        CategoriaQuarto[] result = categoriaQuartoDAO.busca("codCategoria", "002");
+        ItemConforto[] result = itemConfortoDAO.busca("codItem", "00" + i);
 
-        if ((expResult.getCodCategoria().equals(result[0].getCodCategoria()))
-                && (expResult.getNomCategoria().equals(result[0].getNomCategoria()))
-                && (Double.compare(expResult.getVlrDiaria(), result[0].getVlrDiaria()) == 0)) {
+        if ((expResult.getCodItem().equals(result[0].getCodItem()))
+                && (expResult.getDesItem().equals(result[0].getDesItem()))) {
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
         } else {
@@ -78,18 +85,19 @@ public class CategoriaQuartoDAOTest {
 
     @Test
     public void testAtualiza() throws Exception {
-        System.out.println("--Testa CategoriaQuartoDAO.atualiza()--");
+        System.out.println("--Testa ItemConfortoDAO.atualiza()--");
 
-        CategoriaQuarto expResult = new CategoriaQuarto("003", "Top", 30.00);
+        ItemConforto expResult = new ItemConforto("00" + i, "Item n°" + i);
+        i++;
 
         try {
-            categoriaQuartoDAO.adiciona(expResult);
+            itemConfortoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            categoriaQuartoDAO.atualiza("003",
-                    new CategoriaQuarto("004", "TopTop", 40.00));
+            itemConfortoDAO.atualiza("00" + (i - 1),
+                    new ItemConforto("00" + i, "Item n°" + i));
 
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
@@ -100,17 +108,17 @@ public class CategoriaQuartoDAOTest {
 
     @Test
     public void testDeleta() throws Exception {
-        System.out.println("--Testa CategoriaQuartoDAO.deleta()--");
+        System.out.println("--Testa ItemConfortoDAO.deleta()--");
 
-        CategoriaQuarto expResult = new CategoriaQuarto("005", "HOSP TOP", 999.99);
+        ItemConforto expResult = new ItemConforto("00" + i, "Item n°" + i);
 
         try {
-            categoriaQuartoDAO.adiciona(expResult);
+            itemConfortoDAO.adiciona(expResult);
         } catch (SQLException e) {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            categoriaQuartoDAO.deleta("005");
+            itemConfortoDAO.deleta("00" + i);
 
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;

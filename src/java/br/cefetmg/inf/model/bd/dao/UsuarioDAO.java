@@ -49,20 +49,25 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        
-        if(dadoBusca instanceof String) 
+
+        if (dadoBusca instanceof String) {
             pStmt.setString(1, dadoBusca.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        
+        }
+
         ResultSet rs = pStmt.executeQuery();
 
         Usuario[] usuarioEncontrados = new Usuario[UtilidadesBD.contaLinhasResultSet(rs)];
 
         rs.beforeFirst();
         while (rs.next()) {
-            usuarioEncontrados[i] = new Usuario(rs.getString(1), rs.getString(2),
-                    rs.getString(3), rs.getString(4), rs.getString(5));
+            usuarioEncontrados[i] = new Usuario();
+            usuarioEncontrados[i].setCodUsuario(rs.getString(1));
+            usuarioEncontrados[i].setNomUsuario(rs.getString(2));
+            usuarioEncontrados[i].setCodCargo(rs.getString(3));
+            usuarioEncontrados[i].setDesSenhaSemSHA256(rs.getString(4));
+            usuarioEncontrados[i].setDesEmail(rs.getString(5));
             i++;
         }
 
@@ -80,10 +85,11 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         pStmt.setString(3, usuarioAtualizado.getCodCargo());
         pStmt.setString(4, usuarioAtualizado.getDesSenha());
         pStmt.setString(5, usuarioAtualizado.getDesEmail());
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(6, pK.toString());
-        else 
+        } else {
             pStmt.setInt(6, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }
@@ -93,11 +99,12 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         String qry = "DELETE FROM Usuario "
                 + "WHERE codUsuario = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(1, pK.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
-
+        }
+        
         pStmt.execute();
     }
 }

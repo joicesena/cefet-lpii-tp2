@@ -42,15 +42,16 @@ public class QuartoDAO extends BaseDAO<Quarto> {
 
         String qry = "SELECT * FROM Quarto "
                 + "WHERE " + coluna + " "
-                + "LIKE ?";
+                + "= ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        
-        if(dadoBusca instanceof String) 
+
+        if (dadoBusca instanceof String) {
             pStmt.setString(1, dadoBusca.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        
+        }
+
         ResultSet rs = pStmt.executeQuery();
 
         Quarto[] quartoEncontrados = new Quarto[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -74,10 +75,11 @@ public class QuartoDAO extends BaseDAO<Quarto> {
         pStmt.setInt(1, quartoAtualizado.getNroQuarto());
         pStmt.setString(2, quartoAtualizado.getCodCategoria());
         pStmt.setBoolean(3, quartoAtualizado.isIdtOcupado());
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(4, pK.toString());
-        else 
+        } else {
             pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }
@@ -87,10 +89,11 @@ public class QuartoDAO extends BaseDAO<Quarto> {
         String qry = "DELETE FROM Quarto "
                 + "WHERE nroQuarto = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(1, pK.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }

@@ -20,6 +20,9 @@ public class Usuario {
         this.desEmail = desEmail;
     }
 
+    public Usuario() {
+    }
+
     public String getCodUsuario() {
         return codUsuario;
     }
@@ -49,11 +52,11 @@ public class Usuario {
     }
 
     public void setDesSenha(String desSenha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        if(desSenha.length() == 64) {
-            this.desSenha = desSenha;
-        } else {
-            this.desSenha = UtilidadesBD.stringParaSHA256(desSenha);
-        }
+        this.desSenha = UtilidadesBD.stringParaSHA256(desSenha);
+    }
+
+    public void setDesSenhaSemSHA256(String desSenha) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        this.desSenha = desSenha;
     }
 
     public String getDesEmail() {

@@ -43,15 +43,15 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
 
         String qry = "SELECT * FROM Hospedagem "
                 + "WHERE " + coluna + " "
-                + "LIKE ?";
+                + "= ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
         
         if(dadoBusca instanceof String) 
             pStmt.setString(1, dadoBusca.toString());
-        else 
+        else
             pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        
+            
         ResultSet rs = pStmt.executeQuery();
 
         Hospedagem[] hospedagemEncontrados = new Hospedagem[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -87,7 +87,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
     @Override
     public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Hospedagem "
-                + "WHERE codHospedagem = ?";
+                + "WHERE seqHospedagem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         if(pK instanceof String) 
             pStmt.setString(1, pK.toString());

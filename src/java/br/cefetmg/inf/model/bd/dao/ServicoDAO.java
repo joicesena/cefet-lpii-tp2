@@ -43,7 +43,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
 
         String qry = "SELECT * FROM Servico "
                 + "WHERE " + coluna + " "
-                + "LIKE ?";
+                + "= ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
         
@@ -87,7 +87,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     @Override
     public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Servico "
-                + "WHERE codServico = ?";
+                + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
         if(pK instanceof String) 
             pStmt.setString(1, pK.toString());

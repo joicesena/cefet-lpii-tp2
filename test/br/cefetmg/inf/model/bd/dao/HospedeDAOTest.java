@@ -1,7 +1,11 @@
 package br.cefetmg.inf.model.bd.dao;
 
+import br.cefetmg.inf.model.bd.util.ConnectionFactory;
+import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.dto.Hospede;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -12,6 +16,7 @@ import static org.junit.Assert.*;
 public class HospedeDAOTest {
 
     private final HospedeDAO hospedeDAO = HospedeDAO.getInstance();
+    private final Connection con  = new ConnectionFactory().getConnection();
 
     public HospedeDAOTest() {
     }
@@ -25,7 +30,9 @@ public class HospedeDAOTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws SQLException {
+        UtilidadesBD.apagarBDHosten();
+        UtilidadesBD.constroiBDHosten();
     }
 
     @After
