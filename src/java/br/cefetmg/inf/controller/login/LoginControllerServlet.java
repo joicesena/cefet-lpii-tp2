@@ -22,7 +22,7 @@ public class LoginControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UnsupportedEncodingException {
             email = request.getParameter("email");
-            senha = request.getParameter("password");
+            senha = request.getParameter("senha");
 
             LoginAutenticador verificaLogin = new LoginAutenticador();
             boolean loginVerificado = false;
