@@ -51,7 +51,7 @@ public class ServicoDAOTest {
         System.out.println("-- Testa ServicoDAO.adiciona() --");
 
         servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
-        Servico expResult = new Servico(i, "Serviço n°" + i, 1.00 * i, "00" + i);
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
 
         try {
             servicoDAO.adiciona(expResult);
@@ -66,7 +66,7 @@ public class ServicoDAOTest {
         System.out.println("--Testa ServicoDAO.busca()--");
 
         servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
-        Servico expResult = new Servico(i, "Serviço n°" + i, 1.00 * i, "00" + i);
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
 
         try {
             servicoDAO.adiciona(expResult);
@@ -74,9 +74,9 @@ public class ServicoDAOTest {
             fail("--!! O teste falhou -> 1 !!--");
         }
 
-        Servico[] result = servicoDAO.busca("seqServico", i);
+        Servico[] result = servicoDAO.busca("seqServico", 1);
 
-        if ((expResult.getSeqServico() == result[0].getSeqServico())
+        if ((1 == result[0].getSeqServico())
                 && (expResult.getDesServico().equals(result[0].getDesServico()))
                 && (Double.compare(expResult.getVlrUnit(), result[0].getVlrUnit()) == 0)
                 && (expResult.getCodServicoArea().equals(result[0].getCodServicoArea()))) {
@@ -92,7 +92,7 @@ public class ServicoDAOTest {
         System.out.println("--Testa ServicoDAO.atualiza()--");
 
         servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
-        Servico expResult = new Servico(i, "Serviço n°" + i, 1.00 * i, "00" + i);
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
         i++;
 
         servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
@@ -103,8 +103,8 @@ public class ServicoDAOTest {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            servicoDAO.atualiza((i - 1),
-                    new Servico(i, "Serviço n°" + i, 1.00 * i, "00" + i));
+            servicoDAO.atualiza(1,
+                    new Servico("Serviço n°" + i, 1.00 * i, "00" + i));
 
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
@@ -118,7 +118,7 @@ public class ServicoDAOTest {
         System.out.println("--Testa ServicoDAO.deleta()--");
 
         servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
-        Servico expResult = new Servico(i, "Serviço n°" + i, 1.00 * i, "00" + i);
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
 
         try {
             servicoDAO.adiciona(expResult);
@@ -126,7 +126,7 @@ public class ServicoDAOTest {
             fail("--!! O teste falhou -> 1 !!--");
         }
         try {
-            servicoDAO.deleta(i);
+            servicoDAO.deleta(1);
 
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;

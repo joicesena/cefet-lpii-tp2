@@ -78,8 +78,6 @@ public class UsuarioDAOTest {
 
         Usuario[] result = usuarioDAO.busca("codUsuario", "000" + i);
         
-        System.out.println(expResult.getDesSenha() + " // " + result[0].getDesSenha());
-
         if ((expResult.getCodUsuario().equals(result[0].getCodUsuario()))
                 && (expResult.getNomUsuario().equals(result[0].getNomUsuario()))
                 && (expResult.getCodCargo().equals(result[0].getCodCargo()))

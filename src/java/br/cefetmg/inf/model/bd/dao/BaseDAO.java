@@ -16,8 +16,9 @@ abstract class BaseDAO<ObjetoDTO> {
     protected abstract void adiciona(ObjetoDTO obj) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException;
 
     protected abstract ObjetoDTO[] busca(String coluna, Object dadoBusca) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException;
+    protected abstract ObjetoDTO[] busca() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException;
 
-    public abstract void atualiza(Object pK, ObjetoDTO objAtualizado) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException;
+    protected abstract void atualiza(Object pK, ObjetoDTO objAtualizado) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException;
 
-    public abstract void deleta(Object pK) throws SQLException;
+    protected abstract void deleta(Object pK) throws SQLException;
 }

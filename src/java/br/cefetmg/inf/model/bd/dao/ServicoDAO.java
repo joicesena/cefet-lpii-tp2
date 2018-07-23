@@ -6,6 +6,7 @@ import br.cefetmg.inf.model.dto.Servico;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ServicoDAO extends BaseDAO<Servico> {
 
@@ -25,14 +26,13 @@ public class ServicoDAO extends BaseDAO<Servico> {
     @Override
     public void adiciona(Servico servico) throws SQLException {
         String qry = "INSERT INTO Servico"
-                + "(seqServico, desServico, vlrUnit, codServicoArea)"
-                + " VALUES (?,?,?,?)";
+                + "(desServico, vlrUnit, codServicoArea)"
+                + " VALUES (?,?,?)";
 
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, servico.getSeqServico());
-        pStmt.setString(2, servico.getDesServico());
-        pStmt.setDouble(3, servico.getVlrUnit());
-        pStmt.setString(4, servico.getCodServicoArea());
+        pStmt.setString(1, servico.getDesServico());
+        pStmt.setDouble(2, servico.getVlrUnit());
+        pStmt.setString(3, servico.getCodServicoArea());
 
         pStmt.execute();
     }
@@ -46,12 +46,13 @@ public class ServicoDAO extends BaseDAO<Servico> {
                 + "= ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        
-        if(dadoBusca instanceof String) 
+
+        if (dadoBusca instanceof String) {
             pStmt.setString(1, dadoBusca.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        
+        }
+
         ResultSet rs = pStmt.executeQuery();
 
         Servico[] servicoEncontrados = new Servico[UtilidadesBD.contaLinhasResultSet(rs)];
@@ -67,19 +68,41 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     @Override
+    public Servico[] busca() throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM Servico";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        Servico[] servicosEncontrados
+                = new Servico[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            servicosEncontrados[i] = new Servico(rs.getInt(1), rs.getString(2),
+                    rs.getDouble(3), rs.getString(4));
+            i++;
+        }
+
+        return servicosEncontrados;
+    }
+
+    @Override
     public void atualiza(Object pK, Servico servicoAtualizado) throws SQLException {
         String qry = "UPDATE Servico "
-                + "SET seqServico = ?, desServico = ?, vlrUnit = ?, codServicoArea = ? "
+                + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, servicoAtualizado.getSeqServico());
-        pStmt.setString(2, servicoAtualizado.getDesServico());
-        pStmt.setDouble(3, servicoAtualizado.getVlrUnit());
-        pStmt.setString(4, servicoAtualizado.getCodServicoArea());
-        if(pK instanceof String) 
-            pStmt.setString(5, pK.toString());
-        else 
-            pStmt.setInt(5, Integer.parseInt(pK.toString()));
+        pStmt.setString(1, servicoAtualizado.getDesServico());
+        pStmt.setDouble(2, servicoAtualizado.getVlrUnit());
+        pStmt.setString(3, servicoAtualizado.getCodServicoArea());
+        if (pK instanceof String) {
+            pStmt.setString(4, pK.toString());
+        } else {
+            pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }
@@ -89,10 +112,11 @@ public class ServicoDAO extends BaseDAO<Servico> {
         String qry = "DELETE FROM Servico "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(1, pK.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }

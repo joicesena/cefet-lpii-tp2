@@ -91,12 +91,6 @@ public class HospedagemDAOTest {
 
         Hospedagem[] result = hospedagemDAO.busca("seqHospedagem", 1);
         
-        System.out.println(expResult.getSeqHospedagem() + " // " + result[0].getSeqHospedagem());
-        System.out.println(expResult.getDatCheckIn() + " // " + result[0].getDatCheckIn());
-        System.out.println(expResult.getDatCheckOut() + " // " + result[0].getDatCheckOut());
-        System.out.println(expResult.getVlrPago() + " // " + result[0].getVlrPago());
-        System.out.println(expResult.getCodCPF() + " // " + result[0].getCodCPF());
-
         if ((1 == result[0].getSeqHospedagem())
                 && (expResult.getDatCheckIn().equals(result[0].getDatCheckIn()))
                 && (expResult.getDatCheckOut().equals(result[0].getDatCheckOut()))

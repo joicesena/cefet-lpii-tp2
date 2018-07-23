@@ -6,6 +6,7 @@ import br.cefetmg.inf.model.dto.Hospedagem;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class HospedagemDAO extends BaseDAO<Hospedagem> {
 
@@ -46,24 +47,49 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
                 + "= ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        
-        if(dadoBusca instanceof String) 
+
+        if (dadoBusca instanceof String) {
             pStmt.setString(1, dadoBusca.toString());
-        else
+        } else {
             pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-            
+        }
+
         ResultSet rs = pStmt.executeQuery();
 
         Hospedagem[] hospedagemEncontrados = new Hospedagem[UtilidadesBD.contaLinhasResultSet(rs)];
 
         rs.beforeFirst();
         while (rs.next()) {
-            hospedagemEncontrados[i] = new Hospedagem(rs.getInt(1), rs.getTimestamp(2),
-                    rs.getTimestamp(3), rs.getDouble(4), rs.getString(5));
+            hospedagemEncontrados[i] = new Hospedagem(rs.getInt(1),
+                    rs.getTimestamp(2), rs.getTimestamp(3), rs.getDouble(4),
+                    rs.getString(5));
             i++;
         }
 
         return hospedagemEncontrados;
+    }
+
+    @Override
+    public Hospedagem[] busca() throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM Hospedagem";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        Hospedagem[] hospedagemsEncontrados
+                = new Hospedagem[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            hospedagemsEncontrados[i] = new Hospedagem(rs.getInt(1),
+                    rs.getTimestamp(2), rs.getTimestamp(3), rs.getDouble(4),
+                    rs.getString(5));
+            i++;
+        }
+
+        return hospedagemsEncontrados;
     }
 
     @Override
@@ -76,10 +102,11 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckOut());
         pStmt.setDouble(3, hospedagemAtualizado.getVlrPago());
         pStmt.setString(4, hospedagemAtualizado.getCodCPF());
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(5, pK.toString());
-        else 
+        } else {
             pStmt.setInt(5, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }
@@ -89,10 +116,11 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         String qry = "DELETE FROM Hospedagem "
                 + "WHERE seqHospedagem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(1, pK.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }

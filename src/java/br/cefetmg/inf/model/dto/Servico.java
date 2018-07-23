@@ -13,6 +13,12 @@ public class Servico {
         this.codServicoArea = codServicoArea;
     }
 
+    public Servico(String desServico, Double vlrUnit, String codServicoArea) {
+        this.desServico = desServico;
+        this.vlrUnit = vlrUnit;
+        this.codServicoArea = codServicoArea;
+    }
+
     public int getSeqServico() {
         return seqServico;
     }

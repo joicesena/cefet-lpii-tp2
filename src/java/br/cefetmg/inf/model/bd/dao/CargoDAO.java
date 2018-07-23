@@ -6,6 +6,7 @@ import br.cefetmg.inf.model.dto.Cargo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class CargoDAO extends BaseDAO<Cargo>{
     private static CargoDAO instancia;
@@ -54,6 +55,27 @@ public class CargoDAO extends BaseDAO<Cargo>{
 
         Cargo[] cargosEncontrados = new Cargo[UtilidadesBD.contaLinhasResultSet(rs)];
         
+        rs.beforeFirst();
+        while (rs.next()) {
+            cargosEncontrados[i] = new Cargo(rs.getString(1), rs.getString(2),
+                    rs.getBoolean(3));
+            i++;
+        }
+
+        return cargosEncontrados;
+    }
+    
+    @Override
+    public Cargo[] busca() throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        
+        String qry = "SELECT * FROM Cargo";
+        ResultSet rs = stmt.executeQuery(qry);
+        
+        Cargo[] cargosEncontrados = new Cargo[UtilidadesBD.contaLinhasResultSet(rs)];
+        
+        int i = 0;
         rs.beforeFirst();
         while (rs.next()) {
             cargosEncontrados[i] = new Cargo(rs.getString(1), rs.getString(2),

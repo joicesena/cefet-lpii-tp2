@@ -3,9 +3,11 @@ package br.cefetmg.inf.model.bd.dao;
 import static br.cefetmg.inf.model.bd.dao.BaseDAO.con;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.dto.ServicoArea;
+import br.cefetmg.inf.model.dto.ServicoArea;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
 
@@ -61,6 +63,27 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
         }
 
         return servicoAreaEncontrados;
+    }
+    
+    @Override
+    public ServicoArea[] busca() throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM ServicoArea";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        ServicoArea[] servicoAreasEncontrados
+                = new ServicoArea[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            servicoAreasEncontrados[i] = new ServicoArea(rs.getString(1), rs.getString(2));
+            i++;
+        }
+
+        return servicoAreasEncontrados;
     }
 
     @Override

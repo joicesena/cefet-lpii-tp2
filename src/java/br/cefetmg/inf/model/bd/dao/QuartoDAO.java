@@ -6,6 +6,7 @@ import br.cefetmg.inf.model.dto.Quarto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class QuartoDAO extends BaseDAO<Quarto> {
 
@@ -66,6 +67,28 @@ public class QuartoDAO extends BaseDAO<Quarto> {
         return quartoEncontrados;
     }
 
+    @Override
+    public Quarto[] busca() throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM Quarto";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        Quarto[] quartosEncontrados
+                = new Quarto[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            quartosEncontrados[i] = new Quarto(rs.getInt(1), rs.getString(2),
+                    rs.getBoolean(3));
+            i++;
+        }
+
+        return quartosEncontrados;
+    }
+    
     @Override
     public void atualiza(Object pK, Quarto quartoAtualizado) throws SQLException {
         String qry = "UPDATE Quarto "

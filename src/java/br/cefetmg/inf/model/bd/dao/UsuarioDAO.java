@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UsuarioDAO extends BaseDAO<Usuario> {
 
@@ -72,6 +73,32 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         }
 
         return usuarioEncontrados;
+    }
+    
+    @Override
+    public Usuario[] busca() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM Usuario";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        Usuario[] usuariosEncontrados
+                = new Usuario[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            usuariosEncontrados[i] = new Usuario();
+            usuariosEncontrados[i].setCodUsuario(rs.getString(1));
+            usuariosEncontrados[i].setNomUsuario(rs.getString(2));
+            usuariosEncontrados[i].setCodCargo(rs.getString(3));
+            usuariosEncontrados[i].setDesSenhaSemSHA256(rs.getString(4));
+            usuariosEncontrados[i].setDesEmail(rs.getString(5));
+            i++;
+        }
+
+        return usuariosEncontrados;
     }
 
     @Override

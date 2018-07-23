@@ -6,6 +6,7 @@ import br.cefetmg.inf.model.dto.CategoriaQuarto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
 
@@ -45,21 +46,45 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        
+
         if (dadoBusca instanceof String) {
             pStmt.setString(1, dadoBusca.toString());
         } else {
             pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
         }
-        
+
         ResultSet rs = pStmt.executeQuery();
 
         CategoriaQuarto[] categoriaQuartosEncontrados = new CategoriaQuarto[UtilidadesBD.contaLinhasResultSet(rs)];
 
         rs.beforeFirst();
         while (rs.next()) {
-            categoriaQuartosEncontrados[i] = new CategoriaQuarto(rs.getString(1), rs.getString(2),
-                    rs.getDouble(3));
+            categoriaQuartosEncontrados[i]
+                    = new CategoriaQuarto(rs.getString(1), rs.getString(2),
+                            rs.getDouble(3));
+            i++;
+        }
+
+        return categoriaQuartosEncontrados;
+    }
+
+    @Override
+    public CategoriaQuarto[] busca() throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM Categoria";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        CategoriaQuarto[] categoriaQuartosEncontrados
+                = new CategoriaQuarto[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            categoriaQuartosEncontrados[i]
+                    = new CategoriaQuarto(rs.getString(1), rs.getString(2),
+                            rs.getDouble(3));
             i++;
         }
 
@@ -75,10 +100,11 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
         pStmt.setString(1, categoriaQuartoAtualizado.getCodCategoria());
         pStmt.setString(2, categoriaQuartoAtualizado.getNomCategoria());
         pStmt.setDouble(3, categoriaQuartoAtualizado.getVlrDiaria());
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(4, pK.toString());
-        else 
+        } else {
             pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }
@@ -88,10 +114,11 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
         String qry = "DELETE FROM Categoria "
                 + "WHERE codCategoria = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(1, pK.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }

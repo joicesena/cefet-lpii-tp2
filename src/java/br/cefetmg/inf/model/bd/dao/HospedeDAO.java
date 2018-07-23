@@ -1,10 +1,12 @@
 package br.cefetmg.inf.model.bd.dao;
 
+import static br.cefetmg.inf.model.bd.dao.BaseDAO.con;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.dto.Hospede;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public final class HospedeDAO extends BaseDAO<Hospede> {
 
@@ -45,20 +47,43 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
                 + "LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        
-        if(dadoBusca instanceof String) 
+
+        if (dadoBusca instanceof String) {
             pStmt.setString(1, dadoBusca.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
-        
+        }
+
         ResultSet rs = pStmt.executeQuery();
 
         Hospede[] hospedesEncontrados = new Hospede[UtilidadesBD.contaLinhasResultSet(rs)];
-        
+
         rs.beforeFirst();
         while (rs.next()) {
-            hospedesEncontrados[i] = new Hospede(rs.getString(1), rs.getString(2),
-                    rs.getString(3), rs.getString(4));
+            hospedesEncontrados[i] = new Hospede(rs.getString(1),
+                    rs.getString(2), rs.getString(3), rs.getString(4));
+            i++;
+        }
+
+        return hospedesEncontrados;
+    }
+
+    @Override
+    public Hospede[] busca() throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM Hospede";
+        ResultSet rs = stmt.executeQuery(qry);
+
+        Hospede[] hospedesEncontrados
+                = new Hospede[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            hospedesEncontrados[i] = new Hospede(rs.getString(1),
+                    rs.getString(2), rs.getString(3), rs.getString(4));
             i++;
         }
 
@@ -75,10 +100,11 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
         pStmt.setString(2, hospedeAtualizado.getNomHospede());
         pStmt.setString(3, hospedeAtualizado.getDesTelefone());
         pStmt.setString(4, hospedeAtualizado.getDesEmail());
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(5, pK.toString());
-        else 
+        } else {
             pStmt.setInt(5, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }
@@ -88,10 +114,11 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
         String qry = "DELETE FROM Hospede "
                 + "WHERE codCPF = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        if(pK instanceof String) 
+        if (pK instanceof String) {
             pStmt.setString(1, pK.toString());
-        else 
+        } else {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
+        }
 
         pStmt.execute();
     }
