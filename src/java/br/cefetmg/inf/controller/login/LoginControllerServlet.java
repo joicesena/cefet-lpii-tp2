@@ -42,7 +42,8 @@ public class LoginControllerServlet extends HttpServlet {
             if (loginVerificado) {
                 HttpSession session = request.getSession(); 
                 session.setAttribute("email", email);
-                session.setAttribute("codCargo", verificaLogin.retornaCargo());
+                session.setAttribute("codCargo", verificaLogin.getCargo());
+                session.setAttribute("codUsuario", verificaLogin.getCodUsuario());
                 
                 // direciona para a página principal interna do sistema
                 response.sendRedirect("/view/visualizacaoEstadoQuartos.jsp");

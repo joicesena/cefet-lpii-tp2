@@ -14,6 +14,7 @@ public final class LoginAutenticador {
     private String email;
     private String senha;
     private String codCargo;
+    private String codUsuario;
 
     public boolean loginValido (String email, String senha) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         senha = UtilidadesBD.stringParaSHA256(senha);
@@ -28,12 +29,17 @@ public final class LoginAutenticador {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             codCargo = rs.getString("codCargo");
+            codUsuario = rs.getString("codUsuario");
             return true;
         } 
         return false;
     }
  
-    public String retornaCargo () {
+    public String getCargo () {
         return codCargo;
+    }
+
+    public String getCodUsuario () {
+        return codUsuario;
     }
 }

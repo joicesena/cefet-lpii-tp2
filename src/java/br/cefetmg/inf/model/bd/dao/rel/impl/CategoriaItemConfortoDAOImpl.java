@@ -43,4 +43,12 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
         pStmt.setString(2, codItem);
         pStmt.execute();
     }
+
+    public void deleta(String codCategoria) throws SQLException {
+        String qry = "DELETE FROM CategoriaItemConforto "
+                + "WHERE codCategoria = ? AND ";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setString(1, codCategoria);
+        pStmt.execute();
+    }
 }
