@@ -1,4 +1,4 @@
-package br.cefetmg.inf.controller.login;
+package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.login.LoginAutenticador;
 

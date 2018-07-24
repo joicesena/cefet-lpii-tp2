@@ -1,4 +1,4 @@
-package br.cefetmg.inf.controller.itemConforto;
+package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.ItemConfortoDAO;
 import br.cefetmg.inf.model.dto.ItemConforto;

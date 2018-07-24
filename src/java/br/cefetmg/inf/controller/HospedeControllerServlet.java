@@ -1,4 +1,4 @@
-package br.cefetmg.inf.controller.hospede;
+package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.HospedeDAO;
 import br.cefetmg.inf.model.dto.Hospede;

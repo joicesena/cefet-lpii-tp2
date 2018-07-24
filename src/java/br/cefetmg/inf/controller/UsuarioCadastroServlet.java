@@ -1,4 +1,4 @@
-package br.cefetmg.inf.controller.funcionario;
+package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.CargoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;

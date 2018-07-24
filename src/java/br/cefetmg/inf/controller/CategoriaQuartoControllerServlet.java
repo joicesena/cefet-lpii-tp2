@@ -1,4 +1,4 @@
-package br.cefetmg.inf.controller.categoriaQuarto;
+package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO;
 import br.cefetmg.inf.model.bd.dao.ItemConfortoDAO;
