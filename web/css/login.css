@@ -1,0 +1,98 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald:300,400,700);
+
+body {
+    background: rgba(95, 75, 139, 0.8); /* para browsers mais antigos */
+    background: -webkit-linear-gradient(to right, #5F4B8B, #7e6ea2, #9f93b9, #bfb7d0); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #5F4B8B, #7e6ea2, #9f93b9, #bfb7d0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Menu */
+nav ul a,
+nav .brand-logo,
+nav .button-collapse {
+    color: #5f4b8b;
+}
+#menu-mobile-header a {
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 10px;
+    font-size: 25px;
+    text-align: center;
+    color: #ffffff;
+    background-color: rgba(95, 75, 139, 0.5);
+}
+
+/* Login Box */
+.login-box {
+    margin-top: 55px;
+    margin-bottom: 55px;
+}
+.card-title {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.ultraviolet-color {
+    color: #5F4B8B;
+}
+.input-field .prefix.active,
+.input-field label.active {
+    color: #7D3F7C;
+}
+.input-field input[type=email]:focus,
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #7D3F7C !important;
+    box-shadow: 0 1px 0 0 #7D3F7C !important;
+}
+[type="checkbox"]:checked + label:before {
+    border-right: 2px solid #7D3F7C !important;
+    border-bottom: 2px solid #7D3F7C !important;
+}
+#remember-password {
+    margin-left: 5px;
+}
+#login-button {
+    width: 50%;
+    background-color: #5F4B8B;
+}
+
+/* Tipografia */
+p {
+    line-height: 2rem;
+}
+
+h3 {
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 10px;
+    text-align: center;
+    color: #5F4B8B;
+    font-weight: 400;
+    text-transform: uppercase;
+    z-index: 10;
+    opacity: .9;
+}
+
+/* Rodapé */
+.footer-copyright {
+    overflow: hidden;
+    min-height: 50px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #5f4b8b;
+}
