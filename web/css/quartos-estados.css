@@ -1,0 +1,135 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald:300,400,700);
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Menu */
+nav ul a,
+nav .brand-logo {
+    color: #5f4b8b;
+}
+
+/* Sidemenu */
+.dropdown-icon {
+    margin-right: 0px !important;
+}
+
+/* Tipografia */
+.title {    
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 5px;
+    text-align: center;
+    color: #5F4B8B;
+    text-transform: uppercase;
+    z-index: 10;
+}
+
+/* Campos de busca e seleção*/
+#container {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+}
+.search-box {
+    display: inline-block;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    padding-left: 0px !important;
+}
+.input-field .prefix.active,
+.input-field label.active {
+    color: #5F4B8B;
+}
+.input-field input[type=search]:focus {
+    border-bottom: 1px solid #5F4B8B !important;
+    box-shadow: 0 1px 0 0 #5F4B8B !important;
+}
+.select-box {
+    display: inline-block;
+    margin-top: 30px;
+    margin-bottom: 5px;
+    padding-right: 0px !important;
+}
+.select-dropdown .dropdown-content li > a, .dropdown-content li > span {
+    color: #5F4B8B !important;
+}
+
+/* Tabela */
+table {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid #5F4B8B;
+}
+th {
+    color: white;
+    background-color: rgba(95, 75, 139, 0.8);
+    border: 2px solid #5F4B8B; 
+}
+td + td { 
+    border-left: 2px solid #5F4B8B; 
+}
+.table-icon-sort {
+    margin-left: 0px !important;
+    color: white;
+}
+.table-icon-edit {
+    color: #3f51b5;
+}
+.table-icon-delete {
+    color: #f44336;
+}
+
+/* Botões */
+#checkin-button {
+    text-transform: none;
+    background-color: #4caf50;
+    padding-left: 3px;
+    padding-right: 8px;
+}
+#checkout-button {
+    text-transform: none;
+    background-color: #ef5350;
+    padding-left: 3px;
+    padding-right: 8px;
+}
+#info-button {
+    text-transform: none;
+    background-color: #5c6bc0;
+    padding-left: 3px;
+    padding-right: 8px;
+}
+#checkin-button i, #checkout-button i, #info-button i {
+    margin-right: 3px;
+    font-size: 24px;
+}
+
+/* Rodapé */
+.footer-copyright {
+    overflow: hidden;
+    min-height: 50px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #5f4b8b;
+}
