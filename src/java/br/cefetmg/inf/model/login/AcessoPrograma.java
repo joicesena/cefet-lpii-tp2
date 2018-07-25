@@ -11,16 +11,16 @@ public final class AcessoPrograma {
 
     private static Connection con = new ConnectionFactory().getConnection();
 
-    public boolean temAcessoPagina(String codUsuario, String codCargo, String desPrograma) throws SQLException {
-        Statement stmtUsuario = con.createStatement();
-        Statement stmt = con.createStatement();
-        String qryUsuario = "SELECT idtMaster FROM usuario WHERE codUsuario = '" + codUsuario + "' ";
-        ResultSet rsUsuario = stmtUsuario.executeQuery(qryUsuario);
-        if (rsUsuario.next()) {
-            if (rsUsuario.getBoolean("idtMaster")) {
+    public boolean temAcessoPagina(String codCargo, String desPrograma) throws SQLException {
+        Statement stmt0 = con.createStatement();
+        String qryMaster = "SELECT idtMaster FROM cargo WHERE codCargo = '" + codCargo + "' ";
+        ResultSet rscargo = stmt0.executeQuery(qryMaster);
+        if(rscargo.next()) {
+            if (rscargo.getBoolean("idtMaster")) {
                 return true;
             } else {
                 // selecionar o codPrograma na tabela Programa que tem a desPrograma
+                Statement stmt = con.createStatement();
                 String qry = "SELECT codPrograma FROM programa WHERE desPrograma = '" + desPrograma + "' ";
                 ResultSet rs = stmt.executeQuery(qry);
 
@@ -38,6 +38,7 @@ public final class AcessoPrograma {
                 }
             }
         }
+        
         return false;
     }
 }
