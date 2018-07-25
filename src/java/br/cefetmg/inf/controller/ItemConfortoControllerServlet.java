@@ -4,6 +4,7 @@ import br.cefetmg.inf.model.bd.dao.ItemConfortoDAO;
 import br.cefetmg.inf.model.dto.ItemConforto;
 import java.io.IOException;
 import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ItemConfortoControllerServlet", urlPatterns = {"/itemConforto"})
 public class ItemConfortoControllerServlet extends HttpServlet {
 
-    private HttpServletRequest request;
+    private HttpServletRequest requestInterno;
+    private HttpServletResponse response;
     private String operacaoItem;
     
     private ItemConfortoDAO itemConforto;
@@ -26,10 +28,11 @@ public class ItemConfortoControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        this.request = request;
+        this.requestInterno = request;
+        this.response = response;
         operacaoItem = null;
 
-        operacaoItem = request.getParameter("operacaoItem");
+        operacaoItem = requestInterno.getParameter("operacaoItem");
         
         try {
             if (operacaoItem.equals("cadastrarItem")) {
@@ -47,10 +50,11 @@ public class ItemConfortoControllerServlet extends HttpServlet {
             //
         }
         
-        //
-        //
-        String caminhoTelaItemConforto = "";
-        request.getRequestDispatcher(caminhoTelaItemConforto).forward(request, response);
+        String caminhoArquivo = "/view/itens-conforto.jsp";
+        
+        RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
+        rd.forward(request, response);
+        
     }
 
     
@@ -61,8 +65,8 @@ public class ItemConfortoControllerServlet extends HttpServlet {
         String codItem;
         String desItem;
         
-        codItem = request.getParameter("codItem");
-        desItem = request.getParameter("desItem");
+        codItem = requestInterno.getParameter("codItem");
+        desItem = requestInterno.getParameter("desItem");
         
         ItemConforto itemAdicionar = new ItemConforto(codItem, desItem);
         itemConforto.adiciona(itemAdicionar);
@@ -72,20 +76,19 @@ public class ItemConfortoControllerServlet extends HttpServlet {
     
     private void pesquisaItem() throws SQLException {
         String parametroPesquisa, tipoParametroPesquisa;
-        parametroPesquisa = (String)request.getParameter("pesquisaItem");
-        tipoParametroPesquisa = (String)request.getParameter("parametroPesquisaItem");
+        parametroPesquisa = (String)requestInterno.getParameter("pesquisaItem");
+        tipoParametroPesquisa = (String)requestInterno.getParameter("parametroPesquisaItem");
         
         ItemConforto [] itensPesquisa = itemConforto.busca(tipoParametroPesquisa, parametroPesquisa);
         
-        request.setAttribute("listaItens", itensPesquisa);
-        
+        requestInterno.setAttribute("listaItens", itensPesquisa);
         return;
     }
 
     private void editaItem() throws SQLException {
         String codItem, desItem;
-        codItem = request.getParameter("codItemSelecionado");
-        desItem = request.getParameter("desItemSelecionado");
+        codItem = requestInterno.getParameter("codItemSelecionado");
+        desItem = requestInterno.getParameter("desItemSelecionado");
         
         ItemConforto itemConfortoAtualizado = new ItemConforto(codItem, desItem);
         
@@ -96,10 +99,11 @@ public class ItemConfortoControllerServlet extends HttpServlet {
     
     private void removeItem() throws SQLException {
         String codItem;
-        codItem = request.getParameter("codItemSelecionado");
+        codItem = requestInterno.getParameter("codItemSelecionado");
         
         itemConforto.deleta(codItem);
         
         return;
     }
+
 }
