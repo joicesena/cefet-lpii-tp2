@@ -45,7 +45,8 @@
         <main>
             <div class="valign-wrapper row login-box">
                 <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4">
-                    <form action="quartos-estados.jsp">
+                    <!--<form action="quartos-estados.jsp">-->
+                    <form action="http://localhost:8080/cefet-lpii-tp2/login" method="post">
                         <div class="card-content">
                             <div class="center-align">
                                 <h3>Hosten</h3>
@@ -55,12 +56,12 @@
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">mail_outline</i>
                                     <label for="email">Email</label>
-                                    <input id="email" type="email" class="validate">
+                                    <input name="email" id="email" type="email" class="validate">
                                 </div>
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">lock_outline</i>
                                     <label for="password">Senha</label>
-                                    <input id="password" type="password" class="validate">
+                                    <input name="password" id="password" type="password" class="validate">
                                 </div>
                                 <div id="remember-password" class="col s6">
                                     <p>

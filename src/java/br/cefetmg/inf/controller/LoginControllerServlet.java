@@ -22,7 +22,7 @@ public class LoginControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, UnsupportedEncodingException {
             email = request.getParameter("email");
-            senha = request.getParameter("senha");
+            senha = request.getParameter("password");
 
             LoginAutenticador verificaLogin = new LoginAutenticador();
             boolean loginVerificado = false;
@@ -39,18 +39,19 @@ public class LoginControllerServlet extends HttpServlet {
             //
         }
 
+            HttpSession session = request.getSession();
+
             if (loginVerificado) {
-                HttpSession session = request.getSession(); 
                 session.setAttribute("email", email);
                 session.setAttribute("codCargo", verificaLogin.getCargo());
                 session.setAttribute("codUsuario", verificaLogin.getCodUsuario());
                 
                 // direciona para a página principal interna do sistema
-                response.sendRedirect("/view/visualizacaoEstadoQuartos.jsp");
+                response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp");
             } else {
                 // retorna para a página de login
-                request.setAttribute("mensagemErro", "Informações inválidas");
-                request.getRequestDispatcher("/view/login.jsp").forward(request, response);
+                session.setAttribute("mensagem-erro-login", "Informações inválidas!");
+                response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
             }
     }
 }
