@@ -72,7 +72,7 @@
                 <a class="collapsible-header waves-effect" href="#"><i class="material-icons grey-text text-darken-3">people</i>Hóspedes<i class="material-icons right dropdown-icon">arrow_drop_down</i></a>
                 <div class="collapsible-body">
                     <ul>
-                        <li><a href="#"><i class="material-icons">search</i>Visualizar hóspedes</a></li>
+                        <li><a href="hospedes-visualizacao.jsp"><i class="material-icons">search</i>Visualizar hóspedes</a></li>
                         <li><a href="#"><i class="material-icons">person_add</i>Cadastrar novo hóspede</a></li>
                     </ul>
                 </div>
