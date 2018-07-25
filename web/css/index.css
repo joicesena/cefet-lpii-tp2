@@ -1,0 +1,135 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald:300,400,700);
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/* Menu */
+nav ul a,
+nav .brand-logo,
+nav .button-collapse {
+    color: #5f4b8b;
+}
+#menu-mobile-header a {
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 10px;
+    font-size: 25px;
+    text-align: center;
+    color: #ffffff;
+    background-color: rgba(95, 75, 139, 0.5);
+}
+
+/* Parallax */
+.parallax-hosten-home .parallax-one {
+    padding-top: 200px;
+    padding-bottom: 200px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background-image: url("../imgs/home-parallax-one-background.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+.parallax-hosten-home .parallax-two {
+    padding-top: 200px;
+    padding-bottom: 200px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    background-image: url("../imgs/home-parallax-two-background.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+/* Rodapé */
+.footer-copyright {
+    overflow: hidden;
+    min-height: 50px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: #5f4b8b;
+}
+
+/* Tipografia */
+p {
+    line-height: 2rem;
+}
+.parallax-hosten-home h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 70px;
+    letter-spacing: 10px;
+    text-align: center;
+    color: white;
+    font-weight: 400;
+    text-transform: uppercase;
+    z-index: 10;
+    opacity: .9;
+}
+
+/* Icons */
+.icon-block {
+    padding: 0 15px;
+}
+.icon-block .material-icons {
+    font-size: inherit;
+}
+.ultraviolet-text {
+    color: rgba(95, 75, 139, 0.8) !important;
+}
+
+/* Media Queries */
+@media screen and (max-width: 959px) and (min-width: 768px) {
+    .parallax-hosten-home .block {
+        padding: 40px;
+        width: 620px;
+    }
+}
+@media screen and (max-width: 767px) {
+    .parallax-hosten-home .block {
+        padding: 30px;
+        width:420px;
+    }
+    .parallax-hosten-home h2 {
+        font-size: 30px;
+    }
+    .parallax-hosten-home .block {
+        padding: 30px;
+    }
+    .parallax-hosten-home .parallax-one,
+    .parallax-hosten-home .parallax-two,
+    .parallax-hosten-home .parallax-three {
+        padding-top: 100px;
+        padding-bottom: 100px;
+    }
+}
+@media screen and (max-width: 479px) {
+    .parallax-hosten-home .block {
+        padding: 30px 15px;
+        width: 290px;
+  }
+}

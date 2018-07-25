@@ -1,16 +1,113 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
+<html lang="pt-br">
     <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <!-- Mostra para o browser que o site é otimizado para mobile -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Home</title>
+
+        <!-- CSS -->
+        <!-- Google Icon Font -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!-- Materialize CSS -->
+        <link type="text/css" rel="stylesheet" href="./css/materialize/materialize.css"/>
+        <link type="text/css" rel="stylesheet" href="./css/index.css"/>
     </head>
     <body>
-        <div>TODO write content</div>
-    </body>
+        <header>
+            <nav class="white">
+                <div class="nav-wrapper container">
+                    <a href="#" class="brand-logo">Logo</a>
+                    <a href="#" data-activates="menu-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+
+                    <ul class="right hide-on-med-and-down">
+                      <li><a href="./view/login.jsp">Login</a></li>
+                    </ul>
+                    
+                    <ul id="menu-mobile" class="side-nav">
+                        <li id="menu-mobile-header">
+                        <div class="user-view">
+                          <div class="background">
+                            <img src="./imgs/sidenav-background.jpg"/>
+                          </div>
+                          <a href="#">HOSTEN</a>
+                        </div>
+                      <li>
+                      <li><a class="waves-effect" href="index.html"><i class="material-icons grey-text text-darken-3">home</i>Home</a></li>
+                      <li><a class="waves-effect" href="./view/login.jsp"><i class="material-icons grey-text text-darken-3">exit_to_app</i>Login</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="parallax-hosten-home">
+                <div class="parallax-one">
+                  <h2>O QUE É O HOSTEN?</h2>
+                </div>
+            </section>
+
+            <div class="container">
+              <div class="section">
+                <div class="row">
+                  <div class="col s12 center">
+                    <h4>Um sistema feito para você</h4>
+                    <p class="left-align light">Hosten é um sistema de gerenciamento interno de hospedagem que tem como objetivo (...) texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten texto sobre o que é o hosten.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <section class="parallax-hosten-home">
+              <div class="parallax-two">
+                <h2>O QUE O SISTEMA DISPONIBILIZA?</h2>
+              </div>
+            </section>
+
+            <div class="container">
+              <div class="section">
+                <!--   Icon Section   -->
+                <div class="row">
+                  <div class="col s12 m4">
+                    <div class="icon-block">
+                      <h2 class="center ultraviolet-text"><i class="material-icons">group</i></h2>
+                      <h5 class="center">Cadastro de hóspedes</h5>
+                      <p class="light">Possibilita aos funcionários do hotel verificar os hóspedes, atribuir quartos e habilitar os serviços disponíveis, facilitando o processo de controle do gerenciamento da hospedagem com qualidade e organização.</p>
+                    </div>
+                  </div>
+
+                  <div class="col s12 m4">
+                    <div class="icon-block">
+                      <h2 class="center ultraviolet-text"><i class="material-icons">devices</i></h2>
+                      <h5 class="center">Facilidade de acesso</h5>
+                      <p class="light">Por ser um serviço web, não é necessária uma instalação prévia. E mais: com o site responsivo, você também pode acessar o sistema por meio de dispositivos mobile sem dificuldades.</p>
+                    </div>
+                  </div>
+
+                  <div class="col s12 m4">
+                    <div class="icon-block">
+                      <h2 class="center ultraviolet-text"><i class="material-icons">business</i></h2>
+                      <h5 class="center">Adaptação ao hotel</h5>
+                      <p class="light">Garante uma evolução no serviço prestado ao contar com uma personalização do sistema feita de acordo com as necessidades de cada estabelecimento.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </main>
+
+        <footer>
+          <div class="footer-copyright">
+            <div class="container">
+              Feito com  <i class="tiny material-icons">favorite_border</i> por estudantes do CEFET-MG
+            </div>
+          </div>
+        </footer>
+        
+        <!--  Script -->
+        <!-- Import jQuery before Materialize JS  -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="./js/materialize/materialize.js"></script>
+        <script type="text/javascript" src="./js/index.js"></script>
+  </body>
 </html>
