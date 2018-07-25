@@ -45,7 +45,7 @@
         <main>
             <div class="valign-wrapper row login-box">
                 <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4">
-                    <form action="visualizacao-cargos.jsp">
+                    <form action="cargos.jsp">
                         <div class="card-content">
                             <div class="center-align">
                                 <h3>Hosten</h3>
