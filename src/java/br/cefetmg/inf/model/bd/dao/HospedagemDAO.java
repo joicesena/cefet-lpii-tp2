@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 public class HospedagemDAO extends BaseDAO<Hospedagem> {
 
@@ -111,6 +112,60 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.execute();
     }
 
+    public void atualiza(Hospedagem hospedagemAntiga,
+            Hospedagem hospedagemAtualizado) throws SQLException {
+        String qry = "UPDATE Hospedagem "
+                + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
+                + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
+                + "codCPF = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckIn());
+        pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckOut());
+        pStmt.setDouble(3, hospedagemAtualizado.getVlrPago());
+        pStmt.setString(4, hospedagemAtualizado.getCodCPF());
+        pStmt.setTimestamp(5, hospedagemAntiga.getDatCheckIn());
+        pStmt.setTimestamp(6, hospedagemAntiga.getDatCheckOut());
+        pStmt.setDouble(7, hospedagemAntiga.getVlrPago());
+        pStmt.setString(8, hospedagemAntiga.getCodCPF());
+
+        pStmt.execute();
+    }
+
+    public void atualiza(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
+            Double vlrPagoAntigo, String codCPFAntigo,
+            Hospedagem hospedagemAtualizado) throws SQLException {
+        String qry = "SELECT * FROM Hospedagem "
+                + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
+                + "codCPF = ?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        pStmt.setTimestamp(1, datCheckInAntiga);
+        pStmt.setTimestamp(2, datCheckOutAntiga);
+        pStmt.setDouble(3, vlrPagoAntigo);
+        pStmt.setString(4, codCPFAntigo);
+
+        ResultSet rs = pStmt.executeQuery();
+
+        if (UtilidadesBD.contaLinhasResultSet(rs) == 1) {
+            qry = "UPDATE Hospedagem "
+                    + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
+                    + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? "
+                    + "AND codCPF = ?";
+            pStmt = con.prepareStatement(qry);
+            pStmt.setTimestamp(1, hospedagemAtualizado.getDatCheckIn());
+            pStmt.setTimestamp(2, hospedagemAtualizado.getDatCheckOut());
+            pStmt.setDouble(3, hospedagemAtualizado.getVlrPago());
+            pStmt.setString(4, hospedagemAtualizado.getCodCPF());
+            pStmt.setTimestamp(5, datCheckInAntiga);
+            pStmt.setTimestamp(6, datCheckOutAntiga);
+            pStmt.setDouble(7, vlrPagoAntigo);
+            pStmt.setString(8, codCPFAntigo);
+
+            pStmt.execute();
+        }
+    }
+
     @Override
     public void deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Hospedagem "
@@ -123,5 +178,47 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         }
 
         pStmt.execute();
+    }
+
+    public void deleta(Hospedagem hospedagemAntiga) throws SQLException {
+        String qry = "DELETE FROM Hospedagem "
+                + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
+                + "codCPF = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setTimestamp(1, hospedagemAntiga.getDatCheckIn());
+        pStmt.setTimestamp(2, hospedagemAntiga.getDatCheckOut());
+        pStmt.setDouble(3, hospedagemAntiga.getVlrPago());
+        pStmt.setString(4, hospedagemAntiga.getCodCPF());
+
+        pStmt.execute();
+    }
+
+    public void deleta(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
+            Double vlrPagoAntigo, String codCPFAntigo) throws SQLException {
+        String qry = "SELECT * FROM Hospedagem "
+                + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
+                + "codCPF = ?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        pStmt.setTimestamp(1, datCheckInAntiga);
+        pStmt.setTimestamp(2, datCheckOutAntiga);
+        pStmt.setDouble(3, vlrPagoAntigo);
+        pStmt.setString(4, codCPFAntigo);
+
+        ResultSet rs = pStmt.executeQuery();
+
+        if (UtilidadesBD.contaLinhasResultSet(rs) == 1) {
+            qry = "DELETE FROM Hospedagem "
+                    + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? "
+                    + "AND codCPF = ?";
+            pStmt = con.prepareStatement(qry);
+            pStmt.setTimestamp(1, datCheckInAntiga);
+            pStmt.setTimestamp(2, datCheckOutAntiga);
+            pStmt.setDouble(3, vlrPagoAntigo);
+            pStmt.setString(4, codCPFAntigo);
+
+            pStmt.execute();
+        }
     }
 }

@@ -112,6 +112,60 @@ public class ServicoDAOTest {
             fail("--!! O teste falhou -> 2 !!--");
         }
     }
+    
+    @Test
+    public void testAtualiza2() throws Exception {
+        System.out.println("--Testa ServicoDAO.atualiza2()--");
+
+        servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
+        i++;
+
+        servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
+
+        try {
+            servicoDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            servicoDAO.atualiza(expResult,
+                    new Servico("Serviço n°" + i, 1.00 * i, "00" + i));
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
+    
+    @Test
+    public void testAtualiza3() throws Exception {
+        System.out.println("--Testa ServicoDAO.atualiza3()--");
+
+        servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
+        i++;
+
+        servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
+
+        try {
+            servicoDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            servicoDAO.atualiza(expResult.getDesServico(), expResult.getCodServicoArea(),
+                    new Servico("Serviço n°" + i, 1.00 * i, "00" + i));
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
 
     @Test
     public void testDeleta() throws Exception {
@@ -131,6 +185,52 @@ public class ServicoDAOTest {
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;
         } catch (SQLException e) {
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
+    
+    @Test
+    public void testDeleta2() throws Exception {
+        System.out.println("--Testa ServicoDAO.deleta2()--");
+
+        servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
+
+        try {
+            servicoDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            servicoDAO.deleta(expResult);
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
+    
+    @Test
+    public void testDeleta3() throws Exception {
+        System.out.println("--Testa ServicoDAO.deleta3()--");
+
+        servicoAreaDAO.adiciona(new ServicoArea("00" + i, "ServiçoArea n°" + i));
+        Servico expResult = new Servico("Serviço n°" + i, 1.00 * i, "00" + i);
+
+        try {
+            servicoDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            servicoDAO.deleta(expResult.getDesServico(), expResult.getCodServicoArea());
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            e.printStackTrace();
             fail("--!! O teste falhou -> 2 !!--");
         }
     }

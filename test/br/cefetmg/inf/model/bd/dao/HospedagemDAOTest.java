@@ -69,7 +69,7 @@ public class HospedagemDAOTest {
         }
         System.out.println("-->> Teste finalizado com sucesso <<--");
     }
-    
+
     @Test
     public void testBusca() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         System.out.println("--Testa HospedagemDAO.busca()--");
@@ -90,7 +90,7 @@ public class HospedagemDAOTest {
         }
 
         Hospedagem[] result = hospedagemDAO.busca("seqHospedagem", 1);
-        
+
         if ((1 == result[0].getSeqHospedagem())
                 && (expResult.getDatCheckIn().equals(result[0].getDatCheckIn()))
                 && (expResult.getDatCheckOut().equals(result[0].getDatCheckOut()))
@@ -142,6 +142,85 @@ public class HospedagemDAOTest {
     }
 
     @Test
+    public void testAtualiza2() throws Exception {
+        System.out.println("--Testa HospedagemDAO.atualiza2()--");
+
+        hospedeDAO.adiciona(new Hospede("           ".replace(" ", "" + i + ""), "Hospede" + i,
+                "319        ".replace(" ", "" + i + ""), "pablo" + i + "@email.com"));
+
+        Hospedagem expResult = new Hospedagem(
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * i)),
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * (i + 1))),
+                100.00 * i,
+                "           ".replace(" ", "" + i + ""));
+
+        i--;
+
+        hospedeDAO.adiciona(new Hospede("           ".replace(" ", "" + i + ""), "Hospede" + i,
+                "319        ".replace(" ", "" + i + ""), "pablo" + i + "@email.com"));
+
+        try {
+            hospedagemDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            hospedagemDAO.atualiza(expResult,
+                    new Hospedagem(
+                            new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * i)),
+                            new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * (i + 1))),
+                            100.00 * i,
+                            "           ".replace(" ", "" + i + "")));
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
+
+    @Test
+    public void testAtualiza3() throws Exception {
+        System.out.println("--Testa HospedagemDAO.atualiza3()--");
+
+        hospedeDAO.adiciona(new Hospede("           ".replace(" ", "" + i + ""), "Hospede" + i,
+                "319        ".replace(" ", "" + i + ""), "pablo" + i + "@email.com"));
+
+        Hospedagem expResult = new Hospedagem(
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * i)),
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * (i + 1))),
+                100.00 * i,
+                "           ".replace(" ", "" + i + ""));
+
+        i--;
+
+        hospedeDAO.adiciona(new Hospede("           ".replace(" ", "" + i + ""), "Hospede" + i,
+                "319        ".replace(" ", "" + i + ""), "pablo" + i + "@email.com"));
+
+        try {
+            hospedagemDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            hospedagemDAO.atualiza(expResult.getDatCheckIn(),
+                    expResult.getDatCheckOut(),
+                    expResult.getVlrPago(),
+                    expResult.getCodCPF(),
+                    new Hospedagem(
+                            new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * i)),
+                            new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * (i + 1))),
+                            100.00 * i,
+                            "           ".replace(" ", "" + i + "")));
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
+
+    @Test
     public void testDeleta() throws Exception {
         System.out.println("--Testa HospedagemDAO.deleta()--");
 
@@ -161,6 +240,65 @@ public class HospedagemDAOTest {
         }
         try {
             hospedagemDAO.deleta(1);
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
+
+    @Test
+    public void testDeleta2() throws Exception {
+        System.out.println("--Testa HospedagemDAO.deleta2()--");
+
+        hospedeDAO.adiciona(new Hospede("           ".replace(" ", "" + i + ""), "Hospede" + i,
+                "319        ".replace(" ", "" + i + ""), "pablo" + i + "@email.com"));
+
+        Hospedagem expResult = new Hospedagem(
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * i)),
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * (i + 1))),
+                100.00 * i,
+                "           ".replace(" ", "" + i + ""));
+
+        try {
+            hospedagemDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            hospedagemDAO.deleta(expResult);
+
+            System.out.println("-->> Teste finalizado com sucesso <<--");
+            assert true;
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 2 !!--");
+        }
+    }
+
+    @Test
+    public void testDeleta3() throws Exception {
+        System.out.println("--Testa HospedagemDAO.deleta3()--");
+
+        hospedeDAO.adiciona(new Hospede("           ".replace(" ", "" + i + ""), "Hospede" + i,
+                "319        ".replace(" ", "" + i + ""), "pablo" + i + "@email.com"));
+
+        Hospedagem expResult = new Hospedagem(
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * i)),
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * (i + 1))),
+                100.00 * i,
+                "           ".replace(" ", "" + i + ""));
+
+        try {
+            hospedagemDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+        try {
+            hospedagemDAO.deleta(expResult.getDatCheckIn(),
+                    expResult.getDatCheckOut(),
+                    expResult.getVlrPago(),
+                    expResult.getCodCPF());
 
             System.out.println("-->> Teste finalizado com sucesso <<--");
             assert true;

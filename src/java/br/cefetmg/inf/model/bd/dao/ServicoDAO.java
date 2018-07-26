@@ -98,13 +98,50 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setString(1, servicoAtualizado.getDesServico());
         pStmt.setDouble(2, servicoAtualizado.getVlrUnit());
         pStmt.setString(3, servicoAtualizado.getCodServicoArea());
-        if (pK instanceof String) {
-            pStmt.setString(4, pK.toString());
-        } else {
-            pStmt.setInt(4, Integer.parseInt(pK.toString()));
-        }
+        pStmt.setInt(4, Integer.parseInt(pK.toString()));
+        
+        pStmt.execute();
+    }
+
+    public void atualiza(Servico servicoAntigo, Servico servicoAtualizado) throws SQLException {
+        String qry = "UPDATE Servico "
+                + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
+                + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setString(1, servicoAtualizado.getDesServico());
+        pStmt.setDouble(2, servicoAtualizado.getVlrUnit());
+        pStmt.setString(3, servicoAtualizado.getCodServicoArea());
+        pStmt.setString(4, servicoAntigo.getDesServico());
+        pStmt.setDouble(5, servicoAntigo.getVlrUnit());
+        pStmt.setString(6, servicoAntigo.getCodServicoArea());
 
         pStmt.execute();
+    }
+
+    public void atualiza(String desServicoAntigo, String codServicoAreaAntigo,
+            Servico servicoAtualizado) throws SQLException {
+        String qry = "SELECT * FROM Servico "
+                + "WHERE desServico = ? AND codServicoArea = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        pStmt.setString(1, desServicoAntigo);
+        pStmt.setString(2, codServicoAreaAntigo);
+        ResultSet rs = pStmt.executeQuery();
+
+        if (UtilidadesBD.contaLinhasResultSet(rs) == 1) {
+            qry = "UPDATE Servico "
+                    + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
+                    + "WHERE desServico = ? AND codServicoArea = ?";
+            pStmt = null;
+            pStmt = con.prepareStatement(qry);
+            pStmt.setString(1, servicoAtualizado.getDesServico());
+            pStmt.setDouble(2, servicoAtualizado.getVlrUnit());
+            pStmt.setString(3, servicoAtualizado.getCodServicoArea());
+            pStmt.setString(4, desServicoAntigo);
+            pStmt.setString(5, codServicoAreaAntigo);
+
+            pStmt.execute();
+        }
     }
 
     @Override
@@ -119,5 +156,37 @@ public class ServicoDAO extends BaseDAO<Servico> {
         }
 
         pStmt.execute();
+    }
+    
+    public void deleta(Servico servicoAntigo) throws SQLException {
+        String qry = "DELETE FROM Servico "
+                + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setString(1, servicoAntigo.getDesServico());
+        pStmt.setDouble(2, servicoAntigo.getVlrUnit());
+        pStmt.setString(3, servicoAntigo.getCodServicoArea());
+
+        pStmt.execute();
+    }
+    
+    public void deleta(String desServicoAntigo, String codServicoAreaAntigo) throws SQLException {
+        String qry = "SELECT * FROM Servico "
+                + "WHERE desServico = ? AND codServicoArea = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+        pStmt.setString(1, desServicoAntigo);
+        pStmt.setString(2, codServicoAreaAntigo);
+        ResultSet rs = pStmt.executeQuery();
+
+        if (UtilidadesBD.contaLinhasResultSet(rs) == 1) {
+            qry = "DELETE FROM Servico "
+                    + "WHERE desServico = ? AND codServicoArea = ?";
+            pStmt = null;
+            pStmt = con.prepareStatement(qry);
+            pStmt.setString(1, desServicoAntigo);
+            pStmt.setString(2, codServicoAreaAntigo);
+
+            pStmt.execute();
+        }
     }
 }

@@ -5,7 +5,6 @@ import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.dto.Cargo;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
