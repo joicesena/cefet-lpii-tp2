@@ -93,6 +93,36 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         return hospedagemsEncontrados;
     }
 
+    public Hospedagem[] busca(Hospedagem hospedagem) throws SQLException {
+        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
+
+        String qry = "SELECT * FROM Hospedagem WHERE "
+                + "datCheckIn=? AND datCheckOut=? AND vlrPago=? AND codCPF=?";
+
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setTimestamp(1, hospedagem.getDatCheckIn());
+        pStmt.setTimestamp(2, hospedagem.getDatCheckOut());
+        pStmt.setDouble(3, hospedagem.getVlrPago());
+        pStmt.setString(4, hospedagem.getCodCPF());
+
+        ResultSet rs = pStmt.executeQuery();
+        Hospedagem[] hospedagemsEncontrados
+                = new Hospedagem[UtilidadesBD.contaLinhasResultSet(rs)];
+
+        int i = 0;
+        rs.beforeFirst();
+        while (rs.next()) {
+            hospedagemsEncontrados[i] = new Hospedagem(rs.getInt(1),
+                    rs.getTimestamp(2), rs.getTimestamp(3), rs.getDouble(4),
+                    rs.getString(5));
+            i++;
+        }
+
+        return hospedagemsEncontrados;
+    }
+
+
     @Override
     public void atualiza(Object pK, Hospedagem hospedagemAtualizado) throws SQLException {
         String qry = "UPDATE Hospedagem "
