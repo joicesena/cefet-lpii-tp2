@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ItemConfortoControllerServlet extends HttpServlet {
 
     private HttpServletRequest requestInterno;
-    private HttpServletResponse response;
     private String operacaoItem;
     
     private ItemConfortoDAO itemConforto;
@@ -29,7 +28,6 @@ public class ItemConfortoControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.requestInterno = request;
-        this.response = response;
         operacaoItem = null;
 
         operacaoItem = requestInterno.getParameter("operacaoItem");
