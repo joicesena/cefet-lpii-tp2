@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 
 public interface QuartoHospedagemDAO {
     void adiciona(int seqHospedagem, int nroQuarto, 
-            Timestamp datCheckIn, Timestamp datCheckOut,
             int nroAdultos, int nroCriancas,
             Double vlrDiaria) throws SQLException;
 

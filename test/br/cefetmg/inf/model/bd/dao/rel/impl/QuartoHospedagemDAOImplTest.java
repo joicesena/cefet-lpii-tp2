@@ -76,8 +76,6 @@ public class QuartoHospedagemDAOImplTest {
         try {
             QUARTO_HOSPEDAGEM_DAO_IMPL.adiciona(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
                     quarto1.getNroQuarto(),
-                    hospedagem1.getDatCheckIn(),
-                    hospedagem1.getDatCheckOut(),
                     2,
                     1,
                     10.00);
@@ -112,8 +110,6 @@ public class QuartoHospedagemDAOImplTest {
 
         QUARTO_HOSPEDAGEM_DAO_IMPL.adiciona(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
                     quarto1.getNroQuarto(),
-                    hospedagem1.getDatCheckIn(),
-                    hospedagem1.getDatCheckOut(),
                     2,
                     1,
                     10.00);

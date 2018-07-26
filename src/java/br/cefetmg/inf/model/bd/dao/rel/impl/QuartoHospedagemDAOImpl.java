@@ -5,7 +5,6 @@ import br.cefetmg.inf.model.bd.util.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
 
@@ -24,25 +23,21 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
     }
 
     @Override
-    public void adiciona(int seqHospedagem, int nroQuarto, Timestamp datCheckIn,
-            Timestamp datCheckOut, int nroAdultos, int nroCriancas,
-            Double vlrDiaria) throws SQLException {
+    public void adiciona(int seqHospedagem, int nroQuarto, int nroAdultos, 
+            int nroCriancas, Double vlrDiaria) throws SQLException {
         String qry = "INSERT INTO "
                 + "QuartoHospedagem("
                 + "seqHospedagem, "
                 + "nroQuarto, "
-                + "datCheckIn, datCheckOut, "
                 + "nroAdultos, nroCriancas, "
                 + "vlrDiaria) "
-                + "VALUES(?,?,?,?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
-        pStmt.setTimestamp(3, datCheckIn);
-        pStmt.setTimestamp(4, datCheckOut);
-        pStmt.setInt(5, nroAdultos);
-        pStmt.setInt(6, nroCriancas);
-        pStmt.setDouble(7, vlrDiaria);
+        pStmt.setInt(3, nroAdultos);
+        pStmt.setInt(4, nroCriancas);
+        pStmt.setDouble(5, vlrDiaria);
         pStmt.execute();
     }
 

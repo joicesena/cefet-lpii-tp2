@@ -268,8 +268,6 @@ public final class UtilidadesBD {
                 + "CREATE TABLE QuartoHospedagem(\n"
                 + " seqHospedagem Integer NOT NULL,\n"
                 + " nroQuarto Smallint NOT NULL,\n"
-                + " datCheckIn Timestamp NOT NULL,\n"
-                + " datCheckOut Timestamp,\n"
                 + " nroAdultos Smallint NOT NULL,\n"
                 + " nroCriancas Smallint NOT NULL,\n"
                 + " vlrDiaria Numeric(7,2) NOT NULL\n"
