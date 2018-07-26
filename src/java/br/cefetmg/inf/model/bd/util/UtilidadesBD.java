@@ -317,6 +317,21 @@ public final class UtilidadesBD {
                 + ";\n"
                 + "\n"
                 + "ALTER TABLE Hospedagem ADD CONSTRAINT Relationship26 FOREIGN KEY (codCPF) REFERENCES Hospede (codCPF) ON DELETE NO ACTION ON UPDATE NO ACTION\n"
-                + ";");
+                + ";\n"
+                + "\n"
+                + "-- CRIA A VIEW TOP Q A LÍVIA FEZ ----------------------------------\n"
+                + "\n"
+                + "CREATE VIEW relatorioDespesas AS\n"
+                + "SELECT A.seqHospedagem, A.nroQuarto, A.nroAdultos, A.nroCriancas, A.vlrDiaria,\n"
+                + "       B.datCheckIn, B.datCheckOut, B.vlrPago,\n"
+                + "       C.nomHospede,\n"
+                + "       D.seqServico, D.qtdConsumo,\n"
+                + "       E.desServico, E.vlrUnit\n"
+                + "FROM\n"
+                + "	QuartoHospedagem A\n"
+                + "	JOIN Hospedagem B ON A.seqHospedagem = B.seqHospedagem\n"
+                + "	JOIN Hospede C ON B.codCPF = C.codCPF\n"
+                + "	JOIN QuartoConsumo D ON A.seqHospedagem = D.seqHospedagem AND A.nroQuarto = D.nroQuarto\n"
+                + "	JOIN Servico E ON D.seqServico = E.seqServico;");
     }
 }
