@@ -76,8 +76,7 @@ public class CheckInControllerServlet extends HttpServlet {
             Hospedagem[] hospEncontrada = hospDAO.busca(hosp);
             
             QuartoHospedagemDAOImpl quartoHosp = QuartoHospedagemDAOImpl.getInstance();
-            quartoHosp.adiciona(hospEncontrada[0].getSeqHospedagem(), nroQuarto, dataCheckIn, dataCheckOut, nroAdultos,
-                                nroCriancas, valorDiaria);
+            quartoHosp.adiciona(hospEncontrada[0].getSeqHospedagem(), nroQuarto, nroAdultos, nroCriancas, valorDiaria);
         } catch (SQLException ex) {
             //
             //

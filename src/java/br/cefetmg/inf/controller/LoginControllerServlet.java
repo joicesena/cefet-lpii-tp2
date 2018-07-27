@@ -23,6 +23,12 @@ public class LoginControllerServlet extends HttpServlet {
             throws ServletException, IOException, UnsupportedEncodingException {
             email = request.getParameter("email");
             senha = request.getParameter("password");
+            
+            HttpSession session = request.getSession();
+            
+            if (email == null || senha == null) {
+                response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
+            }
 
             LoginAutenticador verificaLogin = new LoginAutenticador();
             boolean loginVerificado = false;
@@ -39,19 +45,16 @@ public class LoginControllerServlet extends HttpServlet {
             //
         }
 
-            HttpSession session = request.getSession();
+        if (loginVerificado) {
+            session.setAttribute("email", email);
+            session.setAttribute("codCargo", verificaLogin.getCargo());
+            session.setAttribute("codUsuario", verificaLogin.getCodUsuario());
 
-            if (loginVerificado) {
-                session.setAttribute("email", email);
-                session.setAttribute("codCargo", verificaLogin.getCargo());
-                session.setAttribute("codUsuario", verificaLogin.getCodUsuario());
-                
-                // direciona para a página principal interna do sistema
-                response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp");
-            } else {
-                // retorna para a página de login
-                session.setAttribute("mensagem-erro-login", "Informações inválidas!");
-                response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
-            }
+            // direciona para a página principal interna do sistema
+            response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp");
+        } else {
+            // retorna para a página de login
+            response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
+        }
     }
 }
