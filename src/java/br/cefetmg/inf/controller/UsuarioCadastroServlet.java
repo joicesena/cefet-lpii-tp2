@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "UsuarioCadastroServlet", urlPatterns = {"/cadastroFuncionario"})
+@WebServlet(name = "UsuarioCadastroServlet", urlPatterns = {"/cadastro-de-funcionario"})
 public class UsuarioCadastroServlet extends HttpServlet {
 
     private HttpServletRequest request;

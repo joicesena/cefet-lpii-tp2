@@ -11,7 +11,7 @@ import br.cefetmg.inf.model.bd.dao.ServicoAreaDAO;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 
-@WebServlet(name = "AreaServicoControllerServlet", urlPatterns = {"/areaServico"})
+@WebServlet(name = "AreaServicoControllerServlet", urlPatterns = {"/area-de-servico"})
 public class AreaServicoControllerServlet extends HttpServlet {
 
     private HttpServletRequest requestInterno;

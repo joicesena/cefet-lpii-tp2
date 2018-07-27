@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "CategoriaQuartoControllerServlet", urlPatterns = {"/categoriaQuarto"})
+@WebServlet(name = "CategoriaQuartoControllerServlet", urlPatterns = {"/categoriad-de-quarto"})
 public class CategoriaQuartoControllerServlet extends HttpServlet {
 
     private HttpServletRequest request;

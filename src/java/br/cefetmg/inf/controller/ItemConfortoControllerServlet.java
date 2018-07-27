@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "ItemConfortoControllerServlet", urlPatterns = {"/itemConforto"})
+@WebServlet(name = "ItemConfortoControllerServlet", urlPatterns = {"/item-de-conforto"})
 public class ItemConfortoControllerServlet extends HttpServlet {
 
     private HttpServletRequest requestInterno;
