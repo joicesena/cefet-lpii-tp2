@@ -120,7 +120,7 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
         
 
-        relacaoCategItem.deleta(codCategoria);
+        relacaoCategItem.deleta(codCategoria, "codCategoria");
         for (String item : itensConforto) {
             ItemConforto [] itemConforto = itemConfortoDAO.busca("desItem", item);
             codItem = itemConforto[0].getCodItem();
@@ -134,6 +134,8 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         String codCategoria;
         codCategoria = request.getParameter("codCategoriaSelecionado");
 
+        CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
+        relacaoCategItem.deleta(codCategoria, "codCategoria");
         categoriaQuarto.deleta(codCategoria);
         
         return;

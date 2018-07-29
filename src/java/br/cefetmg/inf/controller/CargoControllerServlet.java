@@ -1,83 +1,147 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.model.bd.dao.CargoDAO;
+import br.cefetmg.inf.model.bd.dao.ProgramaDAO;
+import br.cefetmg.inf.model.dto.Cargo;
+import br.cefetmg.inf.model.bd.dao.rel.impl.CargoProgramaDAOImpl;
+import br.cefetmg.inf.model.dto.Programa;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author Lívia
- */
 @WebServlet(name = "CargoControllerServlet", urlPatterns = {"/cargo"})
 public class CargoControllerServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CargoControllerServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CargoControllerServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private HttpServletRequest request;
+    private String operacaoCargo;
+    
+    private CargoDAO cargo;
+    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    public void init() throws ServletException {
+        cargo = CargoDAO.getInstance();
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        this.request = request;
+        operacaoCargo = null;
+
+        operacaoCargo = request.getParameter("operacaoCargo");
+        
+        try {
+            if (operacaoCargo.equals("cadastrarCargo")) {
+                cadastraCargo();
+            } else if (operacaoCargo.equals("pesquisarCargo")) {
+                pesquisaCargo();
+            } else if (operacaoCargo.equals("editarCargo")) {
+                editaCargo();
+            } else if (operacaoCargo.equals("removerCargo")) {
+                removeCargo();
+            }
+        } catch (SQLException exc) {
+            //
+            //
+            //
+        }
+        
+        String caminhoTelaCargo = "";
+        request.getRequestDispatcher(caminhoTelaCargo).forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    
+    //
+    // MÉTODOS DE CONTROLE
+    //
+    private void cadastraCargo () throws SQLException {
+        String codCargo;
+        String nomCargo;
+        boolean idtMaster;
+        String [] programas;
+        String codPrograma;
+        
+        codCargo = request.getParameter("codCargo");
+        nomCargo = request.getParameter("nomCargo");
+        idtMaster = Boolean.getBoolean(request.getParameter("idtMaster"));
 
+        programas = request.getParameterValues("programas");
+        
+        Cargo cargoAdicionar = new Cargo(codCargo, nomCargo, idtMaster);
+        cargo.adiciona(cargoAdicionar);
+        
+        CargoProgramaDAOImpl relacaoCargoPrograma = CargoProgramaDAOImpl.getInstance();
+        ProgramaDAO programaDAO = ProgramaDAO.getInstance();
+        
+        for (String prog : programas) {
+            // busca o codigo dos programas que tem aquelas descrições
+            Programa [] programa = programaDAO.busca("desPrograma", prog);
+            
+            codPrograma = programa[0].getCodPrograma();
+
+            // adiciona o relacionamento
+            relacaoCargoPrograma.adiciona(codCargo, codPrograma);
+        }
+        
+        return;
+    }
+    
+    private void pesquisaCargo() throws SQLException {
+        String parametroPesquisa, tipoParametroPesquisa;
+        parametroPesquisa = (String)request.getParameter("pesquisaCargo");
+        tipoParametroPesquisa = (String)request.getParameter("parametroPesquisaCargo");
+        
+        Cargo [] cargosPesquisa = cargo.busca(tipoParametroPesquisa, parametroPesquisa);
+        
+        request.setAttribute("listaCargos", cargosPesquisa);
+        
+        return;
+    }
+
+    private void editaCargo() throws SQLException {
+        String codCargo;
+        String nomCargo;
+        boolean idtMaster;
+        String [] programas;
+        String codPrograma;
+        
+        codCargo = request.getParameter("codCargoSelecionado");
+        nomCargo = request.getParameter("nomCargoSelecionado");
+        idtMaster = Boolean.getBoolean(request.getParameter("idtMasterSelecionado"));
+
+        programas = request.getParameterValues("programasSelecionados");
+        
+        Cargo cargoAtualizado = new Cargo(codCargo, nomCargo, idtMaster);
+        
+        cargo.atualiza(codCargo, cargoAtualizado);
+        
+        CargoProgramaDAOImpl relacaoCargoPrograma = CargoProgramaDAOImpl.getInstance();
+        ProgramaDAO programaDAO = ProgramaDAO.getInstance();
+        
+
+        relacaoCargoPrograma.deleta(codCargo, "codCargo");
+        
+        for (String prog : programas) {
+            Programa [] programa = programaDAO.busca("desPrograma", prog);
+            codPrograma = programa[0].getCodPrograma();
+            relacaoCargoPrograma.adiciona(codCargo, codPrograma);
+        }
+        
+        return;
+    }
+    
+    private void removeCargo() throws SQLException {
+        String codCargo;
+        codCargo = request.getParameter("codCargoSelecionado");
+
+        CargoProgramaDAOImpl relacaoCargoPrograma = CargoProgramaDAOImpl.getInstance();
+        relacaoCargoPrograma.deleta(codCargo, "codCargo");
+        cargo.deleta(codCargo);
+        
+        return;
+    }
 }

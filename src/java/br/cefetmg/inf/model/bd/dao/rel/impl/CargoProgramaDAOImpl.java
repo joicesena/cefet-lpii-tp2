@@ -31,14 +31,23 @@ public class CargoProgramaDAOImpl implements CargoProgramaDAO {
         pStmt.execute();
     }
 
+//    @Override
+//    public void deleta(String codPrograma, String codCargo) throws SQLException {
+//        String qry = "DELETE FROM CargoPrograma "
+//                + "WHERE codPrograma = ? AND "
+//                + "codCargo = ?";
+//        PreparedStatement pStmt = con.prepareStatement(qry);
+//        pStmt.setString(1, codPrograma);
+//        pStmt.setString(2, codCargo);
+//        pStmt.execute();
+//    }
+
     @Override
-    public void deleta(String codPrograma, String codCargo) throws SQLException {
+    public void deleta(String cod, String coluna) throws SQLException {
         String qry = "DELETE FROM CargoPrograma "
-                + "WHERE codPrograma = ? AND "
-                + "codCargo = ?";
+                + "WHERE " + coluna + " = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, codPrograma);
-        pStmt.setString(2, codCargo);
+        pStmt.setString(1, cod);
         pStmt.execute();
     }
 }
