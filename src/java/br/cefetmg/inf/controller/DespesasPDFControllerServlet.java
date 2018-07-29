@@ -72,10 +72,10 @@ public class DespesasPDFControllerServlet extends HttpServlet {
         Font fonteRedViolet = new Font(HELVETICA, 18, 1, new BaseColor(163, 87, 118));
         Font fonteSparklingGrape = new Font(HELVETICA, 14, 1, new BaseColor(125, 63, 124));
         Font fonteMulberry = new Font(HELVETICA, 14, 0, new BaseColor(167, 108, 151));
-        Font fonteJacaranda = new Font(HELVETICA, 20, 0, new BaseColor(132, 141, 197));
-        Font fonteRhapsody = new Font(HELVETICA, 20, 0, new BaseColor(159, 134, 170));
-        Font fonteChateauRose = new Font(HELVETICA, 20, 0, new BaseColor(210, 115, 143));
-        Font fontePrismPink = new Font(HELVETICA, 20, 0, new BaseColor(240, 161, 191));
+        Font fonteJacaranda = new Font(HELVETICA, 14, 0, new BaseColor(132, 141, 197));
+        Font fonteRhapsody = new Font(HELVETICA, 14, 0, new BaseColor(159, 134, 170));
+        Font fonteChateauRose = new Font(HELVETICA, 14, 0, new BaseColor(210, 115, 143));
+        Font fontePrismPink = new Font(HELVETICA, 14, 0, new BaseColor(240, 161, 191));
         
         Chunk c = new Chunk(separator);
         Paragraph p = new Paragraph();
@@ -142,30 +142,30 @@ public class DespesasPDFControllerServlet extends HttpServlet {
             Double valorDiarias = dias*vlrDiaria;
             vlrTotal += valorDiarias;
 
-            p.setFont(fonteMulberry);
+            p.setFont(fonteChateauRose);
             p.setSpacingAfter(2);
             p.setSpacingBefore(0);
+
             p.add("Número de adultos");
             p.add(c);
-            p.setFont(fonteSparklingGrape);
             p.add(String.valueOf(nroAdultos));
             document.add(p);
             p.clear();
+
             p.add("Número de crianças");
             p.add(c);
-            p.setFont(fonteSparklingGrape);
             p.add(String.valueOf(nroCriancas));
             document.add(p);
             p.clear();
+
             p.add("Dias de estadia");
             p.add(c);
-            p.setFont(fonteSparklingGrape);
             p.add(String.valueOf(dias));
             document.add(p);
             p.clear();
+
             p.add("Valor total das diárias");
             p.add(c);
-            p.setFont(fonteSparklingGrape);
             p.add(String.valueOf(valorDiarias));
             document.add(p);
             p.clear();
