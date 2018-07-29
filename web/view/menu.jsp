@@ -80,5 +80,5 @@
         </ul>
     </li>
 
-    <li><a class="collapsible-header waves-effect" href="../login/login.html"><i class="material-icons grey-text text-darken-3">exit_to_app</i>Logout</a></li>
+    <li><a class="collapsible-header waves-effect" href="login.jsp"><i class="material-icons grey-text text-darken-3">exit_to_app</i>Logout</a></li>
 </ul>
