@@ -5,4 +5,14 @@
             30
         </session-timeout>
     </session-config>
+    <servlet>
+        <display-name>Fatura gerada</display-name>
+        <servlet-name>DespesasPDF</servlet-name>
+        <servlet-class>br.cefetmg.inf.controller.DespesasPDFControllerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DespesasPDF</servlet-name>
+        <url-pattern>/despesas-pdf</url-pattern>
+        <url-pattern>/fatura-gerada.pdf</url-pattern>
+    </servlet-mapping>
 </web-app>

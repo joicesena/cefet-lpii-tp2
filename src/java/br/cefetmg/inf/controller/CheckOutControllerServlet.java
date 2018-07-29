@@ -29,7 +29,8 @@ public class CheckOutControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         // buscar o seqHospedagem atual pelo numero do quarto e pela última data de check-in
         // buscar a view pelo seqHospedagem e pelo nroQuarto
-        // montar o arquivo (fatura)
+        // colocar o objeto de acesso à view no request
+        // dar um forward para o DespesasPDFControllerServlet
     }
 
 }
