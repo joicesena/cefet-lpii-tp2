@@ -1,6 +1,7 @@
 package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.ItemConfortoDAO;
+import br.cefetmg.inf.model.bd.dao.rel.impl.CategoriaItemConfortoDAOImpl;
 import br.cefetmg.inf.model.dto.ItemConforto;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -99,6 +100,8 @@ public class ItemConfortoControllerServlet extends HttpServlet {
         String codItem;
         codItem = requestInterno.getParameter("codItemSelecionado");
         
+        CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
+        relacaoCategItem.deleta(codItem, "codItem");
         itemConforto.deleta(codItem);
         
         return;

@@ -1,6 +1,12 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.model.bd.dao.HospedagemDAO;
+import br.cefetmg.inf.model.bd.util.UtilidadesBD;
+import br.cefetmg.inf.model.dto.Hospedagem;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,9 +33,34 @@ public class CheckOutControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // buscar o seqHospedagem atual pelo numero do quarto e pela última data de check-in
-        // buscar a view pelo seqHospedagem e pelo nroQuarto
-        // montar o arquivo (fatura)
+        try {
+            // buscar o seqHospedagem atual pelo numero do quarto e pela última data de check-in
+            int seqHospedagem = UtilidadesBD.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
+
+            Date dataAtual = new Date();
+            Timestamp dataCheckOut = new Timestamp(dataAtual.getTime());
+            
+            HospedagemDAO hospDAO = HospedagemDAO.getInstance();
+            Hospedagem[] hospBuscada = hospDAO.busca("seqHospedagem", seqHospedagem);
+            Hospedagem hospedagemAtualizado = hospBuscada[0];
+            hospedagemAtualizado.setDatCheckOut(dataCheckOut);
+            
+            // atualiza a data de check-out da hospedagem
+            hospDAO.atualiza(seqHospedagem, hospedagemAtualizado);
+            
+            // colocar o seqHospedagem como atributo do request
+            request.setAttribute("seqHospedagem", seqHospedagem);
+
+            // dar um forward para o DespesasPDFControllerServlet
+            String caminhoArquivo = "/despesas-pdf";
+            RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
+            rd.forward(request, response);
+            
+        } catch (SQLException ex) {
+            //
+            //
+            //
+        }
     }
 
 }

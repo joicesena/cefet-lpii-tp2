@@ -13,7 +13,8 @@ public class LogoutControllerServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.invalidate();
+        if (session != null)
+            session.invalidate();
         response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
     }
 }

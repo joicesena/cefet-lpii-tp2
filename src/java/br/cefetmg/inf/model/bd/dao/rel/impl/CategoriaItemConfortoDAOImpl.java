@@ -33,22 +33,24 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
         pStmt.execute();
     }
 
+//    @Override
+//    public void deleta(String codCategoria, String codItem) throws SQLException {
+//        String qry = "DELETE FROM CategoriaItemConforto "
+//                + "WHERE codCategoria = ? AND "
+//                + "codItem = ?";
+//        PreparedStatement pStmt = con.prepareStatement(qry);
+//        pStmt.setString(1, codCategoria);
+//        pStmt.setString(2, codItem);
+//        pStmt.execute();
+//    }
+
     @Override
-    public void deleta(String codCategoria, String codItem) throws SQLException {
+    public void deleta(String cod, String coluna) throws SQLException {
         String qry = "DELETE FROM CategoriaItemConforto "
-                + "WHERE codCategoria = ? AND "
-                + "codItem = ?";
+                + "WHERE " + coluna + " = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, codCategoria);
-        pStmt.setString(2, codItem);
+        pStmt.setString(1, cod);
         pStmt.execute();
     }
 
-    public void deleta(String codCategoria) throws SQLException {
-        String qry = "DELETE FROM CategoriaItemConforto "
-                + "WHERE codCategoria = ? AND ";
-        PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, codCategoria);
-        pStmt.execute();
-    }
 }
