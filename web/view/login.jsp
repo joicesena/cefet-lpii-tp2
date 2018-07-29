@@ -56,12 +56,12 @@
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">mail_outline</i>
                                     <label for="email">Email</label>
-                                    <input name="email" id="email" type="email" class="validate">
+                                    <input name="email" id="email" type="email" class="validate" required>
                                 </div>
                                 <div class="input-field col s12">
                                     <i class="material-icons prefix">lock_outline</i>
                                     <label for="password">Senha</label>
-                                    <input name="password" id="password" type="password" class="validate">
+                                    <input name="password" id="password" type="password" class="validate" required>
                                 </div>
                                 <div id="remember-password" class="col s6">
                                     <p>

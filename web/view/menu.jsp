@@ -29,7 +29,7 @@
                 <div class="collapsible-body">
                     <ul>
                         <li><a href="funcionarios-visualizacao.jsp"><i class="material-icons">search</i>Visualizar funcionários</a></li>
-                        <li><a href="#"><i class="material-icons">person_add</i>Cadastrar novo funcionário</a></li>
+                        <li><a href="funcionarios-cadastro.jsp"><i class="material-icons">person_add</i>Cadastrar novo funcionário</a></li>
                     </ul>
                 </div>
             </li>
