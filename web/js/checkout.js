@@ -11,6 +11,7 @@ function sortTableDESC() {
     alert("Função para ordenar a coluna de forma decrescente");
 }
 
-function checkin() {
-    alert("Redireciona para a tela de check-in");
+function checkout() {
+    alert("Função para registrar o check-out, gerar relatório e redirecionar" +
+          " para a tela de estados dos quartos");
 }

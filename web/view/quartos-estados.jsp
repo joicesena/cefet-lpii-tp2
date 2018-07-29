@@ -73,7 +73,7 @@
                         <td>
                             <center>
                                 <a href="conta-detalhes.jsp" id="info-button" class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Detalhes</a>
-                                <a id="checkout-button" class="waves-effect waves-light btn" onclick="checkout()"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
+                                <a href="checkout.jsp" id="checkout-button" class="waves-effect waves-light btn"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
                             </center>    
                         </td>
                     </tr>
@@ -84,7 +84,7 @@
                         <td>
                             <center>
                                 <a href="conta-detalhes.jsp" id="info-button" class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Detalhes</a>
-                                <a id="checkout-button" class="waves-effect waves-light btn" onclick="checkout()"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
+                                <a href="checkout.jsp" id="checkout-button" class="waves-effect waves-light btn"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
                             </center>    
                         </td>
                     </tr>
