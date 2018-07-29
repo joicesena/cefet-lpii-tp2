@@ -11,11 +11,6 @@ function sortTableDESC() {
     alert("Função para ordenar a coluna de forma decrescente");
 }
 
-// Funções de CRUD
-function editItem() {
-    alert("Função para editar item");
-}
-
-function deleteItem() {
-    alert("Função para deletar item");
+function addItem() {
+    alert("Função para adicionar item");
 }
