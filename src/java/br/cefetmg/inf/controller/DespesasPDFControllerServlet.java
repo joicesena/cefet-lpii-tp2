@@ -1,4 +1,4 @@
-package br.cefetmg.inf.controller;
+
 
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import com.itextpdf.text.BaseColor;
@@ -72,10 +72,8 @@ public class DespesasPDFControllerServlet extends HttpServlet {
         Font fonteRedViolet = new Font(HELVETICA, 18, 1, new BaseColor(163, 87, 118));
         Font fonteSparklingGrape = new Font(HELVETICA, 14, 1, new BaseColor(125, 63, 124));
         Font fonteMulberry = new Font(HELVETICA, 14, 0, new BaseColor(167, 108, 151));
-        Font fonteJacaranda = new Font(HELVETICA, 14, 0, new BaseColor(132, 141, 197));
-        Font fonteRhapsody = new Font(HELVETICA, 14, 0, new BaseColor(159, 134, 170));
         Font fonteChateauRose = new Font(HELVETICA, 14, 0, new BaseColor(210, 115, 143));
-        Font fontePrismPink = new Font(HELVETICA, 14, 0, new BaseColor(240, 161, 191));
+        Font fonteChateauRoseNegrito = new Font(HELVETICA, 14, 1, new BaseColor(210, 115, 143));
         
         Chunk c = new Chunk(separator);
         Paragraph p = new Paragraph();
@@ -166,7 +164,9 @@ public class DespesasPDFControllerServlet extends HttpServlet {
 
             p.add("Valor total das diárias");
             p.add(c);
-            p.add(String.valueOf(valorDiarias));
+            String strValorDiarias = currencyFormatter.format(valorDiarias);
+            p.setFont(fonteChateauRoseNegrito);
+            p.add(strValorDiarias);
             document.add(p);
             p.clear();
         }

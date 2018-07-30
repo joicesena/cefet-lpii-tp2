@@ -43,15 +43,16 @@
                     <td><% out.print(desItem); %></td>
                     <td>
                         <center>
-                            <a href="#modal-edit-item" class="modal-trigger"><i class="material-icons table-icon-edit">create</i></a>
-                            <a href="#modal-delete-item" class="modal-trigger"><i class="material-icons table-icon-delete">delete</i></a>
+							<!-- CHAMADA DOS MÉTODOS DE EXIBIÇÃO DO MODAL DE EDIÇÃO E EXCLUSÃO-->
+                            <a href="#" class="modal-trigger" onclick="showEditDialog('<% out.print(codItem); %>');"><i class="material-icons table-icon-edit">edit</i></a>
+                            <a href="#" class="modal-trigger" onclick="showDeleteDialog('<% out.print(codItem); %>');"><i class="material-icons table-icon-delete">delete</i></a>
                         </center>    
                     </td>
                 </tr>
                 <% } // for  %>
             </tbody>
         </table>
-    </body>
+	</body>
 </html>
 
 
