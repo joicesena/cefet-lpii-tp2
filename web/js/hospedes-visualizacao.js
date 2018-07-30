@@ -12,10 +12,6 @@ function sortTableDESC() {
 }
 
 // Funções de CRUD
-function addItem() {
-    alert("Função para adicionar item");
-}
-
 function editItem() {
     alert("Função para editar item");
 }

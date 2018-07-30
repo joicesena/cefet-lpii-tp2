@@ -107,7 +107,7 @@
                 </tbody>
             </table>
             <div class="card-action right-align button-box">
-                <button id="add-button" class="btn waves-effect waves-light" onclick="addItem()"><i class="material-icons left">add_circle_outline</i>Novo Funcionário</button>
+                <a href="hospedes-cadastro.jsp"><button id="add-button" class="btn waves-effect waves-light"><i class="material-icons left">add_circle_outline</i>Novo Hóspede</button></a>
             </div>
         </main>
 

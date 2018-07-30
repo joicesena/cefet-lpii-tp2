@@ -73,7 +73,7 @@
                 <div class="collapsible-body">
                     <ul>
                         <li><a href="hospedes-visualizacao.jsp"><i class="material-icons">search</i>Visualizar hóspedes</a></li>
-                        <li><a href="#"><i class="material-icons">person_add</i>Cadastrar novo hóspede</a></li>
+                        <li><a href="hospedes-cadastro.jsp"><i class="material-icons">person_add</i>Cadastrar novo hóspede</a></li>
                     </ul>
                 </div>
             </li>
