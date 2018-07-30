@@ -1,6 +1,7 @@
 $( document ).ready(function(){
     $("#button-menu").sideNav();
     $('select').material_select();
+    $('.modal').modal();
 });
 
 function sortTableASC() {
@@ -11,15 +12,13 @@ function sortTableDESC() {
     alert("Função para ordenar a coluna de forma decrescente");
 }
 
-// Funções de CRUD
-function addItem() {
-    alert("Função para adicionar item");
+// Modals
+function closeAddModal() {
+    $('#modal-add-item').modal('close');
 }
-
-function editItem() {
-    alert("Função para editar item");
+function closeEditModal() {
+    $('#modal-edit-item').modal('close');
 }
-
-function deleteItem() {
-    alert("Função para deletar item");
+function closeDeleteModal() {
+    $('#modal-delete-item').modal('close');
 }
