@@ -25,7 +25,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
     }
 
     @Override
-    public void adiciona(Hospedagem hospedagem) throws SQLException {
+    public boolean adiciona(Hospedagem hospedagem) throws SQLException {
         String qry = "INSERT INTO Hospedagem"
                 + "(datCheckIn, datCheckOut, vlrPago, codCPF)"
                 + " VALUES (?,?,?,?)";
@@ -36,7 +36,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.setDouble(3, hospedagem.getVlrPago());
         pStmt.setString(4, hospedagem.getCodCPF());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -124,7 +124,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
 
 
     @Override
-    public void atualiza(Object pK, Hospedagem hospedagemAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, Hospedagem hospedagemAtualizado) throws SQLException {
         String qry = "UPDATE Hospedagem "
                 + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
                 + "WHERE seqHospedagem = ?";
@@ -139,10 +139,10 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setInt(5, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
-    public void atualiza(Hospedagem hospedagemAntiga,
+    public boolean atualiza(Hospedagem hospedagemAntiga,
             Hospedagem hospedagemAtualizado) throws SQLException {
         String qry = "UPDATE Hospedagem "
                 + "SET datCheckIn = ?, datCheckOut = ?, vlrPago = ?, codCPF = ? "
@@ -158,10 +158,10 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.setDouble(7, hospedagemAntiga.getVlrPago());
         pStmt.setString(8, hospedagemAntiga.getCodCPF());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
-    public void atualiza(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
+    public boolean atualiza(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
             Double vlrPagoAntigo, String codCPFAntigo,
             Hospedagem hospedagemAtualizado) throws SQLException {
         String qry = "SELECT * FROM Hospedagem "
@@ -192,12 +192,13 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setDouble(7, vlrPagoAntigo);
             pStmt.setString(8, codCPFAntigo);
 
-            pStmt.execute();
+            return pStmt.execute();
         }
+        return false;
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Hospedagem "
                 + "WHERE seqHospedagem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -207,10 +208,10 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
-    public void deleta(Hospedagem hospedagemAntiga) throws SQLException {
+    public boolean deleta(Hospedagem hospedagemAntiga) throws SQLException {
         String qry = "DELETE FROM Hospedagem "
                 + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
                 + "codCPF = ?";
@@ -220,10 +221,10 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.setDouble(3, hospedagemAntiga.getVlrPago());
         pStmt.setString(4, hospedagemAntiga.getCodCPF());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
-    public void deleta(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
+    public boolean deleta(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
             Double vlrPagoAntigo, String codCPFAntigo) throws SQLException {
         String qry = "SELECT * FROM Hospedagem "
                 + "WHERE datCheckIn = ? AND datCheckOut = ? AND vlrPago = ? AND "
@@ -248,7 +249,8 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setDouble(3, vlrPagoAntigo);
             pStmt.setString(4, codCPFAntigo);
 
-            pStmt.execute();
+            return pStmt.execute();
         }
+        return false;
     }
 }

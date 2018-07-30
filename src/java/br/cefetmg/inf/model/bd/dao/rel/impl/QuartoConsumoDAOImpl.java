@@ -24,7 +24,7 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
     }
 
     @Override
-    public void adiciona(int seqHospedagem, int nroQuarto, Timestamp datConsumo,
+    public boolean adiciona(int seqHospedagem, int nroQuarto, Timestamp datConsumo,
             int qtdConsumo, int seqServico, String codUsuarioRegistro)
             throws SQLException {
         String qry = "INSERT INTO "
@@ -38,11 +38,11 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
         pStmt.setInt(4, qtdConsumo);
         pStmt.setInt(5, seqServico);
         pStmt.setString(6, codUsuarioRegistro);
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(int seqHospedagem, int nroQuarto, Timestamp datConsumo)
+    public boolean deleta(int seqHospedagem, int nroQuarto, Timestamp datConsumo)
             throws SQLException {
         String qry = "DELETE FROM QuartoConsumo "
                 + "WHERE seqHospedagem = ? AND nroQuarto = ? AND datConsumo = ?";
@@ -50,6 +50,6 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
         pStmt.setTimestamp(3, datConsumo);
-        pStmt.execute();
+        return pStmt.execute();
     }
 }

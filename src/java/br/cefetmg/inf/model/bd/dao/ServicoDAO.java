@@ -24,7 +24,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     @Override
-    public void adiciona(Servico servico) throws SQLException {
+    public boolean adiciona(Servico servico) throws SQLException {
         String qry = "INSERT INTO Servico"
                 + "(desServico, vlrUnit, codServicoArea)"
                 + " VALUES (?,?,?)";
@@ -34,7 +34,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setDouble(2, servico.getVlrUnit());
         pStmt.setString(3, servico.getCodServicoArea());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
     }
 
     @Override
-    public void atualiza(Object pK, Servico servicoAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, Servico servicoAtualizado) throws SQLException {
         String qry = "UPDATE Servico "
                 + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE seqServico = ?";
@@ -100,10 +100,10 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setString(3, servicoAtualizado.getCodServicoArea());
         pStmt.setInt(4, Integer.parseInt(pK.toString()));
         
-        pStmt.execute();
+        return pStmt.execute();
     }
 
-    public void atualiza(Servico servicoAntigo, Servico servicoAtualizado) throws SQLException {
+    public boolean atualiza(Servico servicoAntigo, Servico servicoAtualizado) throws SQLException {
         String qry = "UPDATE Servico "
                 + "SET desServico = ?, vlrUnit = ?, codServicoArea = ? "
                 + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
@@ -115,10 +115,10 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setDouble(5, servicoAntigo.getVlrUnit());
         pStmt.setString(6, servicoAntigo.getCodServicoArea());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
-    public void atualiza(String desServicoAntigo, String codServicoAreaAntigo,
+    public boolean atualiza(String desServicoAntigo, String codServicoAreaAntigo,
             Servico servicoAtualizado) throws SQLException {
         String qry = "SELECT * FROM Servico "
                 + "WHERE desServico = ? AND codServicoArea = ?";
@@ -140,12 +140,13 @@ public class ServicoDAO extends BaseDAO<Servico> {
             pStmt.setString(4, desServicoAntigo);
             pStmt.setString(5, codServicoAreaAntigo);
 
-            pStmt.execute();
+            return pStmt.execute();
         }
+        return false;
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Servico "
                 + "WHERE seqServico = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -155,10 +156,10 @@ public class ServicoDAO extends BaseDAO<Servico> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
     
-    public void deleta(Servico servicoAntigo) throws SQLException {
+    public boolean deleta(Servico servicoAntigo) throws SQLException {
         String qry = "DELETE FROM Servico "
                 + "WHERE desServico = ? AND vlrUnit = ? AND codServicoArea = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -166,10 +167,10 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setDouble(2, servicoAntigo.getVlrUnit());
         pStmt.setString(3, servicoAntigo.getCodServicoArea());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
     
-    public void deleta(String desServicoAntigo, String codServicoAreaAntigo) throws SQLException {
+    public boolean deleta(String desServicoAntigo, String codServicoAreaAntigo) throws SQLException {
         String qry = "SELECT * FROM Servico "
                 + "WHERE desServico = ? AND codServicoArea = ?";
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -186,7 +187,8 @@ public class ServicoDAO extends BaseDAO<Servico> {
             pStmt.setString(1, desServicoAntigo);
             pStmt.setString(2, codServicoAreaAntigo);
 
-            pStmt.execute();
+            return pStmt.execute();
         }
+        return false;
     }
 }

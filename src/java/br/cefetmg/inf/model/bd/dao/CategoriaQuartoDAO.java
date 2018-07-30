@@ -24,7 +24,7 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
     }
 
     @Override
-    public void adiciona(CategoriaQuarto categoriaQuarto) throws SQLException {
+    public boolean adiciona(CategoriaQuarto categoriaQuarto) throws SQLException {
         String qry = "INSERT INTO Categoria"
                 + "(codCategoria, nomCategoria, vlrDiaria)"
                 + " VALUES (?,?,?)";
@@ -34,7 +34,7 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
         pStmt.setString(2, categoriaQuarto.getNomCategoria());
         pStmt.setDouble(3, categoriaQuarto.getVlrDiaria());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
     }
 
     @Override
-    public void atualiza(Object pK, CategoriaQuarto categoriaQuartoAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, CategoriaQuarto categoriaQuartoAtualizado) throws SQLException {
         String qry = "UPDATE Categoria "
                 + "SET codCategoria = ?, nomCategoria = ?, vlrDiaria = ? "
                 + "WHERE codCategoria = ?";
@@ -106,11 +106,11 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
             pStmt.setInt(4, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Categoria "
                 + "WHERE codCategoria = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -120,6 +120,6 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 }

@@ -23,34 +23,35 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
     }
 
     @Override
-    public void adiciona(String codCategoria, String codItem) throws SQLException {
+    public boolean adiciona(String codCategoria, String codItem) throws SQLException {
         String qry = "INSERT INTO "
                 + "CategoriaItemConforto(codCategoria, codItem) "
                 + "VALUES(?,?)";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, codCategoria);
         pStmt.setString(2, codItem);
-        pStmt.execute();
+        return pStmt.execute();
     }
 
 //    @Override
-//    public void deleta(String codCategoria, String codItem) throws SQLException {
+//    public boolean deleta(String codCategoria, String codItem) throws SQLException {
 //        String qry = "DELETE FROM CategoriaItemConforto "
 //                + "WHERE codCategoria = ? AND "
 //                + "codItem = ?";
 //        PreparedStatement pStmt = con.prepareStatement(qry);
 //        pStmt.setString(1, codCategoria);
 //        pStmt.setString(2, codItem);
-//        pStmt.execute();
+//        return pStmt.execute();
 //    }
 
     @Override
-    public void deleta(String cod, String coluna) throws SQLException {
+    public boolean deleta(String codCategoria, String codItem) throws SQLException {
         String qry = "DELETE FROM CategoriaItemConforto "
-                + "WHERE " + coluna + " = ?";
+                + "WHERE codCategoria = ? AND codItem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, cod);
-        pStmt.execute();
+        pStmt.setString(1, codCategoria);
+        pStmt.setString(2, codItem);
+        return pStmt.execute();
     }
 
 }

@@ -23,7 +23,7 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
     }
 
     @Override
-    public void adiciona(int seqHospedagem, int nroQuarto, int nroAdultos, 
+    public boolean adiciona(int seqHospedagem, int nroQuarto, int nroAdultos, 
             int nroCriancas, Double vlrDiaria) throws SQLException {
         String qry = "INSERT INTO "
                 + "QuartoHospedagem("
@@ -38,18 +38,17 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
         pStmt.setInt(3, nroAdultos);
         pStmt.setInt(4, nroCriancas);
         pStmt.setDouble(5, vlrDiaria);
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(int seqHospedagem, int nroQuarto) throws SQLException {
+    public boolean deleta(int seqHospedagem, int nroQuarto) throws SQLException {
         String qry = "DELETE FROM QuartoHospedagem "
                 + "WHERE seqHospedagem = ? AND "
                 + "nroQuarto = ? ";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
-        pStmt.execute();
+        return pStmt.execute();
     }
-
 }

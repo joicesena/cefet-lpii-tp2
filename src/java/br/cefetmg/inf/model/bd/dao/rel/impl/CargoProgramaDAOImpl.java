@@ -21,33 +21,34 @@ public class CargoProgramaDAOImpl implements CargoProgramaDAO {
     }
     
     @Override
-    public void adiciona(String codPrograma, String codCargo) throws SQLException {
+    public boolean adiciona(String codPrograma, String codCargo) throws SQLException {
         String qry = "INSERT INTO "
                 + "CargoPrograma(codPrograma, codCargo) "
                 + "VALUES(?,?)";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, codPrograma);
         pStmt.setString(2, codCargo);
-        pStmt.execute();
+        return pStmt.execute();
     }
 
 //    @Override
-//    public void deleta(String codPrograma, String codCargo) throws SQLException {
+//    public boolean deleta(String codPrograma, String codCargo) throws SQLException {
 //        String qry = "DELETE FROM CargoPrograma "
 //                + "WHERE codPrograma = ? AND "
 //                + "codCargo = ?";
 //        PreparedStatement pStmt = con.prepareStatement(qry);
 //        pStmt.setString(1, codPrograma);
 //        pStmt.setString(2, codCargo);
-//        pStmt.execute();
+//        return pStmt.execute();
 //    }
 
     @Override
-    public void deleta(String cod, String coluna) throws SQLException {
+    public boolean deleta(String codPrograma, String codCargo) throws SQLException {
         String qry = "DELETE FROM CargoPrograma "
-                + "WHERE " + coluna + " = ?";
+                + "WHERE codPrograma = ? AND codCargo = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, cod);
-        pStmt.execute();
+        pStmt.setString(1, codPrograma);
+        pStmt.setString(2, codCargo);
+        return pStmt.execute();
     }
 }

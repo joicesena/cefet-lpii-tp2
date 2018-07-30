@@ -26,7 +26,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
     }
 
     @Override
-    public void adiciona(Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public boolean adiciona(Usuario usuario) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String qry = "INSERT INTO Usuario"
                 + "(codUsuario, nomUsuario, codCargo, desSenha, desEmail)"
                 + " VALUES (?,?,?,?,?)";
@@ -38,7 +38,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         pStmt.setString(4, usuario.getDesSenha());
         pStmt.setString(5, usuario.getDesEmail());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -102,7 +102,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
     }
 
     @Override
-    public void atualiza(Object pK, Usuario usuarioAtualizado) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public boolean atualiza(Object pK, Usuario usuarioAtualizado) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String qry = "UPDATE Usuario "
                 + "SET codUsuario = ?, nomUsuario = ?, codCargo = ?, desSenha= ?, desEmail = ? "
                 + "WHERE codUsuario = ?";
@@ -118,11 +118,11 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
             pStmt.setInt(6, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Usuario "
                 + "WHERE codUsuario = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -132,6 +132,6 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
         
-        pStmt.execute();
+        return pStmt.execute();
     }
 }

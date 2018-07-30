@@ -24,7 +24,7 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
     }
 
     @Override
-    public void adiciona(Programa programa) throws SQLException {
+    public boolean adiciona(Programa programa) throws SQLException {
         String qry = "INSERT INTO Programa"
                 + "(codPrograma, desPrograma) "
                 + "VALUES (?,?)";
@@ -33,7 +33,7 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
         pStmt.setString(1, programa.getCodPrograma());
         pStmt.setString(2, programa.getDesPrograma());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -89,7 +89,7 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
     }
 
     @Override
-    public void atualiza(Object pK, Programa programaAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, Programa programaAtualizado) throws SQLException {
         String qry = "UPDATE Programa "
                 + "SET codPrograma = ?, desPrograma = ? "
                 + "WHERE codPrograma LIKE ?";
@@ -102,11 +102,11 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
             pStmt.setInt(3, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Programa "
                 + "WHERE codPrograma LIKE ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -116,6 +116,6 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 }

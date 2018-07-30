@@ -25,7 +25,7 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
     }
 
     @Override
-    public void adiciona(ServicoArea servicoArea) throws SQLException {
+    public boolean adiciona(ServicoArea servicoArea) throws SQLException {
         String qry = "INSERT INTO ServicoArea"
                 + "(codServicoArea, nomServicoArea)"
                 + " VALUES (?,?)";
@@ -34,7 +34,7 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
         pStmt.setString(1, servicoArea.getCodServicoArea());
         pStmt.setString(2, servicoArea.getNomServicoArea());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
     }
 
     @Override
-    public void atualiza(Object pK, ServicoArea servicoAreaAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, ServicoArea servicoAreaAtualizado) throws SQLException {
         String qry = "UPDATE ServicoArea "
                 + "SET codServicoArea = ?, nomServicoArea = ? "
                 + "WHERE codServicoArea = ?";
@@ -99,11 +99,11 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
         else 
             pStmt.setInt(3, Integer.parseInt(pK.toString()));
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM ServicoArea "
                 + "WHERE codServicoArea = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -112,6 +112,6 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
         else 
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 }

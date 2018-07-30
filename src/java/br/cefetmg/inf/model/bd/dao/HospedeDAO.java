@@ -24,7 +24,7 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     @Override
-    public void adiciona(Hospede hospede) throws SQLException {
+    public boolean adiciona(Hospede hospede) throws SQLException {
         String qry = "INSERT INTO Hospede"
                 + "(codCPF, nomHospede, desTelefone, desEmail)"
                 + " VALUES (?,?,?,?)";
@@ -35,7 +35,7 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
         pStmt.setString(3, hospede.getDesTelefone());
         pStmt.setString(4, hospede.getDesEmail());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -91,7 +91,7 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
     }
 
     @Override
-    public void atualiza(Object pK, Hospede hospedeAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, Hospede hospedeAtualizado) throws SQLException {
         String qry = "UPDATE Hospede "
                 + "SET codCPF = ?, nomHospede = ?, desTelefone = ?, desEmail = ? "
                 + "WHERE codCPF = ?";
@@ -106,11 +106,11 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
             pStmt.setInt(5, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Hospede "
                 + "WHERE codCPF = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -120,6 +120,6 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 }

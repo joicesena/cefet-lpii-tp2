@@ -25,7 +25,7 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
     }
 
     @Override
-    public void adiciona(ItemConforto itemConforto) throws SQLException {
+    public boolean adiciona(ItemConforto itemConforto) throws SQLException {
         String qry = "INSERT INTO ItemConforto"
                 + "(codItem, desItem)"
                 + " VALUES (?,?)";
@@ -34,7 +34,7 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
         pStmt.setString(1, itemConforto.getCodItem());
         pStmt.setString(2, itemConforto.getDesItem());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
     }
 
     @Override
-    public void atualiza(Object pK, ItemConforto itemConfortoAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, ItemConforto itemConfortoAtualizado) throws SQLException {
         String qry = "UPDATE ItemConforto "
                 + "SET codItem = ?, desItem = ?"
                 + "WHERE codItem = ?";
@@ -99,11 +99,11 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
         else 
             pStmt.setInt(3, Integer.parseInt(pK.toString()));
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM ItemConforto "
                 + "WHERE codItem = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -112,6 +112,6 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
         else 
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 }

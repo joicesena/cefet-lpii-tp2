@@ -23,7 +23,7 @@ public class CargoDAO extends BaseDAO<Cargo>{
     }
 
     @Override
-    public void adiciona(Cargo cargo) throws SQLException {
+    public boolean adiciona(Cargo cargo) throws SQLException {
         String qry = "INSERT INTO Cargo"
                 + "(codCargo, nomCargo, idtMaster)"
                 + " VALUES (?,?,?)";
@@ -33,7 +33,7 @@ public class CargoDAO extends BaseDAO<Cargo>{
         pStmt.setString(2, cargo.getNomCargo());
         pStmt.setBoolean(3, cargo.isIdtMaster());
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class CargoDAO extends BaseDAO<Cargo>{
     }
 
     @Override
-    public void atualiza(Object pK, Cargo cargoAtualizado) throws SQLException {
+    public boolean atualiza(Object pK, Cargo cargoAtualizado) throws SQLException {
         String qry = "UPDATE Cargo "
                 + "SET codCargo = ?, nomCargo = ?, idtMaster = ? "
                 + "WHERE codCargo = ?";
@@ -100,11 +100,11 @@ public class CargoDAO extends BaseDAO<Cargo>{
         else 
             pStmt.setInt(4, Integer.parseInt(pK.toString()));
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 
     @Override
-    public void deleta(Object pK) throws SQLException {
+    public boolean deleta(Object pK) throws SQLException {
         String qry = "DELETE FROM Cargo "
                 + "WHERE codCargo = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
@@ -113,6 +113,6 @@ public class CargoDAO extends BaseDAO<Cargo>{
         else 
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
-        pStmt.execute();
+        return pStmt.execute();
     }
 }
