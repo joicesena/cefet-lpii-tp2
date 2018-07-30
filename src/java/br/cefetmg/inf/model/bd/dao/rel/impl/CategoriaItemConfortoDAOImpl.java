@@ -30,7 +30,7 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, codCategoria);
         pStmt.setString(2, codItem);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
 //    @Override
@@ -41,7 +41,7 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
 //        PreparedStatement pStmt = con.prepareStatement(qry);
 //        pStmt.setString(1, codCategoria);
 //        pStmt.setString(2, codItem);
-//        return pStmt.execute();
+//        return pStmt.executeUpdate() > 0;
 //    }
 
     @Override
@@ -51,7 +51,7 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, codCategoria);
         pStmt.setString(2, codItem);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
 }

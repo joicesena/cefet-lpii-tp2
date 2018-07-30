@@ -28,7 +28,7 @@ public class CargoProgramaDAOImpl implements CargoProgramaDAO {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, codPrograma);
         pStmt.setString(2, codCargo);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
 //    @Override
@@ -39,7 +39,7 @@ public class CargoProgramaDAOImpl implements CargoProgramaDAO {
 //        PreparedStatement pStmt = con.prepareStatement(qry);
 //        pStmt.setString(1, codPrograma);
 //        pStmt.setString(2, codCargo);
-//        return pStmt.execute();
+//        return pStmt.executeUpdate() > 0;
 //    }
 
     @Override
@@ -49,6 +49,6 @@ public class CargoProgramaDAOImpl implements CargoProgramaDAO {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setString(1, codPrograma);
         pStmt.setString(2, codCargo);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

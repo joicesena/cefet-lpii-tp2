@@ -36,7 +36,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.setDouble(3, hospedagem.getVlrPago());
         pStmt.setString(4, hospedagem.getCodCPF());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -139,7 +139,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setInt(5, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     public boolean atualiza(Hospedagem hospedagemAntiga,
@@ -158,7 +158,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.setDouble(7, hospedagemAntiga.getVlrPago());
         pStmt.setString(8, hospedagemAntiga.getCodCPF());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     public boolean atualiza(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
@@ -192,7 +192,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setDouble(7, vlrPagoAntigo);
             pStmt.setString(8, codCPFAntigo);
 
-            return pStmt.execute();
+            return pStmt.executeUpdate() > 0;
         }
         return false;
     }
@@ -208,7 +208,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     public boolean deleta(Hospedagem hospedagemAntiga) throws SQLException {
@@ -221,7 +221,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
         pStmt.setDouble(3, hospedagemAntiga.getVlrPago());
         pStmt.setString(4, hospedagemAntiga.getCodCPF());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     public boolean deleta(Timestamp datCheckInAntiga, Timestamp datCheckOutAntiga,
@@ -249,7 +249,7 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
             pStmt.setDouble(3, vlrPagoAntigo);
             pStmt.setString(4, codCPFAntigo);
 
-            return pStmt.execute();
+            return pStmt.executeUpdate() > 0;
         }
         return false;
     }

@@ -34,7 +34,7 @@ public class QuartoDAO extends BaseDAO<Quarto> {
         pStmt.setString(2, quarto.getCodCategoria());
         pStmt.setBoolean(3, quarto.isIdtOcupado());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class QuartoDAO extends BaseDAO<Quarto> {
             pStmt.setInt(4, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -118,6 +118,6 @@ public class QuartoDAO extends BaseDAO<Quarto> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

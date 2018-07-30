@@ -33,7 +33,7 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
         pStmt.setString(1, programa.getCodPrograma());
         pStmt.setString(2, programa.getDesPrograma());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -102,7 +102,7 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
             pStmt.setInt(3, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -116,6 +116,6 @@ public final class ProgramaDAO extends BaseDAO<Programa> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

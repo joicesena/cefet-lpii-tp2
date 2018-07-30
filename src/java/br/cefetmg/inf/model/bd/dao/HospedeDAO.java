@@ -35,7 +35,7 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
         pStmt.setString(3, hospede.getDesTelefone());
         pStmt.setString(4, hospede.getDesEmail());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -106,7 +106,7 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
             pStmt.setInt(5, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -120,6 +120,6 @@ public final class HospedeDAO extends BaseDAO<Hospede> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

@@ -38,7 +38,7 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
         pStmt.setInt(4, qtdConsumo);
         pStmt.setInt(5, seqServico);
         pStmt.setString(6, codUsuarioRegistro);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -50,6 +50,6 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
         pStmt.setTimestamp(3, datConsumo);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

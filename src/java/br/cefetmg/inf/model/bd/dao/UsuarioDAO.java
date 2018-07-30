@@ -38,7 +38,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
         pStmt.setString(4, usuario.getDesSenha());
         pStmt.setString(5, usuario.getDesEmail());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -118,7 +118,7 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
             pStmt.setInt(6, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -132,6 +132,6 @@ public class UsuarioDAO extends BaseDAO<Usuario> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
         
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

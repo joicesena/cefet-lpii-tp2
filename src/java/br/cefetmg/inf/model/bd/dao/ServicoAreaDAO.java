@@ -34,7 +34,7 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
         pStmt.setString(1, servicoArea.getCodServicoArea());
         pStmt.setString(2, servicoArea.getNomServicoArea());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
         else 
             pStmt.setInt(3, Integer.parseInt(pK.toString()));
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -112,6 +112,6 @@ public class ServicoAreaDAO extends BaseDAO<ServicoArea> {
         else 
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

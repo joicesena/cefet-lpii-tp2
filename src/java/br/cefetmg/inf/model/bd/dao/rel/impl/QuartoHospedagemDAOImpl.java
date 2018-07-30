@@ -38,7 +38,7 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
         pStmt.setInt(3, nroAdultos);
         pStmt.setInt(4, nroCriancas);
         pStmt.setDouble(5, vlrDiaria);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -49,6 +49,6 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

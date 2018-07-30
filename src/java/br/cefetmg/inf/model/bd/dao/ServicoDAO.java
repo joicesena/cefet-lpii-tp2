@@ -34,7 +34,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setDouble(2, servico.getVlrUnit());
         pStmt.setString(3, servico.getCodServicoArea());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setString(3, servicoAtualizado.getCodServicoArea());
         pStmt.setInt(4, Integer.parseInt(pK.toString()));
         
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     public boolean atualiza(Servico servicoAntigo, Servico servicoAtualizado) throws SQLException {
@@ -115,7 +115,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setDouble(5, servicoAntigo.getVlrUnit());
         pStmt.setString(6, servicoAntigo.getCodServicoArea());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     public boolean atualiza(String desServicoAntigo, String codServicoAreaAntigo,
@@ -140,7 +140,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
             pStmt.setString(4, desServicoAntigo);
             pStmt.setString(5, codServicoAreaAntigo);
 
-            return pStmt.execute();
+            return pStmt.executeUpdate() > 0;
         }
         return false;
     }
@@ -156,7 +156,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
     
     public boolean deleta(Servico servicoAntigo) throws SQLException {
@@ -167,7 +167,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
         pStmt.setDouble(2, servicoAntigo.getVlrUnit());
         pStmt.setString(3, servicoAntigo.getCodServicoArea());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
     
     public boolean deleta(String desServicoAntigo, String codServicoAreaAntigo) throws SQLException {
@@ -187,7 +187,7 @@ public class ServicoDAO extends BaseDAO<Servico> {
             pStmt.setString(1, desServicoAntigo);
             pStmt.setString(2, codServicoAreaAntigo);
 
-            return pStmt.execute();
+            return pStmt.executeUpdate() > 0;
         }
         return false;
     }

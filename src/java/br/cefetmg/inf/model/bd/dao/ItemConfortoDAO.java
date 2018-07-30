@@ -34,7 +34,7 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
         pStmt.setString(1, itemConforto.getCodItem());
         pStmt.setString(2, itemConforto.getDesItem());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
         else 
             pStmt.setInt(3, Integer.parseInt(pK.toString()));
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -112,6 +112,6 @@ public class ItemConfortoDAO extends BaseDAO<ItemConforto> {
         else 
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

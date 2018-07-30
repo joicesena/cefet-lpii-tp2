@@ -34,7 +34,7 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
         pStmt.setString(2, categoriaQuarto.getNomCategoria());
         pStmt.setDouble(3, categoriaQuarto.getVlrDiaria());
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
             pStmt.setInt(4, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -120,6 +120,6 @@ public class CategoriaQuartoDAO extends BaseDAO<CategoriaQuarto> {
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
         }
 
-        return pStmt.execute();
+        return pStmt.executeUpdate() > 0;
     }
 }

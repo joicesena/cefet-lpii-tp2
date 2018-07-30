@@ -33,7 +33,7 @@ public class CargoDAO extends BaseDAO<Cargo>{
         pStmt.setString(2, cargo.getNomCargo());
         pStmt.setBoolean(3, cargo.isIdtMaster());
 
-        return pStmt.execute();
+	return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class CargoDAO extends BaseDAO<Cargo>{
         else 
             pStmt.setInt(4, Integer.parseInt(pK.toString()));
 
-        return pStmt.execute();
+	return pStmt.executeUpdate() > 0;
     }
 
     @Override
@@ -113,6 +113,6 @@ public class CargoDAO extends BaseDAO<Cargo>{
         else 
             pStmt.setInt(1, Integer.parseInt(pK.toString()));
 
-        return pStmt.execute();
+	return pStmt.executeUpdate() > 0;
     }
 }
