@@ -197,7 +197,7 @@ public class ServicoControllerServlet extends HttpServlet {
     }
     
     private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        Servico [] registroBuscado = servico.busca("seqServico", codRegistroSelecionado);
+        Servico [] registroBuscado = servico.busca("seqServico", Integer.parseInt(codRegistroSelecionado));
 
         HttpSession session = requestInterno.getSession();
         
@@ -211,7 +211,7 @@ public class ServicoControllerServlet extends HttpServlet {
         JsonObject dadosRegistro;
 
         if ((usuarios[0].getDesSenha()).equals(senha)) {
-            boolean testeExclusaoItem = servico.deleta(codRegistroSelecionado);
+            boolean testeExclusaoItem = servico.deleta(Integer.parseInt(codRegistroSelecionado));
             
             if (testeExclusaoItem) {
                 dadosRegistro = Json.createObjectBuilder()
