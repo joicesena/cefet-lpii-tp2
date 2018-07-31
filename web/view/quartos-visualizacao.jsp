@@ -1,3 +1,6 @@
+<jsp:include page="/WEB-INF/controleAcesso.jsp" flush="false">
+    <jsp:param name="nomePagina" value="Tela de Quartos"/>
+</jsp:include>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -11,8 +14,8 @@
         <!-- Google Icon Font -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Materialize CSS -->
-        <link type="text/css" rel="stylesheet" href="../css/materialize/materialize.css"/>
-        <link type="text/css" rel="stylesheet" href="../css/padrao-tipo-1.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/materialize/materialize.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/padrao-tipo-1.css"/>
     </head>
     
     <body>
@@ -43,67 +46,131 @@
                 </div>
             </div>
             
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>
-                            Número
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Categoria
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th><center>Ações</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>101</td>
-                        <td>Quarto para Solteiro</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>102</td>
-                        <td>Quarto para Solteiro</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>103</td>
-                        <td>Quarto para Casal</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>104</td>
-                        <td>Suíte Luxo</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <jsp:include page="quartos-visualizacao-tabela.jsp"></jsp:include>
+            </div>
+            
             <div class="card-action right-align button-box">
-                <button id="add-button" class="btn waves-effect waves-light" onclick="addItem()"><i class="material-icons left">add_circle_outline</i>Novo Quarto</button>
+                <button data-target="modal-add-item" id="add-button" class="btn waves-effect waves-light modal-trigger"><i class="material-icons left">add_circle_outline</i>Novo Quarto</button>
+            </div>
+            
+            
+            <!-- Modals -->  
+            <!-- Adicionar -->
+            <div id="modal-add-item" class="modal">
+                <div class="modal-content">
+                    <h4 class="title">Cadastro de Quartos</h4>
+                    <form id="frmInsertItem" method="post">
+						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR A OPERAÇÃO; 2->inserir -->
+						<input type="hidden" id="operacaoItem" name="operacaoItem" value="2">
+                        <div id="modal-container">
+                            <div class="row">
+                                <div class="col s12 form-input">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">filter_3</i>
+										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+										<!-- ID USADO NO JSON -->
+                                        <label for="nroQuarto">Número</label>
+                                        <input id="nroQuarto" name="nroQuarto" type="number" class="validate" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 form-input">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">local_offer</i>
+										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+										<!-- ID USADO NO JSON -->
+                                        <label for="nomCategoria">Categoria</label>
+                                        <input id="nomCategoria" name="nomCategoria" type="text" class="validate" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action right-align button-box">
+							<!-- CHAMADA DE MÉTODO PARA REGISTRAR A OPERAÇÃO -->
+                            <button id="submit-button" class="btn waves-effect waves-light" onclick="saveInsertDialog()"><i class="material-icons left">check_circle_outline</i>Salvar quarto</button>
+							<!-- CHAMADA DE MÉTODO PARA FECHAR O MODAL -->
+                            <button id="cancel-button" class="btn waves-effect waves-light" onclick="cancelInsertDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Editar -->
+            <div id="modal-edit-item" class="modal">
+                <div class="modal-content">
+                    <h4 class="title">Edição de Quartos</h4>
+                    <form id="frmEditItem" method="post">
+						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR A OPERAÇÃO; 4->editar -->
+						<input type="hidden" id="operacaoItem" name="operacaoItem" value="4">
+                        <div id="modal-container">
+                            <div class="row">
+                                <div class="col s12 form-input">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">filter_3</i>
+										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+										<!-- ID USADO NO JSON -->
+                                        <label for="nroQuarto">Número</label>
+                                        <input id="nroQuarto" name="nroQuarto" type="number" class="validate" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 form-input">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">local_offer</i>
+										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+										<!-- ID USADO NO JSON -->
+                                        <label for="nomCategoria">Categoria</label>
+                                        <input id="nomCategoria" name="nomCategoria" type="text" class="validate" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action right-align button-box">
+							<!-- CHAMADA DE MÉTODO PARA REGISTRAR A OPERAÇÃO -->
+                            <button id="submit-button" class="btn waves-effect waves-light" onclick="saveEditDialog()"><i class="material-icons left">check_circle_outline</i>Salvar alterações</button>
+							<!-- CHAMADA DE MÉTODO PARA FECHAR O MODAL -->
+                            <button id="cancel-button" class="btn waves-effect waves-light" onclick="cancelEditDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Excluir -->
+            <div id="modal-delete-item" class="modal">
+                <div class="modal-content">
+                    <h4 class="title">Exclusão de Quartos</h4>
+                    <form id="frmDeleteItem" method="post">
+						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR A OPERAÇÃO; 5->excluir -->
+						<input type="hidden" id="operacaoItem" name="operacaoItem" value="5">
+						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR O REGISTRO A EXCLUIR -->
+						<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+						<!-- ID USADO NO JSON -->
+						<input type="hidden" id="nroQuarto" name="nroQuarto">
+                        <div id="modal-container">
+                            <p>Tem certeza que deseja excluir o quarto selecionado? Se sim, confirme sua senha no campo abaixo:</p>
+                            <div class="row">
+                                <div class="col s12 form-input">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">lock</i>
+										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+										<!-- ID USADO NO JSON -->
+                                        <label for="senhaFuncionario">Senha</label>
+                                        <input id="senhaFuncionario" name="senhaFuncionario" type="password" class="validate" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-action right-align button-box">
+							<!-- CHAMADA DE MÉTODO PARA REGISTRAR A OPERAÇÃO -->
+                            <button id="submit-button" class="btn waves-effect waves-light" onclick="executeDeleteDialog()"><i class="material-icons left">check_circle_outline</i>Excluir</button>
+							<!-- CHAMADA DE MÉTODO PARA FECHAR O MODAL -->
+                            <button id="cancel-button" class="btn waves-effect waves-light" onclick="cancelDeleteDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </main>
 
@@ -118,7 +185,7 @@
         <!--  Script -->
         <!-- Import jQuery before Materialize JS  -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="../js/materialize/materialize.js"></script>
-        <script type="text/javascript" src="../js/quartos-visualizacao.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/materialize/materialize.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/quartos-visualizacao.js"></script>
     </body>
 </html>
