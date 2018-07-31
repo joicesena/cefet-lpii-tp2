@@ -65,7 +65,7 @@
             <div id="modal-add-item" class="modal">
                 <div class="modal-content">
                     <h4 class="title">Cadastro de Itens de Conforto</h4>
-                    <form id="frmInsertItem" action="http://localhost:8080/cefet-lpii-tp2/item-de-conforto" method="post">
+                    <form id="frmInsertItem" method="post">
 						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR A OPERAÇÃO; 2->inserir -->
 						<input type="hidden" id="operacaoItem" name="operacaoItem" value="2">
                         <div id="modal-container">
@@ -94,9 +94,9 @@
                         </div>
                         <div class="card-action right-align button-box">
 							<!-- CHAMADA DE MÉTODO PARA REGISTRAR A OPERAÇÃO -->
-                            <button id="submit-button" class="btn waves-effect waves-light" type="submit" onclick="saveInsertDialog()"><i class="material-icons left">check_circle_outline</i>Salvar item de conforto</button>
+                            <button id="submit-button" class="btn waves-effect waves-light" onclick="saveInsertDialog()"><i class="material-icons left">check_circle_outline</i>Salvar item de conforto</button>
 							<!-- CHAMADA DE MÉTODO PARA FECHAR O MODAL -->
-                            <button id="cancel-button" class="btn waves-effect waves-light" type="reset" onclick="cancelInsertDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
+                            <button id="cancel-button" class="btn waves-effect waves-light" onclick="cancelInsertDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
                         </div>
                     </form>
                 </div>
@@ -106,7 +106,7 @@
             <div id="modal-edit-item" class="modal">
                 <div class="modal-content">
                     <h4 class="title">Edição de Itens de Conforto</h4>
-                    <form id="frmEditItem" action="http://localhost:8080/cefet-lpii-tp2/item-de-conforto" method="post">
+                    <form id="frmEditItem" method="post">
 						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR A OPERAÇÃO; 4->editar -->
 						<input type="hidden" id="operacaoItem" name="operacaoItem" value="4">
                         <div id="modal-container">
@@ -117,7 +117,7 @@
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
                                         <label for="codigoItem">Código</label>
-                                        <input id="codigoItem" type="number" class="validate" required>
+                                        <input id="codigoItem" name="codigoItem" type="number" class="validate" required>
                                     </div>
                                 </div>
                             </div>
@@ -128,16 +128,16 @@
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
                                         <label for="descricaoItem">Descrição</label>
-                                        <input id="descricaoItem" type="text" class="validate" required>
+                                        <input id="descricaoItem" name="descricaoItem" type="text" class="validate" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-action right-align button-box">
 							<!-- CHAMADA DE MÉTODO PARA REGISTRAR A OPERAÇÃO -->
-                            <button id="submit-button" class="btn waves-effect waves-light" type="submit" onclick="saveEditDialog()"><i class="material-icons left">check_circle_outline</i>Salvar alterações</button>
+                            <button id="submit-button" class="btn waves-effect waves-light" onclick="saveEditDialog()"><i class="material-icons left">check_circle_outline</i>Salvar alterações</button>
 							<!-- CHAMADA DE MÉTODO PARA FECHAR O MODAL -->
-                            <button id="cancel-button" class="btn waves-effect waves-light" type="reset" onclick="cancelEditDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
+                            <button id="cancel-button" class="btn waves-effect waves-light" onclick="cancelEditDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
                         </div>
                     </form>
                 </div>
@@ -147,13 +147,13 @@
             <div id="modal-delete-item" class="modal">
                 <div class="modal-content">
                     <h4 class="title">Exclusão de Itens de Conforto</h4>
-                    <form id="frmDeleteItem" action="http://localhost:8080/cefet-lpii-tp2/item-de-conforto" method="post">
+                    <form id="frmDeleteItem" method="post">
 						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR A OPERAÇÃO; 5->excluir -->
 						<input type="hidden" id="operacaoItem" name="operacaoItem" value="5">
 						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR O REGISTRO A EXCLUIR -->
 						<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 						<!-- ID USADO NO JSON -->
-						<input type="hidden" id="codigoItem" value="0">
+						<input type="hidden" id="codigoItem" name="codigoItem">
                         <div id="modal-container">
                             <p>Tem certeza que deseja excluir o item de conforto selecionado? Se sim, confirme sua senha no campo abaixo:</p>
                             <div class="row">
@@ -170,9 +170,9 @@
                         </div>
                         <div class="card-action right-align button-box">
 							<!-- CHAMADA DE MÉTODO PARA REGISTRAR A OPERAÇÃO -->
-                            <button id="submit-button" class="btn waves-effect waves-light" type="submit"><i class="material-icons left" onclick="executeDeleteDialog()">check_circle_outline</i>Excluir</button>
+                            <button id="submit-button" class="btn waves-effect waves-light" onclick="executeDeleteDialog()"><i class="material-icons left">check_circle_outline</i>Excluir</button>
 							<!-- CHAMADA DE MÉTODO PARA FECHAR O MODAL -->
-                            <button id="cancel-button" class="btn waves-effect waves-light" type="reset" onclick="cancelDeleteDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
+                            <button id="cancel-button" class="btn waves-effect waves-light" onclick="cancelDeleteDialog()"><i class="material-icons left">highlight_off</i>Cancelar</button>
                         </div>
                     </form>
                 </div>

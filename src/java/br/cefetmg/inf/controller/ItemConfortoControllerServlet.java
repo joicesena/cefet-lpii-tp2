@@ -13,8 +13,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,6 +43,8 @@ public class ItemConfortoControllerServlet extends HttpServlet {
         operacaoItem = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
         JsonObject retorno;
         
+//        String caminhoTela = "http://localhost:8080/cefet-lpii-tp2/view/itens-conforto.jsp";
+        
         try {
             if (operacaoItem == 1) {
                 codItemSelecionado = request.getParameter("codItem");
@@ -57,6 +57,7 @@ public class ItemConfortoControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
+//                response.sendRedirect(caminhoTela);
             } else if (operacaoItem == 3) {
                 pesquisarItem();
             } else if (operacaoItem == 4) {
@@ -69,6 +70,7 @@ public class ItemConfortoControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
+//                response.sendRedirect(caminhoTela);
             }
         } catch (SQLException exc) {
             //
@@ -130,16 +132,15 @@ public class ItemConfortoControllerServlet extends HttpServlet {
         
         ItemConforto itemAdicionar = new ItemConforto(codItem, desItem);
         boolean testeRegistro = itemConforto.adiciona(itemAdicionar);
-        System.out.println("testeRegistro = "+testeRegistro);
         
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
-                .add("sucesso", true)
+                .add("success", true)
                 .add("mensagem", "Registro adicionado com sucesso!")
                 .build();
         } else {
             dadosRegistro = Json.createObjectBuilder()
-                .add("sucesso", false)
+                .add("success", false)
                 .add("mensagem", "Ocorreu erro ao adicionar o registro. Repita a operação.")
                 .build();
         }
@@ -160,12 +161,14 @@ public class ItemConfortoControllerServlet extends HttpServlet {
 
     private JsonObject editarItem() throws SQLException {
         String codItem, desItem;
-        codItem = requestInterno.getParameter("codItemSelecionado");
-        desItem = requestInterno.getParameter("desItemSelecionado");
+        codItem = requestInterno.getParameter("codigoItem");
+        desItem = requestInterno.getParameter("descricaoItem");
         
         ItemConforto itemConfortoAtualizado = new ItemConforto(codItem, desItem);
         JsonObject dadosRegistro;
-        if (itemConforto.atualiza(codItemSelecionado, itemConfortoAtualizado)) {
+        
+        boolean testeRegistro = itemConforto.atualiza(codItemSelecionado, itemConfortoAtualizado);
+        if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)
                 .add("mensagem", "Registro alterado com sucesso!")
@@ -192,12 +195,16 @@ public class ItemConfortoControllerServlet extends HttpServlet {
         System.out.println("usuarios.length "+usuarios.length);
         
         String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
-        System.out.println("senhaSHA256 - " + senhaSHA256);
-        String senha=null;
-//        String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
+        String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
         
         if ((usuarios[0].getDesSenha()).equals(senha)) {
-            if (itemConforto.deleta(codItemSelecionado) && relacaoCategItem.deleta(codItemSelecionado, "codItem")) {
+            boolean testeExclusaoItem = itemConforto.deleta(codItemSelecionado);
+            boolean testeExclusaoItemRel = relacaoCategItem.deleta(codItemSelecionado, "codItem");
+            
+            System.out.println("testeExclusaoItem " + testeExclusaoItem);
+            System.out.println("testeExclusaoItemRel " + testeExclusaoItemRel);
+            
+            if (testeExclusaoItem) {
                 dadosRegistro = Json.createObjectBuilder()
                     .add("sucesso", true)
                     .add("mensagem", "Registro excluído com sucesso!")

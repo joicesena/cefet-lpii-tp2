@@ -45,12 +45,11 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
 //    }
 
     @Override
-    public boolean deleta(String codCategoria, String codItem) throws SQLException {
+    public boolean deleta(String cod, String coluna) throws SQLException {
         String qry = "DELETE FROM CategoriaItemConforto "
-                + "WHERE codCategoria = ? AND codItem = ?";
+                + "WHERE " + coluna + " = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, codCategoria);
-        pStmt.setString(2, codItem);
+        pStmt.setString(1, cod);
         return pStmt.executeUpdate() > 0;
     }
 
