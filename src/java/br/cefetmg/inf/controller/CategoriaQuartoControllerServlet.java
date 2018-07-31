@@ -8,6 +8,7 @@ import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.CategoriaQuarto;
 import br.cefetmg.inf.model.pojo.ItemConforto;
 import br.cefetmg.inf.model.pojo.Usuario;
+import br.cefetmg.inf.model.pojo.rel.CategoriaItemConforto;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -106,11 +107,15 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         
         // buscar os itens de conforto que se relacionam com a categoria
         CategoriaItemConfortoDAOImpl relDAO = CategoriaItemConfortoDAOImpl.getInstance();
-        String[] codigos = relDAO.busca(codRegistro, "codCategoria");
+        CategoriaItemConforto[] vetorRel = relDAO.busca(codRegistro, "codCategoria");
         // montar uma string com as descrições dos itens
         String itensConforto = "";
-        for (String cod : codigos) {
-            itensConforto += cod + "; ";
+
+        String codCategoria = null;
+        for (CategoriaItemConforto cic : vetorRel) {
+            codCategoria = cic.getCodCategoria();
+            CategoriaQuarto [] buscaCategoria = categoriaQuarto.busca("codCategoria", codCategoria);
+            itensConforto += buscaCategoria[0].getNomCategoria() + "; ";
         }
 
         JsonObject dadosRegistro = Json.createObjectBuilder()

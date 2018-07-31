@@ -1,5 +1,5 @@
 <%@page import="br.cefetmg.inf.model.bd.dao.ItemConfortoDAO"%>
-<%@page import="br.cefetmg.inf.model.dto.ItemConforto"%>
+<%@page import="br.cefetmg.inf.model.pojo.ItemConforto"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

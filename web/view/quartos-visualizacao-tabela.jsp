@@ -1,7 +1,7 @@
 <%@page import="br.cefetmg.inf.model.bd.dao.QuartoDAO"%>
-<%@page import="br.cefetmg.inf.model.dto.Quarto"%>
+<%@page import="br.cefetmg.inf.model.pojo.Quarto"%>
 <%@page import="br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO"%> 
-<%@page import="br.cefetmg.inf.model.dto.CategoriaQuarto"%> 
+<%@page import="br.cefetmg.inf.model.pojo.CategoriaQuarto"%> 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

@@ -1,7 +1,15 @@
 <jsp:include page="/WEB-INF/controleAcesso.jsp" flush="false">
     <jsp:param name="nomePagina" value="Tela de Quartos"/>
 </jsp:include>
+<%@page import="br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO"%>
+<%@page import="br.cefetmg.inf.model.pojo.CategoriaQuarto"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+	CategoriaQuartoDAO registroDAO = CategoriaQuartoDAO.getInstance();
+	CategoriaQuarto [] registrosEncontrados = registroDAO.busca();
+%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -79,10 +87,18 @@
                                 <div class="col s12 form-input">
                                     <div class="input-field">
                                         <i class="material-icons prefix">local_offer</i>
+										<select name="codCategoria">
+											<%	for(int i = 0; i < registrosEncontrados.length; i++) {
+													String codItem = registrosEncontrados[i].getCodCategoria();
+													String desItem = registrosEncontrados[i].getNomCategoria();
+											%>	<option value="<% out.print(codItem); %>"><% out.print(desItem);%></option>
+											<% } // for  
+											%>
+										</select>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
-                                        <label for="nomCategoria">Categoria</label>
-                                        <input id="nomCategoria" name="nomCategoria" type="text" class="validate" required>
+<!--                                        <label for="nomCategoria">Categoria</label>-->
+<!--                                        <input id="nomCategoria" name="nomCategoria" type="text" class="validate" required>-->
                                     </div>
                                 </div>
                             </div>
@@ -120,10 +136,18 @@
                                 <div class="col s12 form-input">
                                     <div class="input-field">
                                         <i class="material-icons prefix">local_offer</i>
+										<select name="codCategoria">
+											<%	for(int i = 0; i < registrosEncontrados.length; i++) {
+													String codItem = registrosEncontrados[i].getCodCategoria();
+													String desItem = registrosEncontrados[i].getNomCategoria();
+											%>	<option value="<% out.print(codItem); %>"><% out.print(desItem);%></option>
+											<% } // for  
+											%>
+										</select>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
-                                        <label for="nomCategoria">Categoria</label>
-                                        <input id="nomCategoria" name="nomCategoria" type="text" class="validate" required>
+<!--                                        <label for="nomCategoria">Categoria</label>-->
+<!--                                        <input id="nomCategoria" name="nomCategoria" type="text" class="validate" required>-->
                                     </div>
                                 </div>
                             </div>

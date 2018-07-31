@@ -27,7 +27,7 @@ public class QuartoControllerServlet extends HttpServlet {
     private HttpServletRequest requestInterno;
     private int operacaoItem;
     
-    private String nroQuartoSelecionado;
+    private int nroQuartoSelecionado;
     
     private QuartoDAO quarto;
     
@@ -46,7 +46,7 @@ public class QuartoControllerServlet extends HttpServlet {
         
         try {
             if (operacaoItem == 1) {
-                nroQuartoSelecionado = request.getParameter("nroQuarto");
+                nroQuartoSelecionado = Integer.parseInt(request.getParameter("nroQuarto"));
                 retorno = retornarDadosRegistro(nroQuartoSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
@@ -101,8 +101,8 @@ public class QuartoControllerServlet extends HttpServlet {
     //
     // MÉTODOS DE CONTROLE
     //
-    private JsonObject retornarDadosRegistro (String nroQuarto) throws SQLException {
-        Quarto [] quartos = quarto.busca("nroQuarto", Integer.parseInt(nroQuarto));
+    private JsonObject retornarDadosRegistro (int nroQuarto) throws SQLException {
+        Quarto [] quartos = quarto.busca("nroQuarto", nroQuarto);
         Quarto quartoRetorno = quartos[0];
 
         CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
@@ -111,6 +111,7 @@ public class QuartoControllerServlet extends HttpServlet {
 
         JsonObject dadosRegistro = Json.createObjectBuilder()
             .add("nroQuarto", quartoRetorno.getNroQuarto())
+            .add("codCategoria", quartoRetorno.getCodCategoria())
             .add("nomCategoria", nomCategoria)
             .build();
 
@@ -123,11 +124,13 @@ public class QuartoControllerServlet extends HttpServlet {
         String codCategoria;
         
         nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
-        nomCategoria = requestInterno.getParameter("nomCategoria");
+        codCategoria = requestInterno.getParameter("codCategoria");
         
-        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
-        CategoriaQuarto[] categoria = categoriaDAO.busca("nomCategoria", nomCategoria);
-        codCategoria = categoria[0].getCodCategoria();
+//        nomCategoria = requestInterno.getParameter("nomCategoria");
+//        
+//        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
+//        CategoriaQuarto[] categoria = categoriaDAO.busca("nomCategoria", nomCategoria);
+//        codCategoria = categoria[0].getCodCategoria();
         
         Quarto quartoAdicionar = new Quarto(nroQuarto, codCategoria, false);
 
@@ -168,17 +171,22 @@ public class QuartoControllerServlet extends HttpServlet {
         String codCategoria;
         
         nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
-        nomCategoria = requestInterno.getParameter("nomCategoria");
-        
-        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
-        CategoriaQuarto[] categoria = categoriaDAO.busca("nomCategoria", nomCategoria);
-        codCategoria = categoria[0].getCodCategoria();
+        codCategoria = requestInterno.getParameter("codCategoria");
+
+//        nomCategoria = requestInterno.getParameter("nomCategoria");
+//        
+//        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
+//        CategoriaQuarto[] categoria = categoriaDAO.busca("nomCategoria", nomCategoria);
+//        codCategoria = categoria[0].getCodCategoria();
         
         Quarto quartoAdicionar = new Quarto(nroQuarto, codCategoria, false);
         
         JsonObject dadosRegistro;
 
         boolean testeRegistro = quarto.atualiza(nroQuartoSelecionado, quartoAdicionar);
+        
+        System.out.println(testeRegistro);
+
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)

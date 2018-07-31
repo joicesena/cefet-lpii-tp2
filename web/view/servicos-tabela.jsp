@@ -1,7 +1,7 @@
 <%@page import="br.cefetmg.inf.model.bd.dao.ServicoDAO"%>
-<%@page import="br.cefetmg.inf.model.dto.Servico"%>
+<%@page import="br.cefetmg.inf.model.pojo.Servico"%>
 <%@page import="br.cefetmg.inf.model.bd.dao.ServicoAreaDAO"%>
-<%@page import="br.cefetmg.inf.model.dto.ServicoArea"%>
+<%@page import="br.cefetmg.inf.model.pojo.ServicoArea"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
