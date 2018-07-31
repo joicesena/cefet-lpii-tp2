@@ -185,7 +185,7 @@ public class QuartoControllerServlet extends HttpServlet {
         
         JsonObject dadosRegistro;
 
-        boolean testeRegistro = quarto.atualiza(nroQuarto, quartoAdicionar);
+        boolean testeRegistro = quarto.atualiza(nroQuartoSelecionado, quartoAdicionar);
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)
