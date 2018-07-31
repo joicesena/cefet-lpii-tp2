@@ -2,8 +2,8 @@ package br.cefetmg.inf.model.bd.dao;
 
 import br.cefetmg.inf.model.bd.util.ConnectionFactory;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.dto.Hospedagem;
-import br.cefetmg.inf.model.dto.Hospede;
+import br.cefetmg.inf.model.pojo.Hospedagem;
+import br.cefetmg.inf.model.pojo.Hospede;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;

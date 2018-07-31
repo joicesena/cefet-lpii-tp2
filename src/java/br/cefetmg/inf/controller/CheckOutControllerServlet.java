@@ -2,7 +2,7 @@ package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.HospedagemDAO;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.dto.Hospedagem;
+import br.cefetmg.inf.model.pojo.Hospedagem;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;

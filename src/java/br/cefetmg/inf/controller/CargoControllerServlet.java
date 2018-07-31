@@ -2,9 +2,9 @@ package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.CargoDAO;
 import br.cefetmg.inf.model.bd.dao.ProgramaDAO;
-import br.cefetmg.inf.model.dto.Cargo;
+import br.cefetmg.inf.model.pojo.Cargo;
 import br.cefetmg.inf.model.bd.dao.rel.impl.CargoProgramaDAOImpl;
-import br.cefetmg.inf.model.dto.Programa;
+import br.cefetmg.inf.model.pojo.Programa;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;

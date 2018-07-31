@@ -2,7 +2,7 @@ package br.cefetmg.inf.model.bd.dao;
 
 import static br.cefetmg.inf.model.bd.dao.BaseDAO.con;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.dto.CategoriaQuarto;
+import br.cefetmg.inf.model.pojo.CategoriaQuarto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

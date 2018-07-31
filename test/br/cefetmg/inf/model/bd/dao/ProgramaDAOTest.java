@@ -2,7 +2,7 @@ package br.cefetmg.inf.model.bd.dao;
 
 import br.cefetmg.inf.model.bd.util.ConnectionFactory;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.dto.Programa;
+import br.cefetmg.inf.model.pojo.Programa;
 import java.sql.Connection;
 import java.sql.SQLException;
 import org.junit.After;

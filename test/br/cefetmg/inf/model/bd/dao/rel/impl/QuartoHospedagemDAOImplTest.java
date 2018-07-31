@@ -1,8 +1,11 @@
 package br.cefetmg.inf.model.bd.dao.rel.impl;
 
+import br.cefetmg.inf.model.pojo.Hospede;
+import br.cefetmg.inf.model.pojo.Hospedagem;
+import br.cefetmg.inf.model.pojo.Quarto;
+import br.cefetmg.inf.model.pojo.CategoriaQuarto;
 import br.cefetmg.inf.model.bd.dao.*;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.dto.*;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;

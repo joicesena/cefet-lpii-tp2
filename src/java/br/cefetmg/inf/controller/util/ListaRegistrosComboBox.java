@@ -1,7 +1,8 @@
 package br.cefetmg.inf.controller.util;
 
+import br.cefetmg.inf.model.pojo.Programa;
+import br.cefetmg.inf.model.pojo.ItemConforto;
 import br.cefetmg.inf.model.bd.dao.*;
-import br.cefetmg.inf.model.dto.*;
 import java.sql.SQLException;
 import javax.json.Json;
 import javax.json.JsonArray;

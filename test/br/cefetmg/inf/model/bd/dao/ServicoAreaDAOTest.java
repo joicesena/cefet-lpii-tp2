@@ -2,7 +2,7 @@ package br.cefetmg.inf.model.bd.dao;
 
 import br.cefetmg.inf.model.bd.util.ConnectionFactory;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.dto.ServicoArea;
+import br.cefetmg.inf.model.pojo.ServicoArea;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;

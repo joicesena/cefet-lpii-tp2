@@ -1,4 +1,4 @@
-package br.cefetmg.inf.model.dto;
+package br.cefetmg.inf.model.pojo;
 
 import java.sql.Timestamp;
 
