@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,7 +58,6 @@ public class ItemConfortoControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//                response.sendRedirect(caminhoTela);
             } else if (operacaoItem == 3) {
                 pesquisarItem();
             } else if (operacaoItem == 4) {
@@ -70,7 +70,11 @@ public class ItemConfortoControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//                response.sendRedirect(caminhoTela);
+            } else if (operacaoItem == 6) {
+                JsonArray retornoArray = listarRegistrosComboBox();
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retornoArray);
             }
         } catch (SQLException exc) {
             //
@@ -85,11 +89,6 @@ public class ItemConfortoControllerServlet extends HttpServlet {
             //
             //
         }
-        
-//        String caminhoArquivo = "/view/itens-conforto.jsp";
-//        
-//        RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
-//        rd.forward(request, response);
         
     }
     
@@ -109,7 +108,6 @@ public class ItemConfortoControllerServlet extends HttpServlet {
     // MÉTODOS DE CONTROLE
     //
     private JsonObject retornarDadosRegistro (String codItem) throws SQLException {
-//        System.out.println("codItem - "+codItem);
         ItemConforto [] itensPesquisa = itemConforto.busca("codItem", codItem);
         ItemConforto itemRetorno = itensPesquisa[0];
 
@@ -223,6 +221,24 @@ public class ItemConfortoControllerServlet extends HttpServlet {
         }
 
         return dadosRegistro;
+    }
+
+    public JsonArray listarRegistrosComboBox () throws SQLException {
+        ItemConfortoDAO registroDAO = ItemConfortoDAO.getInstance();
+        ItemConforto[] registros = registroDAO.busca();
+        
+        JsonArray arrayJson = Json.createArrayBuilder().build();
+        
+        for (ItemConforto registro : registros) {
+            arrayJson.add(
+                (Json.createObjectBuilder()
+                    .add("codigoItem", registro.getCodItem())
+                    .add("descricaoItem", registro.getDesItem())
+                ).build()
+            );
+        }
+        
+        return arrayJson;
     }
 
 }

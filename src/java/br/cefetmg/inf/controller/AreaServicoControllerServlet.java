@@ -17,18 +17,17 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "AreaServicoControllerServlet", urlPatterns = {"/area-de-servico"})
 public class AreaServicoControllerServlet extends HttpServlet {
 
     private HttpServletRequest requestInterno;
-    private int operacaoArea;
+    private int operacaoRegistro;
     
     private ServicoAreaDAO servicoArea;
 
-    private String codServicoAreaSelecionado;
+    private String codRegistroSelecionado;
     
     @Override
     public void init() throws ServletException {
@@ -38,33 +37,33 @@ public class AreaServicoControllerServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.requestInterno = request;
-        operacaoArea = 0;
+        operacaoRegistro = 0;
 
-        operacaoArea = Integer.parseInt(requestInterno.getParameter("operacaoArea"));
+        operacaoRegistro = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
         JsonObject retorno;
         
         try {
-            if (operacaoArea == 1) {
-                codServicoAreaSelecionado = request.getParameter("codServicoArea");
-                retorno = retornarDadosRegistro(codServicoAreaSelecionado);
+            if (operacaoRegistro == 1) {
+                codRegistroSelecionado = request.getParameter("codServicoArea");
+                retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-            } else if (operacaoArea == 2) {
-                retorno = inserirArea();
+            } else if (operacaoRegistro == 2) {
+                retorno = inserirRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
 //                response.sendRedirect(caminhoTela);
-            } else if (operacaoArea == 3) {
-                pesquisarArea();
-            } else if (operacaoArea == 4) {
-                retorno = editarArea();
+            } else if (operacaoRegistro == 3) {
+                pesquisarRegistro();
+            } else if (operacaoRegistro == 4) {
+                retorno = editarRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-            } else if (operacaoArea == 5) {
-                retorno = removerArea();
+            } else if (operacaoRegistro == 5) {
+                retorno = removerRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
@@ -117,7 +116,7 @@ public class AreaServicoControllerServlet extends HttpServlet {
     }
     
 
-    private JsonObject inserirArea () throws SQLException {
+    private JsonObject inserirRegistro () throws SQLException {
         String codArea;
         String desArea;
         
@@ -144,7 +143,7 @@ public class AreaServicoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private void pesquisarArea() throws SQLException {
+    private void pesquisarRegistro() throws SQLException {
         String parametroPesquisa, tipoParametroPesquisa;
         parametroPesquisa = (String)requestInterno.getParameter("pesquisaArea");
         tipoParametroPesquisa = (String)requestInterno.getParameter("parametroPesquisaArea");
@@ -155,16 +154,18 @@ public class AreaServicoControllerServlet extends HttpServlet {
         return;
     }
 
-    private JsonObject editarArea() throws SQLException {
+    private JsonObject editarRegistro() throws SQLException {
         String codArea, desArea;
-        codArea = requestInterno.getParameter("codAreaSelecionado");
-        desArea = requestInterno.getParameter("nomAreaSelecionado");
+        codArea = requestInterno.getParameter("codServicoArea");
+        desArea = requestInterno.getParameter("nomServicoArea");
         
         ServicoArea servicoAreaAtualizado = new ServicoArea(codArea, desArea);
         
         JsonObject dadosRegistro;
         
-        boolean testeRegistro = servicoArea.atualiza(codArea, servicoAreaAtualizado);
+        System.out.println("dado a alterar: " + codRegistroSelecionado);
+        
+        boolean testeRegistro = servicoArea.atualiza(codRegistroSelecionado, servicoAreaAtualizado);
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)
@@ -180,9 +181,9 @@ public class AreaServicoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private JsonObject removerArea() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String codArea;
-        codArea = requestInterno.getParameter("codAreaSelecionado");
+        codArea = requestInterno.getParameter("codServicoArea");
         
         JsonObject dadosRegistro;
         

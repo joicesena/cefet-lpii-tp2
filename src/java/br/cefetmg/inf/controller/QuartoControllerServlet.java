@@ -103,19 +103,12 @@ public class QuartoControllerServlet extends HttpServlet {
     //
     private JsonObject retornarDadosRegistro (String nroQuarto) throws SQLException {
         Quarto [] quartos = quarto.busca("nroQuarto", Integer.parseInt(nroQuarto));
-
-        System.out.println("tamanho do vetor "+quartos.length);
         Quarto quartoRetorno = quartos[0];
-        
 
         CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
         CategoriaQuarto[] categoria = categoriaDAO.busca("codCategoria", quartoRetorno.getCodCategoria());
         String nomCategoria = categoria[0].getNomCategoria();
 
-        
-        System.out.println("nroQuarto - "+nroQuarto);
-        System.out.println("nomCategoria - "+nomCategoria);
-        
         JsonObject dadosRegistro = Json.createObjectBuilder()
             .add("nroQuarto", quartoRetorno.getNroQuarto())
             .add("nomCategoria", nomCategoria)
@@ -140,7 +133,7 @@ public class QuartoControllerServlet extends HttpServlet {
 
         JsonObject dadosRegistro;
         
-        boolean testeRegistro = quarto.adiciona(quartoAdicionar);;
+        boolean testeRegistro = quarto.adiciona(quartoAdicionar);
         
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
@@ -185,7 +178,7 @@ public class QuartoControllerServlet extends HttpServlet {
         
         JsonObject dadosRegistro;
 
-        boolean testeRegistro = quarto.atualiza(nroQuarto, quartoAdicionar);
+        boolean testeRegistro = quarto.atualiza(nroQuartoSelecionado, quartoAdicionar);
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)
