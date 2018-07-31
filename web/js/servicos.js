@@ -1,6 +1,7 @@
 $( document ).ready(function(){
     $("#button-menu").sideNav();
     $('select').material_select();
+    $('.modal').modal();
 });
 
 function sortTableASC() {
@@ -11,15 +12,110 @@ function sortTableDESC() {
     alert("Função para ordenar a coluna de forma decrescente");
 }
 
-// Funções de CRUD
-function addItem() {
-    alert("Função para adicionar item");
+//
+// INSERÇÃO DE ITEM
+//
+
+// método para gravação dos dados inseridos
+function saveInsertDialog () {
+	// a var dados contém os dados dos inputs no formulário
+	var dados = $( "#frmInsertItem" ).serialize();
+	
+	// envia a requisição pro servlet
+	$.ajax({
+		url: "http://localhost:8080/cefet-lpii-tp2/servico",
+		type: "POST",
+		data: dados,
+		success: function(data) {
+			var rst = JSON.parse(data);
+			alert(rst.mensagem);
+		}
+	});
 }
 
-function editItem() {
-    alert("Função para editar item");
+// método para fechar o modal
+function cancelInsertDialog () {
+    $('#modal-add-item').modal('close');
 }
 
-function deleteItem() {
-    alert("Função para deletar item");
+//
+// ALTERAÇÃO DOS DADOS DE UM ITEM
+//
+
+// método para exibir o modal com os dados
+function showEditDialog (ASeqServico) {
+	// envia a requisição para o servlet
+	$.ajax({
+		url: "http://localhost:8080/cefet-lpii-tp2/servico",
+		type: "POST",
+		// manda como parâmetro de operação 1 --> retornarDadosRegistro
+		data: "operacaoItem=1" + "&seqServico="+ASeqServico,
+		success: function(responseText){
+			// abre o modal
+			$('#modal-edit-item').modal('open');
+//			$('#frmEditItem').form('load', responseText);
+			
+			// modifica o valor dos inputs no formulário para os dados existentes
+			$("#frmEditItem #desServico").val(responseText.desServico);
+			$("#frmEditItem #vlrUnit").val(responseText.vlrUnit);
+			$("#frmEditItem #nomServicoArea").val(responseText.nomServicoArea);
+		}
+	});
 }
+
+// método para gravação dos dados alterados
+function saveEditDialog () { 
+	var dados = $( "#frmEditItem" ).serialize();
+	
+	$.ajax({
+		url: "http://localhost:8080/cefet-lpii-tp2/servico",
+		type: "POST",
+		data: dados,
+		success: function(data) {
+			var rst = JSON.parse(data);
+			alert(rst.mensagem);
+		}
+	});
+}
+
+// método para fechar o modal
+function cancelEditDialog () {
+    $('#modal-edit-item').modal('close');
+}
+
+//
+// EXCLUSÃO DE ITEM
+//
+
+// método para exibir modal de exclusão
+function showDeleteDialog (ASeqServico) {
+	$.ajax({
+		url: "http://localhost:8080/cefet-lpii-tp2/servico",
+		type: "POST",
+		data: "operacaoItem=1" + "&seqServico="+ASeqServico,
+		success: function(responseText){
+			$('#modal-delete-item').modal('open');
+			$("#frmDeleteItem #seqServico").val(responseText.seqServico);
+		}
+	});
+}
+
+// método para execução da exclusão
+function executeDeleteDialog () {
+	var dados = $( "#frmDeleteItem" ).serialize();
+	
+	$.ajax({
+		url: "http://localhost:8080/cefet-lpii-tp2/servico",
+		type: "POST",
+		data: dados,
+		success: function(data) {
+			var rst = JSON.parse(data);
+			alert(rst.mensagem);
+		}
+	});
+}
+
+// método para fechar o modal
+function cancelDeleteDialog () {
+    $('#modal-delete-item').modal('close');
+}		
