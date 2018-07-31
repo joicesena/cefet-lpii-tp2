@@ -8,58 +8,116 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.cefetmg.inf.model.dto.ServicoArea;
 import br.cefetmg.inf.model.bd.dao.ServicoAreaDAO;
+import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
+import br.cefetmg.inf.model.bd.util.UtilidadesBD;
+import br.cefetmg.inf.model.dto.Usuario;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "AreaServicoControllerServlet", urlPatterns = {"/area-de-servico"})
 public class AreaServicoControllerServlet extends HttpServlet {
 
     private HttpServletRequest requestInterno;
-    private String operacaoArea;
+    private int operacaoArea;
     
     private ServicoAreaDAO servicoArea;
+
+    private String codServicoAreaSelecionado;
     
     @Override
     public void init() throws ServletException {
         servicoArea = ServicoAreaDAO.getInstance();
     }
     
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.requestInterno = request;
-        operacaoArea = null;
+        operacaoArea = 0;
 
-        operacaoArea = requestInterno.getParameter("operacaoArea");
+        operacaoArea = Integer.parseInt(requestInterno.getParameter("operacaoArea"));
+        JsonObject retorno;
         
         try {
-            if (operacaoArea.equals("cadastrarArea")) {
-                cadastraArea();
-            } else if (operacaoArea.equals("pesquisarArea")) {
-                pesquisaArea();
-            } else if (operacaoArea.equals("editarArea")) {
-                editaArea();
-            } else if (operacaoArea.equals("removerArea")) {
-                removeArea();
+            if (operacaoArea == 1) {
+                codServicoAreaSelecionado = request.getParameter("codServicoArea");
+                retorno = retornarDadosRegistro(codServicoAreaSelecionado);
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retorno);
+            } else if (operacaoArea == 2) {
+                retorno = inserirArea();
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retorno);
+//                response.sendRedirect(caminhoTela);
+            } else if (operacaoArea == 3) {
+                pesquisarArea();
+            } else if (operacaoArea == 4) {
+                retorno = editarArea();
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retorno);
+            } else if (operacaoArea == 5) {
+                retorno = removerArea();
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retorno);
+//                response.sendRedirect(caminhoTela);
             }
         } catch (SQLException exc) {
             //
             //
             //
+        } catch (NoSuchAlgorithmException ex) {
+            //
+            //
+            //
+        } catch (UnsupportedEncodingException ex) {
+            //
+            //
+            //
         }
         
-        String caminhoArquivo = "/view/servicos-areas.jsp";
-        
-        RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
-        rd.forward(request, response);
         
     }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+    
 
     
     //
     // MÉTODOS DE CONTROLE
     //
-    private void cadastraArea () throws SQLException {
+    private JsonObject retornarDadosRegistro (String codServicoArea) throws SQLException {
+//        System.out.println("codItem - "+codItem);
+        ServicoArea [] areasPesquisa = servicoArea.busca("codServicoArea", codServicoArea);
+        ServicoArea areaRetorno = areasPesquisa[0];
+
+        JsonObject dadosRegistro = Json.createObjectBuilder()
+            .add("codServicoArea", areaRetorno.getCodServicoArea())
+            .add("nomServicoArea", areaRetorno.getNomServicoArea())
+            .build();
+
+        return dadosRegistro;
+    }
+    
+
+    private JsonObject inserirArea () throws SQLException {
         String codArea;
         String desArea;
         
@@ -67,12 +125,26 @@ public class AreaServicoControllerServlet extends HttpServlet {
         desArea = requestInterno.getParameter("nomServicoArea");
         
         ServicoArea areaAdicionar = new ServicoArea(codArea, desArea);
-        servicoArea.adiciona(areaAdicionar);
+        boolean testeRegistro = servicoArea.adiciona(areaAdicionar);
         
-        return;
+        JsonObject dadosRegistro;
+        
+        if (testeRegistro) {
+            dadosRegistro = Json.createObjectBuilder()
+                .add("success", true)
+                .add("mensagem", "Registro adicionado com sucesso!")
+                .build();
+        } else {
+            dadosRegistro = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Ocorreu erro ao adicionar o registro. Repita a operação.")
+                .build();
+        }
+
+        return dadosRegistro;
     }
     
-    private void pesquisaArea() throws SQLException {
+    private void pesquisarArea() throws SQLException {
         String parametroPesquisa, tipoParametroPesquisa;
         parametroPesquisa = (String)requestInterno.getParameter("pesquisaArea");
         tipoParametroPesquisa = (String)requestInterno.getParameter("parametroPesquisaArea");
@@ -83,25 +155,68 @@ public class AreaServicoControllerServlet extends HttpServlet {
         return;
     }
 
-    private void editaArea() throws SQLException {
+    private JsonObject editarArea() throws SQLException {
         String codArea, desArea;
         codArea = requestInterno.getParameter("codAreaSelecionado");
         desArea = requestInterno.getParameter("nomAreaSelecionado");
         
         ServicoArea servicoAreaAtualizado = new ServicoArea(codArea, desArea);
         
-        servicoArea.atualiza(codArea, servicoAreaAtualizado);
+        JsonObject dadosRegistro;
         
-        return;
+        boolean testeRegistro = servicoArea.atualiza(codArea, servicoAreaAtualizado);
+        if (testeRegistro) {
+            dadosRegistro = Json.createObjectBuilder()
+                .add("sucesso", true)
+                .add("mensagem", "Registro alterado com sucesso!")
+                .build();
+        } else {
+            dadosRegistro = Json.createObjectBuilder()
+                .add("sucesso", false)
+                .add("mensagem", "Ocorreu erro ao alterar o registro. Repita a operação.")
+                .build();
+        }
+
+        return dadosRegistro;
     }
     
-    private void removeArea() throws SQLException {
+    private JsonObject removerArea() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         String codArea;
         codArea = requestInterno.getParameter("codAreaSelecionado");
         
-        servicoArea.deleta(codArea);
+        JsonObject dadosRegistro;
         
-        return;
+        HttpSession session = requestInterno.getSession();
+        
+        UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+        Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
+        System.out.println("usuarios.length "+usuarios.length);
+        
+        String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
+        String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
+        
+        if ((usuarios[0].getDesSenha()).equals(senha)) {
+            boolean testeExclusaoItem = servicoArea.deleta(codArea);
+            
+            if (testeExclusaoItem) {
+                dadosRegistro = Json.createObjectBuilder()
+                    .add("sucesso", true)
+                    .add("mensagem", "Registro excluído com sucesso!")
+                    .build();
+            } else {
+                dadosRegistro = Json.createObjectBuilder()
+                    .add("sucesso", false)
+                    .add("mensagem", "Ocorreu erro ao excluir o registro. Repita a operação.")
+                    .build();
+            }
+        } else {
+            dadosRegistro = Json.createObjectBuilder()
+                .add("sucesso", false)
+                .add("mensagem", "Senha inválida")
+                .build();
+        }
+
+        return dadosRegistro;
     }
 
 }
