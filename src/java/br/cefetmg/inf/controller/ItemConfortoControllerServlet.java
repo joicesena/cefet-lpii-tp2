@@ -70,11 +70,6 @@ public class ItemConfortoControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-            } else if (operacaoItem == 6) {
-                JsonArray retornoArray = listarRegistrosComboBox();
-                response.setContentType("text/json");
-                PrintWriter out = response.getWriter();
-                out.print(retornoArray);
             }
         } catch (SQLException exc) {
             //
@@ -222,23 +217,4 @@ public class ItemConfortoControllerServlet extends HttpServlet {
 
         return dadosRegistro;
     }
-
-    public JsonArray listarRegistrosComboBox () throws SQLException {
-        ItemConfortoDAO registroDAO = ItemConfortoDAO.getInstance();
-        ItemConforto[] registros = registroDAO.busca();
-        
-        JsonArray arrayJson = Json.createArrayBuilder().build();
-        
-        for (ItemConforto registro : registros) {
-            arrayJson.add(
-                (Json.createObjectBuilder()
-                    .add("codigoItem", registro.getCodItem())
-                    .add("descricaoItem", registro.getDesItem())
-                ).build()
-            );
-        }
-        
-        return arrayJson;
-    }
-
 }
