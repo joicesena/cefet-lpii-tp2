@@ -1,3 +1,6 @@
+<jsp:include page="/WEB-INF/controleAcesso.jsp" flush="false">
+    <jsp:param name="nomePagina" value="Tela de Categorias de Quartos"/>
+</jsp:include>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -11,8 +14,8 @@
         <!-- Google Icon Font -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Materialize CSS -->
-        <link type="text/css" rel="stylesheet" href="../css/materialize/materialize.css"/>
-        <link type="text/css" rel="stylesheet" href="../css/padrao-tipo-1.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/materialize/materialize.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/padrao-tipo-1.css"/>
     </head>
     
     <body>
@@ -44,48 +47,10 @@
                 </div>
             </div>
             
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>
-                            Nome
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Valor da Diária
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>Itens de Conforto</th>
-                        <th><center>Ações</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Suíte Luxo</td>
-                        <td>R$ 200,00</td>
-                        <td>Hidromassagem</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Quarto para Solteiro</td>
-                        <td>R$ 50,00</td>
-                        <td>Frigobar</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <jsp:include page="quartos-categorias-tabela.jsp"></jsp:include>
+            </div>
+            
             <div class="card-action right-align button-box">
                 <button id="add-button" class="btn waves-effect waves-light" onclick="addItem()"><i class="material-icons left">add_circle_outline</i>Nova Categoria de Quarto</button>
             </div>
@@ -102,7 +67,7 @@
         <!--  Script -->
         <!-- Import jQuery before Materialize JS  -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="../js/materialize/materialize.js"></script>
-        <script type="text/javascript" src="../js/quartos-categorias.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/materialize/materialize.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/quartos-categorias.js"></script>
     </body>
 </html>
