@@ -1,7 +1,15 @@
 <jsp:include page="/WEB-INF/controleAcesso.jsp" flush="false">
     <jsp:param name="nomePagina" value="Tela de Serviços"/>
 </jsp:include>
+<%@page import="br.cefetmg.inf.model.bd.dao.ServicoAreaDAO"%>
+<%@page import="br.cefetmg.inf.model.pojo.ServicoArea"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%
+	ServicoAreaDAO registroDAO = ServicoAreaDAO.getInstance();
+	ServicoArea[] registrosEncontrados = registroDAO.busca();
+%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -90,10 +98,18 @@
                                 <div class="col s12 form-input">
                                     <div class="input-field">
                                         <i class="material-icons prefix">room_service</i>
+										<select name="codServicoArea">
+											<%	for(int i = 0; i < registrosEncontrados.length; i++) {
+													String codItem = registrosEncontrados[i].getCodServicoArea();
+													String desItem = registrosEncontrados[i].getNomServicoArea();
+											%>	<option value="<% out.print(codItem); %>"><% out.print(desItem);%></option>
+											<% } // for  
+											%>
+										</select>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
-                                        <label for="nomServicoArea">Área</label>
-                                        <input id="nomServicoArea" name="nomServicoArea" type="text" class="validate" required>
+<!--                                        <label for="nomServicoArea">Área</label>-->
+<!--                                        <input id="nomServicoArea" name="nomServicoArea" type="text" class="validate" required>-->
                                     </div>
                                 </div>
                             </div>
@@ -144,8 +160,16 @@
                                         <i class="material-icons prefix">room_service</i>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
-                                        <label for="nomServicoArea">Área</label>
-                                        <input id="nomServicoArea" name="nomServicoArea" type="text" class="validate" required>
+<!--                                        <label for="nomServicoArea">Área</label>-->
+<!--                                        <input id="nomServicoArea" name="nomServicoArea" type="text" class="validate" required>-->
+										<select name="codServicoArea">
+											<%	for(int i = 0; i < registrosEncontrados.length; i++) {
+													String codItem = registrosEncontrados[i].getCodServicoArea();
+													String desItem = registrosEncontrados[i].getNomServicoArea();
+											%>	<option value="<% out.print(codItem); %>"><% out.print(desItem);%></option>
+											<% } // for  
+											%>
+										</select>
                                     </div>
                                 </div>
                             </div>

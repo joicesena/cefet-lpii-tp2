@@ -113,6 +113,7 @@ public class ServicoControllerServlet extends HttpServlet {
             .add("desServico", registroRetorno.getDesServico())
             .add("vlrUnit", registroRetorno.getVlrUnit())
             .add("nomServicoArea", nomServicoArea)
+            .add("codServicoArea", registroRetorno.getCodServicoArea())
             .build();
 
         return dadosRegistro;
@@ -126,11 +127,12 @@ public class ServicoControllerServlet extends HttpServlet {
         
         desServico = requestInterno.getParameter("desServico");
         vlrUnit = Double.parseDouble(requestInterno.getParameter("vlrUnit"));
-        nomServicoArea = requestInterno.getParameter("nomServicoArea");
+        codServicoArea = requestInterno.getParameter("codServicoArea");
         
-        ServicoAreaDAO areaDAO = ServicoAreaDAO.getInstance();
-        ServicoArea[] areas = areaDAO.busca("nomServicoArea", nomServicoArea);
-        codServicoArea = areas[0].getCodServicoArea();
+//        nomServicoArea = requestInterno.getParameter("nomServicoArea");
+//        ServicoAreaDAO areaDAO = ServicoAreaDAO.getInstance();
+//        ServicoArea[] areas = areaDAO.busca("nomServicoArea", nomServicoArea);
+//        codServicoArea = areas[0].getCodServicoArea();
         
         JsonObject dadosRegistro;
         
@@ -170,11 +172,12 @@ public class ServicoControllerServlet extends HttpServlet {
 
         desServico = requestInterno.getParameter("desServico");
         vlrUnit = Double.parseDouble(requestInterno.getParameter("vlrUnit"));
-        String nomServicoArea = requestInterno.getParameter("nomServicoArea");
-        
-        ServicoAreaDAO areaDAO = ServicoAreaDAO.getInstance();
-        ServicoArea[] areas = areaDAO.busca("nomServicoArea", nomServicoArea);
-        codServicoArea = areas[0].getCodServicoArea();
+        codServicoArea = requestInterno.getParameter("codServicoArea");
+
+//        String nomServicoArea = requestInterno.getParameter("nomServicoArea");
+//        ServicoAreaDAO areaDAO = ServicoAreaDAO.getInstance();
+//        ServicoArea[] areas = areaDAO.busca("nomServicoArea", nomServicoArea);
+//        codServicoArea = areas[0].getCodServicoArea();
 
         Servico registroAtualizado = new Servico(desServico, vlrUnit, codServicoArea);
         
