@@ -1,5 +1,6 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.exception.*;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import br.cefetmg.inf.model.pojo.ServicoArea;
 import br.cefetmg.inf.model.bd.dao.ServicoAreaDAO;
+import br.cefetmg.inf.model.bd.dao.ServicoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
+import br.cefetmg.inf.model.pojo.Servico;
 import br.cefetmg.inf.model.pojo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,7 +57,6 @@ public class AreaServicoControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//                response.sendRedirect(caminhoTela);
             } else if (operacaoRegistro == 3) {
                 pesquisarRegistro();
             } else if (operacaoRegistro == 4) {
@@ -67,23 +69,24 @@ public class AreaServicoControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//                response.sendRedirect(caminhoTela);
             }
-        } catch (SQLException exc) {
-            //
-            //
-            //
-        } catch (NoSuchAlgorithmException ex) {
-            //
-            //
-            //
-        } catch (UnsupportedEncodingException ex) {
-            //
-            //
-            //
+        } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException exc ) {
+            retorno = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
+        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
+            retorno = Json.createObjectBuilder()
+                .add("success", true)
+                .add("mensagem", ex.getMessage())
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
-        
-        
     }
 
     @Override
@@ -97,13 +100,10 @@ public class AreaServicoControllerServlet extends HttpServlet {
         processRequest(request, response);
     }
     
-
-    
     //
     // MÉTODOS DE CONTROLE
     //
     private JsonObject retornarDadosRegistro (String codServicoArea) throws SQLException {
-//        System.out.println("codItem - "+codItem);
         ServicoArea [] areasPesquisa = servicoArea.busca("codServicoArea", codServicoArea);
         ServicoArea areaRetorno = areasPesquisa[0];
 
@@ -116,7 +116,7 @@ public class AreaServicoControllerServlet extends HttpServlet {
     }
     
 
-    private JsonObject inserirRegistro () throws SQLException {
+    private JsonObject inserirRegistro () throws SQLException, PKRepetidaException {
         String codArea;
         String desArea;
         
@@ -124,11 +124,19 @@ public class AreaServicoControllerServlet extends HttpServlet {
         desArea = requestInterno.getParameter("nomServicoArea");
         
         ServicoArea areaAdicionar = new ServicoArea(codArea, desArea);
-        boolean testeRegistro = servicoArea.adiciona(areaAdicionar);
         
         JsonObject dadosRegistro;
         
-        if (testeRegistro) {
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        ServicoArea [] registrosBuscados = servicoArea.busca("codServicoArea", codArea);
+        if (registrosBuscados.length > 0)
+            throw new PKRepetidaException("inserir");
+        //
+        //
+        
+        if (servicoArea.adiciona(areaAdicionar)) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("success", true)
                 .add("mensagem", "Registro adicionado com sucesso!")
@@ -154,7 +162,7 @@ public class AreaServicoControllerServlet extends HttpServlet {
         return;
     }
 
-    private JsonObject editarRegistro() throws SQLException {
+    private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
         String codArea, desArea;
         codArea = requestInterno.getParameter("codServicoArea");
         desArea = requestInterno.getParameter("nomServicoArea");
@@ -163,7 +171,27 @@ public class AreaServicoControllerServlet extends HttpServlet {
         
         JsonObject dadosRegistro;
         
-        System.out.println("dado a alterar: " + codRegistroSelecionado);
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        //
+        if (!codArea.equals(codRegistroSelecionado)) {
+            ServicoArea [] registrosBuscados = servicoArea.busca("codServicoArea", codArea);
+            if (registrosBuscados.length > 0)
+                throw new PKRepetidaException("alterar");
+        }
+        //
+        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM SERVIÇO
+        // LANÇA EXCEÇÃO
+        //
+        ServicoDAO dao = ServicoDAO.getInstance();
+        if (!codArea.equals(codRegistroSelecionado)) {
+            Servico [] registrosExternosBuscados = dao.busca("codServicoArea", codRegistroSelecionado);
+            if (registrosExternosBuscados.length > 0)
+                throw new RegistroUtilizadoExternamenteException("modificar", "serviço");
+        }
+        //
+        //
         
         boolean testeRegistro = servicoArea.atualiza(codRegistroSelecionado, servicoAreaAtualizado);
         if (testeRegistro) {
@@ -181,25 +209,35 @@ public class AreaServicoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String codArea;
-        codArea = requestInterno.getParameter("codServicoArea");
-        
+    private JsonObject removerRegistro() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, RegistroUtilizadoExternamenteException {
         JsonObject dadosRegistro;
         
         HttpSession session = requestInterno.getSession();
         
         UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
         Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
-        System.out.println("usuarios.length "+usuarios.length);
         
         String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
         String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
         
         if ((usuarios[0].getDesSenha()).equals(senha)) {
-            boolean testeExclusaoItem = servicoArea.deleta(codArea);
+            System.out.println("senha correta");
+
+            //
+            // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM SERVIÇO
+            // LANÇA EXCEÇÃO
+            ServicoDAO dao = ServicoDAO.getInstance();
+            Servico [] registrosExternosBuscados = dao.busca("codServicoArea", codRegistroSelecionado);
+            if (registrosExternosBuscados.length > 0)
+                throw new RegistroUtilizadoExternamenteException("excluir", "serviço");
+            //
+            //
+
+            boolean testeExclusaoItem = servicoArea.deleta(codRegistroSelecionado);
+            System.out.println("testeExclusaoItem - "+testeExclusaoItem);
             
             if (testeExclusaoItem) {
+                System.out.println("vai excluir");
                 dadosRegistro = Json.createObjectBuilder()
                     .add("sucesso", true)
                     .add("mensagem", "Registro excluído com sucesso!")
