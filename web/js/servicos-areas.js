@@ -32,7 +32,7 @@ function saveInsertDialog () {
 		},
 		error: function(data) {
 			if (data.mensagem == null) {
-				alert("Não foi possível excluir o registro");
+				alert("Não foi possível inserir o registro");
 			} else {
 				alert(data.mensagem);
 			}

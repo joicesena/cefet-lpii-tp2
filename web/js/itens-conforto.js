@@ -31,9 +31,16 @@ function saveInsertDialog () {
 		url: "http://localhost:8080/cefet-lpii-tp2/item-de-conforto",
 		type: "POST",
 		data: dados,
+		// mostra mensagem pro usuário
 		success: function(data) {
-			var rst = JSON.parse(data);
-			alert(rst.mensagem);
+			alert(data.mensagem);
+		},
+		error: function(data) {
+			if (data.mensagem == null) {
+				alert("Não foi possível inserir o registro");
+			} else {
+				alert(data.mensagem);
+			}
 		}
 	});
 }
@@ -75,9 +82,16 @@ function saveEditDialog () {
 		url: "http://localhost:8080/cefet-lpii-tp2/item-de-conforto",
 		type: "POST",
 		data: dados,
+		// mostra mensagem pro usuário
 		success: function(data) {
-			var rst = JSON.parse(data);
-			alert(rst.mensagem);
+			alert(data.mensagem);
+		},
+		error: function(data) {
+			if (data.mensagem == null) {
+				alert("Não foi possível editar o registro");
+			} else {
+				alert(data.mensagem);
+			}
 		}
 	});
 }
@@ -112,9 +126,16 @@ function executeDeleteDialog () {
 		url: "http://localhost:8080/cefet-lpii-tp2/item-de-conforto",
 		type: "POST",
 		data: dados,
+		// mostra mensagem pro usuário
 		success: function(data) {
-			var rst = JSON.parse(data);
-			alert(rst.mensagem);
+			alert(data.mensagem);
+		},
+		error: function(data) {
+			if (data.mensagem == null) {
+				alert("Não foi possível excluir o registro");
+			} else {
+				alert(data.mensagem);
+			}
 		}
 	});
 }
