@@ -95,6 +95,7 @@
 											<% } // for  
 											%>
 										</select>
+                                                                                <label>Categoria</label>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
 <!--                                        <label for="nomCategoria">Categoria</label>-->
@@ -144,6 +145,7 @@
 											<% } // for  
 											%>
 										</select>
+                                                                                <label>Categoria</label>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
 <!--                                        <label for="nomCategoria">Categoria</label>-->

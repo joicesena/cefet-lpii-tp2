@@ -132,6 +132,16 @@ td + td {
 #cancel-button {
     background-color: #ef5350;
 }
+/* Checkbox do select multiple */
+[type="checkbox"]:not(:checked) + label:before {
+    margin-top: -8px;
+    border: 2px solid #5F4B8B !important;
+}
+[type="checkbox"]:checked + label:before {
+    margin-top: -8px;
+    border-right: 2px solid #7D3F7C !important;
+    border-bottom: 2px solid #7D3F7C !important;
+}
 
 /* Rodapé */
 .footer-copyright {

@@ -106,6 +106,7 @@
 											<% } // for  
 											%>
 										</select>
+                                                                                <label>Área</label>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
 <!--                                        <label for="nomServicoArea">Área</label>-->
@@ -170,6 +171,7 @@
 											<% } // for  
 											%>
 										</select>
+                                                                                <label>Área</label>
                                     </div>
                                 </div>
                             </div>
