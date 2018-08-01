@@ -4,10 +4,12 @@ import br.cefetmg.inf.exception.PKRepetidaException;
 import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO;
 import br.cefetmg.inf.model.bd.dao.ItemConfortoDAO;
+import br.cefetmg.inf.model.bd.dao.QuartoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
 import br.cefetmg.inf.model.bd.dao.rel.impl.CategoriaItemConfortoDAOImpl;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.CategoriaQuarto;
+import br.cefetmg.inf.model.pojo.Quarto;
 import br.cefetmg.inf.model.pojo.Usuario;
 import br.cefetmg.inf.model.pojo.rel.CategoriaItemConforto;
 import java.io.IOException;
@@ -238,10 +240,20 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
                 throw new RegistroUtilizadoExternamenteException();
         }
         //
+        // TESTA SE O CÓDIGO ATUAL É USADO EM QUARTO
+        // LANÇA EXCEÇÃO
+        //
+        QuartoDAO dao1 = QuartoDAO.getInstance();
+        if (!codCategoria.equals(codRegistroSelecionado)) {
+            Quarto [] registrosExternosBuscados = dao1.busca("codServicoArea", codRegistroSelecionado);
+            if (registrosExternosBuscados.length > 0)
+                throw new RegistroUtilizadoExternamenteException("modificar", "quarto");
+        }
+        //
         //
         
         CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
-        ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
+//        ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
 
         relacaoCategItem.deleta(codCategoria, "codCategoria");
         for (String item : codItensSelecionados) {
@@ -290,6 +302,14 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         CategoriaItemConforto [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "codCategoria");
         if (registrosExternosBuscados.length > 0)
             throw new RegistroUtilizadoExternamenteException("excluir", "relação com item de conforto");
+        //
+        // TESTA SE O CÓDIGO ATUAL É USADO EM QUARTO
+        // LANÇA EXCEÇÃO
+        //
+        QuartoDAO dao1 = QuartoDAO.getInstance();
+        Quarto [] registrosExternosBuscados1 = dao1.busca("codServicoArea", codRegistroSelecionado);
+        if (registrosExternosBuscados1.length > 0)
+            throw new RegistroUtilizadoExternamenteException("excluir", "quarto");
         //
         //
         
