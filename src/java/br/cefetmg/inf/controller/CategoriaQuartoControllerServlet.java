@@ -1,12 +1,13 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.exception.PKRepetidaException;
+import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO;
 import br.cefetmg.inf.model.bd.dao.ItemConfortoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
 import br.cefetmg.inf.model.bd.dao.rel.impl.CategoriaItemConfortoDAOImpl;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.CategoriaQuarto;
-import br.cefetmg.inf.model.pojo.ItemConforto;
 import br.cefetmg.inf.model.pojo.Usuario;
 import br.cefetmg.inf.model.pojo.rel.CategoriaItemConforto;
 import java.io.IOException;
@@ -45,9 +46,10 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
 
         operacaoRegistro = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
         JsonObject retorno;
+        
         try {
             if (operacaoRegistro == 1) {
-                codRegistroSelecionado = request.getParameter("seqServico");
+                codRegistroSelecionado = request.getParameter("codCategoria");
                 retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
@@ -70,18 +72,22 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
             }
-        } catch (SQLException exc) {
-            //
-            //
-            //
-        } catch (NoSuchAlgorithmException ex) {
-            //
-            //
-            //
-        } catch (UnsupportedEncodingException ex) {
-            //
-            //
-            //
+        } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException exc ) {
+            retorno = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
+        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
+            retorno = Json.createObjectBuilder()
+                .add("success", true)
+                .add("mensagem", ex.getMessage())
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
     }
 
@@ -105,59 +111,72 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
 
         CategoriaQuarto registroRetorno = registros[0];
         
-        // buscar os itens de conforto que se relacionam com a categoria
-        CategoriaItemConfortoDAOImpl relDAO = CategoriaItemConfortoDAOImpl.getInstance();
-        CategoriaItemConforto[] vetorRel = relDAO.busca(codRegistro, "codCategoria");
-        // montar uma string com as descrições dos itens
-        String itensConforto = "";
-
-        String codCategoria = null;
-        for (CategoriaItemConforto cic : vetorRel) {
-            codCategoria = cic.getCodCategoria();
-            CategoriaQuarto [] buscaCategoria = categoriaQuarto.busca("codCategoria", codCategoria);
-            itensConforto += buscaCategoria[0].getNomCategoria() + "; ";
-        }
+//        // buscar os itens de conforto que se relacionam com a categoria
+//        CategoriaItemConfortoDAOImpl relDAO = CategoriaItemConfortoDAOImpl.getInstance();
+//        CategoriaItemConforto[] vetorRel = relDAO.busca(codRegistro, "codCategoria");
+//        // montar uma string com as descrições dos itens
+//        String itensConforto = "";
+//
+//        String codCategoria = null;
+//        for (CategoriaItemConforto cic : vetorRel) {
+//            codCategoria = cic.getCodCategoria();
+//            CategoriaQuarto [] buscaCategoria = categoriaQuarto.busca("codCategoria", codCategoria);
+//            itensConforto += buscaCategoria[0].getNomCategoria() + "; ";
+//        }
 
         JsonObject dadosRegistro = Json.createObjectBuilder()
             .add("codCategoria", registroRetorno.getCodCategoria())
             .add("nomCategoria", registroRetorno.getNomCategoria())
             .add("vlrDiaria", registroRetorno.getVlrDiaria())
-            .add("itensConforto", itensConforto)
+//            .add("itensConforto", itensConforto)
             .build();
 
         return dadosRegistro;
     }
 
-    private JsonObject inserirRegistro () throws SQLException {
+    private JsonObject inserirRegistro ()  throws SQLException, PKRepetidaException {
         String codCategoria;
         String nomCategoria;
         Double vlrDiaria;
-        String [] itensConforto;
-        String codItem;
+
+        String [] codItensSelecionados;
+//        String [] itensConforto;
+//        String codItem;
         
         codCategoria = requestInterno.getParameter("codCategoria");
         nomCategoria = requestInterno.getParameter("desCategoria");
         vlrDiaria = Double.parseDouble(requestInterno.getParameter("vlrDiaria"));
-        itensConforto = requestInterno.getParameterValues("itensConforto");
+//        itensConforto = requestInterno.getParameterValues("itensConforto");
+        codItensSelecionados = requestInterno.getParameterValues("codItem");
         
         CategoriaQuarto categoriaAdicionar = new CategoriaQuarto(codCategoria, nomCategoria, vlrDiaria);
         
         JsonObject dadosRegistro;
         
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        CategoriaQuarto [] registrosBuscados = categoriaQuarto.busca("codCategoria", codCategoria);
+        if (registrosBuscados.length > 0)
+            throw new PKRepetidaException("inserir");
+        //
+        //
+
         boolean testeRegistro = categoriaQuarto.adiciona(categoriaAdicionar);
         
         if (testeRegistro) {
             CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
-            ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
+//            ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
 
-            for (String item : itensConforto) {
-                // busca o codigo dos itens que tem aquelas descrições
-                ItemConforto [] itemConforto = itemConfortoDAO.busca("desItem", item);
-
-                codItem = itemConforto[0].getCodItem();
+            for (String item : codItensSelecionados) {
+//                // busca o codigo dos itens que tem aquelas descrições
+//                ItemConforto [] itemConforto = itemConfortoDAO.busca("desItem", item);
+//
+//                codItem = itemConforto[0].getCodItem();
 
                 // adiciona o relacionamento
-                relacaoCategItem.adiciona(codCategoria, codItem);
+//                relacaoCategItem.adiciona(codCategoria, codItem);
+                relacaoCategItem.adiciona(codCategoria, item);
             }
             dadosRegistro = Json.createObjectBuilder()
                 .add("success", true)
@@ -181,31 +200,55 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         CategoriaQuarto [] categoriasPesquisa = categoriaQuarto.busca(tipoParametroPesquisa, parametroPesquisa);
         
         requestInterno.setAttribute("listaCategorias", categoriasPesquisa);
-        
-        return;
     }
 
-    private JsonObject editarRegistro() throws SQLException {
+    private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
         String codCategoria, nomCategoria;
         Double vlrDiaria;
-        String [] itensConforto;
-        String codItem;
+        
+        String [] codItensSelecionados;
+//        String [] itensConforto;
+//        String codItem;
         
         codCategoria = requestInterno.getParameter("codCategoria");
         nomCategoria = requestInterno.getParameter("nomCategoria");
         vlrDiaria = Double.parseDouble(requestInterno.getParameter("vlrDiaria"));
-        itensConforto = requestInterno.getParameterValues("itensConforto");
+//        itensConforto = requestInterno.getParameterValues("itensConforto");
+        codItensSelecionados = requestInterno.getParameterValues("codItem");
         
         CategoriaQuarto categoriaQuartoAtualizada = new CategoriaQuarto(codCategoria, nomCategoria, vlrDiaria);
+        
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        //
+        if (!codCategoria.equals(codRegistroSelecionado)) {
+            CategoriaQuarto [] registrosBuscados = categoriaQuarto.busca("codCategoria", codCategoria);
+            if (registrosBuscados.length > 0)
+                throw new PKRepetidaException("alterar");
+        }
+        //
+        // TESTA SE O CÓDIGO ATUAL TEM RELACIONAMENTO COM ITEM DE CONFORTO
+        // LANÇA EXCEÇÃO
+        //
+        CategoriaItemConfortoDAOImpl dao = CategoriaItemConfortoDAOImpl.getInstance();
+        if (!codCategoria.equals(codRegistroSelecionado)) {
+            CategoriaItemConforto [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "codCategoria");
+            if (registrosExternosBuscados.length > 0)
+                throw new RegistroUtilizadoExternamenteException();
+        }
+        //
+        //
         
         CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
         ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
 
         relacaoCategItem.deleta(codCategoria, "codCategoria");
-        for (String item : itensConforto) {
-            ItemConforto [] itemConforto = itemConfortoDAO.busca("desItem", item);
-            codItem = itemConforto[0].getCodItem();
-            relacaoCategItem.adiciona(codCategoria, codItem);
+        for (String item : codItensSelecionados) {
+//            ItemConforto [] itemConforto = itemConfortoDAO.busca("desItem", item);
+//            codItem = itemConforto[0].getCodItem();
+//            relacaoCategItem.adiciona(codCategoria, codItem);
+            relacaoCategItem.adiciona(codCategoria, item);
         }
         
         JsonObject dadosRegistro;
@@ -226,25 +269,42 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private JsonObject removerRegistro() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, RegistroUtilizadoExternamenteException {
         CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
         
         HttpSession session = requestInterno.getSession();
         
         UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
         Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
-        System.out.println("usuarios.length "+usuarios.length);
         
         String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
         String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
         
         JsonObject dadosRegistro;
 
+        //
+        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM CATEGORIA DE QUARTO
+        // LANÇA EXCEÇÃO
+        //
+        CategoriaItemConfortoDAOImpl dao = CategoriaItemConfortoDAOImpl.getInstance();
+        CategoriaItemConforto [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "codCategoria");
+        if (registrosExternosBuscados.length > 0)
+            throw new RegistroUtilizadoExternamenteException("excluir", "relação com item de conforto");
+        //
+        //
+        
+        
         if ((usuarios[0].getDesSenha()).equals(senha)) {
             relacaoCategItem.deleta(codRegistroSelecionado, "codCategoria");
             boolean testeExclusaoItem = categoriaQuarto.deleta(codRegistroSelecionado);
             
-            if (testeExclusaoItem) {
+            boolean testeExclusaoCatRel = true;
+            if (registrosExternosBuscados.length > 0) {
+                testeExclusaoCatRel = relacaoCategItem.deleta(codRegistroSelecionado, "codCategoria");
+            }
+
+//            if (testeExclusaoItem) {
+            if (testeExclusaoItem && testeExclusaoCatRel) {
                 dadosRegistro = Json.createObjectBuilder()
                     .add("sucesso", true)
                     .add("mensagem", "Registro excluído com sucesso!")
