@@ -1,5 +1,6 @@
 package br.cefetmg.inf.model.bd.dao.rel;
 
+import br.cefetmg.inf.model.pojo.rel.QuartoHospedagem;
 import java.sql.SQLException;
 
 public interface QuartoHospedagemDAO {
@@ -7,7 +8,7 @@ public interface QuartoHospedagemDAO {
             int nroAdultos, int nroCriancas,
             Double vlrDiaria) throws SQLException;
 
-    // busca();
+    QuartoHospedagem[] busca(String cod, String coluna) throws SQLException;
     
     //atualiza();
 

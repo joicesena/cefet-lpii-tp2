@@ -34,17 +34,6 @@ public class CargoProgramaDAOImpl implements CargoProgramaDAO {
         return pStmt.executeUpdate() > 0;
     }
 
-//    @Override
-//    public boolean deleta(String codPrograma, String codCargo) throws SQLException {
-//        String qry = "DELETE FROM CargoPrograma "
-//                + "WHERE codPrograma = ? AND "
-//                + "codCargo = ?";
-//        PreparedStatement pStmt = con.prepareStatement(qry);
-//        pStmt.setString(1, codPrograma);
-//        pStmt.setString(2, codCargo);
-//        return pStmt.executeUpdate() > 0;
-//    }
-    
     public CargoPrograma[] busca(String cod, String coluna) throws SQLException {
         String qry;
         if (coluna.equals("codCargo")) {
@@ -74,12 +63,11 @@ public class CargoProgramaDAOImpl implements CargoProgramaDAO {
     }
 
     @Override
-    public boolean deleta(String codPrograma, String codCargo) throws SQLException {
+    public boolean deleta(String cod, String coluna) throws SQLException {
         String qry = "DELETE FROM CargoPrograma "
-                + "WHERE codPrograma = ? AND codCargo = ?";
+                + "WHERE " + coluna + " = ?";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setString(1, codPrograma);
-        pStmt.setString(2, codCargo);
+        pStmt.setString(1, cod);
         return pStmt.executeUpdate() > 0;
     }
 }

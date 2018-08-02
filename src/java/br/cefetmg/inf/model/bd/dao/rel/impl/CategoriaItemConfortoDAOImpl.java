@@ -64,17 +64,6 @@ public class CategoriaItemConfortoDAOImpl implements CategoriaItemConfortoDAO {
         return categoriaItemConfortoEncontrados;
     }
 
-//    @Override
-//    public boolean deleta(String codCategoria, String codItem) throws SQLException {
-//        String qry = "DELETE FROM CategoriaItemConforto "
-//                + "WHERE codCategoria = ? AND "
-//                + "codItem = ?";
-//        PreparedStatement pStmt = con.prepareStatement(qry);
-//        pStmt.setString(1, codCategoria);
-//        pStmt.setString(2, codItem);
-//        return pStmt.executeUpdate() > 0;
-//    }
-    
     @Override
     public boolean deleta(String cod, String coluna) throws SQLException {
         String qry = "DELETE FROM CategoriaItemConforto "

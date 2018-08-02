@@ -44,6 +44,7 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
         return pStmt.executeUpdate() > 0;
     }
     
+    @Override
     public QuartoHospedagem[] busca(String cod, String coluna) throws SQLException {
         String qry = "SELECT * "
                 + "FROM QuartoHospedagem "
