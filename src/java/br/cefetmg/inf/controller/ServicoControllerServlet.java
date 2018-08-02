@@ -1,5 +1,7 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.exception.PKRepetidaException;
+import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.ServicoAreaDAO;
 import br.cefetmg.inf.model.bd.dao.ServicoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
@@ -67,18 +69,22 @@ public class ServicoControllerServlet extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
             }
-        } catch (SQLException exc) {
-            //
-            //
-            //
-        } catch (NoSuchAlgorithmException ex) {
-            //
-            //
-            //
-        } catch (UnsupportedEncodingException ex) {
-            //
-            //
-            //
+        } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException exc ) {
+            retorno = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
+        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
+            retorno = Json.createObjectBuilder()
+                .add("success", true)
+                .add("mensagem", ex.getMessage())
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
         
     }
@@ -119,11 +125,11 @@ public class ServicoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
 
-    private JsonObject inserirRegistro () throws SQLException {
+    private JsonObject inserirRegistro () throws SQLException, PKRepetidaException {
         String desServico;
         Double vlrUnit;
         String codServicoArea;
-        String nomServicoArea;
+//        String nomServicoArea;
         
         desServico = requestInterno.getParameter("desServico");
         vlrUnit = Double.parseDouble(requestInterno.getParameter("vlrUnit"));
@@ -135,6 +141,15 @@ public class ServicoControllerServlet extends HttpServlet {
 //        codServicoArea = areas[0].getCodServicoArea();
         
         JsonObject dadosRegistro;
+        
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        Servico [] registrosBuscados = servico.busca("seqservico", Integer.parseInt(codRegistroSelecionado));
+        if (registrosBuscados.length > 0)
+            throw new PKRepetidaException("inserir");
+        //
+        //
         
         Servico servicoAdicionar = new Servico(desServico, vlrUnit, codServicoArea);
         boolean testeRegistro = servico.adiciona(servicoAdicionar);
@@ -165,7 +180,7 @@ public class ServicoControllerServlet extends HttpServlet {
         return;
     }
 
-    private JsonObject editarRegistro() throws SQLException {
+    private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
         String desServico;
         Double vlrUnit;
         String codServicoArea;
@@ -182,6 +197,12 @@ public class ServicoControllerServlet extends HttpServlet {
         Servico registroAtualizado = new Servico(desServico, vlrUnit, codServicoArea);
         
         JsonObject dadosRegistro;
+        
+        //
+        // testa se o serviço é usado em QuartoConsumo
+        // update cascade
+        //
+        //
 
         boolean testeRegistro = servico.atualiza(codRegistroSelecionado, registroAtualizado);
         if (testeRegistro) {
@@ -199,7 +220,7 @@ public class ServicoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private JsonObject removerRegistro() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, RegistroUtilizadoExternamenteException {
         Servico [] registroBuscado = servico.busca("seqServico", Integer.parseInt(codRegistroSelecionado));
 
         HttpSession session = requestInterno.getSession();
@@ -212,6 +233,12 @@ public class ServicoControllerServlet extends HttpServlet {
         String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
         
         JsonObject dadosRegistro;
+        
+        //
+        // testa se o seqservico é utilizado em quartoconsumo
+        // lança exceção
+        //
+        //
 
         if ((usuarios[0].getDesSenha()).equals(senha)) {
             boolean testeExclusaoItem = servico.deleta(Integer.parseInt(codRegistroSelecionado));
