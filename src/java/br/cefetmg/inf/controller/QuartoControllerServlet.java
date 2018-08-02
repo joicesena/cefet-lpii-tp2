@@ -5,10 +5,12 @@ import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO;
 import br.cefetmg.inf.model.bd.dao.QuartoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
+import br.cefetmg.inf.model.bd.dao.rel.impl.QuartoHospedagemDAOImpl;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.CategoriaQuarto;
 import br.cefetmg.inf.model.pojo.Quarto;
 import br.cefetmg.inf.model.pojo.Usuario;
+import br.cefetmg.inf.model.pojo.rel.QuartoHospedagem;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -227,10 +229,7 @@ public class QuartoControllerServlet extends HttpServlet {
     }
     
     private JsonObject removerRegistro() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, RegistroUtilizadoExternamenteException {
-        int nroQuarto;
-        nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
-        
-        Quarto [] quartoBuscado = quarto.busca("nroQuarto", nroQuarto);
+        Quarto [] quartoBuscado = quarto.busca("nroQuarto", codRegistroSelecionado);
         
         //
         // testa se ele tem idtOcupado (não pode remover o quarto se tiver gente nele)
@@ -241,6 +240,11 @@ public class QuartoControllerServlet extends HttpServlet {
         //
         // testa se o nroQuarto está sendo usado em QuartoHospedagem
         // lança exceção
+        QuartoHospedagemDAOImpl dao = QuartoHospedagemDAOImpl.getInstance();
+        QuartoHospedagem [] registrosExternosBuscados = dao.busca(Integer.toString(codRegistroSelecionado), "nroQuarto");
+        if (registrosExternosBuscados.length > 0)
+            throw new RegistroUtilizadoExternamenteException("modificar", "categoria de quarto");
+        
         //
         //
 
@@ -257,7 +261,7 @@ public class QuartoControllerServlet extends HttpServlet {
             String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
 
             if ((usuarios[0].getDesSenha()).equals(senha)) {
-                boolean testeExclusaoItem = quarto.deleta(nroQuarto);
+                boolean testeExclusaoItem = quarto.deleta(codRegistroSelecionado);
 
                 if (testeExclusaoItem) {
                     dadosRegistro = Json.createObjectBuilder()
