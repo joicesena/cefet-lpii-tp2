@@ -180,18 +180,18 @@ public class AreaServicoControllerServlet extends HttpServlet {
             if (registrosBuscados.length > 0)
                 throw new PKRepetidaException("alterar");
         }
-        //
-        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM SERVIÇO
-        // LANÇA EXCEÇÃO
-        //
-        ServicoDAO dao = ServicoDAO.getInstance();
-        if (!codArea.equals(codRegistroSelecionado)) {
-            Servico [] registrosExternosBuscados = dao.busca("codServicoArea", codRegistroSelecionado);
-            if (registrosExternosBuscados.length > 0)
-                throw new RegistroUtilizadoExternamenteException("modificar", "serviço");
-        }
-        //
-        //
+//        //
+//        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM SERVIÇO
+//        // LANÇA EXCEÇÃO
+//        //
+//        ServicoDAO dao = ServicoDAO.getInstance();
+//        if (!codArea.equals(codRegistroSelecionado)) {
+//            Servico [] registrosExternosBuscados = dao.busca("codServicoArea", codRegistroSelecionado);
+//            if (registrosExternosBuscados.length > 0)
+//                throw new RegistroUtilizadoExternamenteException("modificar", "serviço");
+//        }
+//        //
+//        //
         
         boolean testeRegistro = servicoArea.atualiza(codRegistroSelecionado, servicoAreaAtualizado);
         if (testeRegistro) {

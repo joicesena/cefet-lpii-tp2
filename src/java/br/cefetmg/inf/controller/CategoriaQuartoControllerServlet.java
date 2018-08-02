@@ -216,18 +216,18 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
             if (registrosBuscados.length > 0)
                 throw new PKRepetidaException("alterar");
         }
-        //
-        // TESTA SE O CÓDIGO ATUAL É USADO EM QUARTO
-        // LANÇA EXCEÇÃO
-        //
-        QuartoDAO dao1 = QuartoDAO.getInstance();
-        if (!codCategoria.equals(codRegistroSelecionado)) {
-            Quarto [] registrosExternosBuscados = dao1.busca("codServicoArea", codRegistroSelecionado);
-            if (registrosExternosBuscados.length > 0)
-                throw new RegistroUtilizadoExternamenteException("modificar", "quarto");
-        }
-        //
-        //
+//        //
+//        // TESTA SE O CÓDIGO ATUAL É USADO EM QUARTO
+//        // LANÇA EXCEÇÃO
+//        //
+//        QuartoDAO dao1 = QuartoDAO.getInstance();
+//        if (!codCategoria.equals(codRegistroSelecionado)) {
+//            Quarto [] registrosExternosBuscados = dao1.busca("codServicoArea", codRegistroSelecionado);
+//            if (registrosExternosBuscados.length > 0)
+//                throw new RegistroUtilizadoExternamenteException("modificar", "quarto");
+//        }
+//        //
+//        //
         
         CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
 

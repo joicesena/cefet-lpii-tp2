@@ -180,17 +180,17 @@ public class ItemConfortoControllerServlet extends HttpServlet {
             if (registrosBuscados.length > 0)
                 throw new PKRepetidaException("alterar");
         }
-        //
-        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM CATEGORIA DE QUARTO
-        // LANÇA EXCEÇÃO
-        //
-        CategoriaItemConfortoDAOImpl dao = CategoriaItemConfortoDAOImpl.getInstance();
-        if (!codItem.equals(codRegistroSelecionado)) {
-            CategoriaItemConforto [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "codItem");
-            if (registrosExternosBuscados.length > 0)
-                throw new RegistroUtilizadoExternamenteException("modificar", "categoria de quarto");
-        }
-        //
+//        //
+//        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM CATEGORIA DE QUARTO
+//        // LANÇA EXCEÇÃO
+//        //
+//        CategoriaItemConfortoDAOImpl dao = CategoriaItemConfortoDAOImpl.getInstance();
+//        if (!codItem.equals(codRegistroSelecionado)) {
+//            CategoriaItemConforto [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "codItem");
+//            if (registrosExternosBuscados.length > 0)
+//                throw new RegistroUtilizadoExternamenteException("modificar", "categoria de quarto");
+//        }
+//        //
         //
 
         boolean testeRegistro = itemConforto.atualiza(codRegistroSelecionado, itemConfortoAtualizado);
