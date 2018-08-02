@@ -50,7 +50,7 @@ public class QuartoControllerServlet extends HttpServlet {
         
         try {
             if (operacaoRegistro == 1) {
-                codRegistroSelecionado = Integer.parseInt(request.getParameter("codItem"));
+                codRegistroSelecionado = Integer.parseInt(request.getParameter("nroQuarto"));
                 retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
