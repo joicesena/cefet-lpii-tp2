@@ -9,4 +9,8 @@ public class RegistroUtilizadoExternamenteException extends Exception {
     public RegistroUtilizadoExternamenteException(String operacao, String tabela) {
         super("Não é possível " + operacao + " o código desse registro. Ele é utilizado em um(a) " + tabela);
     }
+
+    public RegistroUtilizadoExternamenteException(String message) {
+        super(message);
+    }
 }

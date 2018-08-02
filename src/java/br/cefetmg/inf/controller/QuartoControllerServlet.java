@@ -1,5 +1,7 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.exception.PKRepetidaException;
+import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO;
 import br.cefetmg.inf.model.bd.dao.QuartoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
@@ -25,9 +27,9 @@ import javax.servlet.http.HttpSession;
 public class QuartoControllerServlet extends HttpServlet {
 
     private HttpServletRequest requestInterno;
-    private int operacaoItem;
+    private int operacaoRegistro;
     
-    private int nroQuartoSelecionado;
+    private int codRegistroSelecionado;
     
     private QuartoDAO quarto;
     
@@ -39,50 +41,52 @@ public class QuartoControllerServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.requestInterno = request;
-        operacaoItem = 0;
+        operacaoRegistro = 0;
 
-        operacaoItem = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
+        operacaoRegistro = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
         JsonObject retorno;
         
         try {
-            if (operacaoItem == 1) {
-                nroQuartoSelecionado = Integer.parseInt(request.getParameter("nroQuarto"));
-                retorno = retornarDadosRegistro(nroQuartoSelecionado);
+            if (operacaoRegistro == 1) {
+                codRegistroSelecionado = Integer.parseInt(request.getParameter("codItem"));
+                retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-            } else if (operacaoItem == 2) {
-                retorno = inserirQuarto();
+            } else if (operacaoRegistro == 2) {
+                retorno = inserirRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//                response.sendRedirect(caminhoTela);
-            } else if (operacaoItem == 3) {
-                pesquisarQuarto();
-            } else if (operacaoItem == 4) {
-                retorno = editarQuarto();
+            } else if (operacaoRegistro == 3) {
+                pesquisarRegistro();
+            } else if (operacaoRegistro == 4) {
+                retorno = editarRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-            } else if (operacaoItem == 5) {
-                retorno = removerQuarto();
+            } else if (operacaoRegistro == 5) {
+                retorno = removerRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//                response.sendRedirect(caminhoTela);
             }
-        } catch (SQLException exc) {
-            //
-            //
-            //
-        } catch (NoSuchAlgorithmException ex) {
-            //
-            //
-            //
-        } catch (UnsupportedEncodingException ex) {
-            //
-            //
-            //
+        } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException exc ) {
+            retorno = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
+        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
+            retorno = Json.createObjectBuilder()
+                .add("success", true)
+                .add("mensagem", ex.getMessage())
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
     }
 
@@ -118,9 +122,9 @@ public class QuartoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
 
-    private JsonObject inserirQuarto () throws SQLException {
+    private JsonObject inserirRegistro () throws SQLException, PKRepetidaException {
         int nroQuarto;
-        String nomCategoria;
+//        String nomCategoria;
         String codCategoria;
         
         nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
@@ -136,6 +140,15 @@ public class QuartoControllerServlet extends HttpServlet {
 
         JsonObject dadosRegistro;
         
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        Quarto [] registrosBuscados = quarto.busca("nroQuarto", nroQuarto);
+        if (registrosBuscados.length > 0)
+            throw new PKRepetidaException("inserir");
+        //
+        //
+
         boolean testeRegistro = quarto.adiciona(quartoAdicionar);
         
         if (testeRegistro) {
@@ -153,7 +166,7 @@ public class QuartoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private void pesquisarQuarto() throws SQLException {
+    private void pesquisarRegistro() throws SQLException {
         String parametroPesquisa, tipoParametroPesquisa;
         parametroPesquisa = (String)requestInterno.getParameter("pesquisaQuarto");
         tipoParametroPesquisa = (String)requestInterno.getParameter("parametroPesquisaQuarto");
@@ -165,9 +178,9 @@ public class QuartoControllerServlet extends HttpServlet {
         return;
     }
 
-    private JsonObject editarQuarto() throws SQLException {
+    private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
         int nroQuarto;
-        String nomCategoria;
+//        String nomCategoria;
         String codCategoria;
         
         nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
@@ -183,7 +196,18 @@ public class QuartoControllerServlet extends HttpServlet {
         
         JsonObject dadosRegistro;
 
-        boolean testeRegistro = quarto.atualiza(nroQuartoSelecionado, quartoAdicionar);
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        //
+        if (nroQuarto != codRegistroSelecionado) {
+            Quarto [] registrosBuscados = quarto.busca("nroQuarto", nroQuarto);
+            if (registrosBuscados.length > 0)
+                throw new PKRepetidaException("alterar");
+        }
+        //
+
+        boolean testeRegistro = quarto.atualiza(codRegistroSelecionado, quartoAdicionar);
         
         System.out.println(testeRegistro);
 
@@ -202,11 +226,23 @@ public class QuartoControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private JsonObject removerQuarto() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private JsonObject removerRegistro() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, RegistroUtilizadoExternamenteException {
         int nroQuarto;
         nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
         
         Quarto [] quartoBuscado = quarto.busca("nroQuarto", nroQuarto);
+        
+        //
+        // testa se ele tem idtOcupado (não pode remover o quarto se tiver gente nele)
+        // lança exceção
+        if (quartoBuscado[0].isIdtOcupado()) {
+            throw new RegistroUtilizadoExternamenteException("Não é possível excluir esse quarto. Ele está ocupado!");
+        }
+        //
+        // testa se o nroQuarto está sendo usado em QuartoHospedagem
+        // lança exceção
+        //
+        //
 
         HttpSession session = requestInterno.getSession();
         
