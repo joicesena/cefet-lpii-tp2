@@ -3,7 +3,6 @@ package br.cefetmg.inf.controller;
 import br.cefetmg.inf.exception.PKRepetidaException;
 import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.CategoriaQuartoDAO;
-import br.cefetmg.inf.model.bd.dao.ItemConfortoDAO;
 import br.cefetmg.inf.model.bd.dao.QuartoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
 import br.cefetmg.inf.model.bd.dao.rel.impl.CategoriaItemConfortoDAOImpl;
@@ -142,13 +141,10 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         Double vlrDiaria;
 
         String [] codItensSelecionados;
-//        String [] itensConforto;
-//        String codItem;
         
         codCategoria = requestInterno.getParameter("codCategoria");
-        nomCategoria = requestInterno.getParameter("desCategoria");
+        nomCategoria = requestInterno.getParameter("nomCategoria");
         vlrDiaria = Double.parseDouble(requestInterno.getParameter("vlrDiaria"));
-//        itensConforto = requestInterno.getParameterValues("itensConforto");
         codItensSelecionados = requestInterno.getParameterValues("codItem");
         
         CategoriaQuarto categoriaAdicionar = new CategoriaQuarto(codCategoria, nomCategoria, vlrDiaria);
@@ -168,17 +164,11 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         
         if (testeRegistro) {
             CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
-//            ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
-
-            for (String item : codItensSelecionados) {
-//                // busca o codigo dos itens que tem aquelas descrições
-//                ItemConforto [] itemConforto = itemConfortoDAO.busca("desItem", item);
-//
-//                codItem = itemConforto[0].getCodItem();
-
-                // adiciona o relacionamento
-//                relacaoCategItem.adiciona(codCategoria, codItem);
-                relacaoCategItem.adiciona(codCategoria, item);
+            
+            if (codItensSelecionados != null) {
+                for (String item : codItensSelecionados) {
+                    relacaoCategItem.adiciona(codCategoria, item);
+                }
             }
             dadosRegistro = Json.createObjectBuilder()
                 .add("success", true)
@@ -209,13 +199,10 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         Double vlrDiaria;
         
         String [] codItensSelecionados;
-//        String [] itensConforto;
-//        String codItem;
         
         codCategoria = requestInterno.getParameter("codCategoria");
         nomCategoria = requestInterno.getParameter("nomCategoria");
         vlrDiaria = Double.parseDouble(requestInterno.getParameter("vlrDiaria"));
-//        itensConforto = requestInterno.getParameterValues("itensConforto");
         codItensSelecionados = requestInterno.getParameterValues("codItem");
         
         CategoriaQuarto categoriaQuartoAtualizada = new CategoriaQuarto(codCategoria, nomCategoria, vlrDiaria);
@@ -228,16 +215,6 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
             CategoriaQuarto [] registrosBuscados = categoriaQuarto.busca("codCategoria", codCategoria);
             if (registrosBuscados.length > 0)
                 throw new PKRepetidaException("alterar");
-        }
-        //
-        // TESTA SE O CÓDIGO ATUAL TEM RELACIONAMENTO COM ITEM DE CONFORTO
-        // LANÇA EXCEÇÃO
-        //
-        CategoriaItemConfortoDAOImpl dao = CategoriaItemConfortoDAOImpl.getInstance();
-        if (!codCategoria.equals(codRegistroSelecionado)) {
-            CategoriaItemConforto [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "codCategoria");
-            if (registrosExternosBuscados.length > 0)
-                throw new RegistroUtilizadoExternamenteException();
         }
         //
         // TESTA SE O CÓDIGO ATUAL É USADO EM QUARTO
@@ -253,14 +230,12 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
         //
         
         CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
-//        ItemConfortoDAO itemConfortoDAO = ItemConfortoDAO.getInstance();
 
         relacaoCategItem.deleta(codCategoria, "codCategoria");
-        for (String item : codItensSelecionados) {
-//            ItemConforto [] itemConforto = itemConfortoDAO.busca("desItem", item);
-//            codItem = itemConforto[0].getCodItem();
-//            relacaoCategItem.adiciona(codCategoria, codItem);
-            relacaoCategItem.adiciona(codCategoria, item);
+        if (codItensSelecionados != null) {
+            for (String item : codItensSelecionados) {
+                relacaoCategItem.adiciona(codCategoria, item);
+            }
         }
         
         JsonObject dadosRegistro;
@@ -282,47 +257,36 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
     }
     
     private JsonObject removerRegistro() throws NoSuchAlgorithmException, UnsupportedEncodingException, SQLException, RegistroUtilizadoExternamenteException {
-        CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
-        
         HttpSession session = requestInterno.getSession();
         
         UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
         Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
-        
         String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
         String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
         
         JsonObject dadosRegistro;
 
         //
-        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM CATEGORIA DE QUARTO
-        // LANÇA EXCEÇÃO
-        //
-        CategoriaItemConfortoDAOImpl dao = CategoriaItemConfortoDAOImpl.getInstance();
-        CategoriaItemConforto [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "codCategoria");
-        if (registrosExternosBuscados.length > 0)
-            throw new RegistroUtilizadoExternamenteException("excluir", "relação com item de conforto");
-        //
         // TESTA SE O CÓDIGO ATUAL É USADO EM QUARTO
         // LANÇA EXCEÇÃO
         //
         QuartoDAO dao1 = QuartoDAO.getInstance();
-        Quarto [] registrosExternosBuscados1 = dao1.busca("codServicoArea", codRegistroSelecionado);
+        Quarto [] registrosExternosBuscados1 = dao1.busca("codCategoria", codRegistroSelecionado);
         if (registrosExternosBuscados1.length > 0)
             throw new RegistroUtilizadoExternamenteException("excluir", "quarto");
         //
         //
         
-        
         if ((usuarios[0].getDesSenha()).equals(senha)) {
-            relacaoCategItem.deleta(codRegistroSelecionado, "codCategoria");
-            boolean testeExclusaoItem = categoriaQuarto.deleta(codRegistroSelecionado);
+            CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
+            CategoriaItemConforto [] registrosExternosBuscados = relacaoCategItem.busca(codRegistroSelecionado, "codCategoria");
             
             boolean testeExclusaoCatRel = true;
             if (registrosExternosBuscados.length > 0) {
                 testeExclusaoCatRel = relacaoCategItem.deleta(codRegistroSelecionado, "codCategoria");
             }
 
+            boolean testeExclusaoItem = categoriaQuarto.deleta(codRegistroSelecionado);
 //            if (testeExclusaoItem) {
             if (testeExclusaoItem && testeExclusaoCatRel) {
                 dadosRegistro = Json.createObjectBuilder()

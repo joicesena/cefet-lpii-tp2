@@ -185,7 +185,7 @@
 										<!-- ID USADO NO JSON -->
 <!--                                        <label for="nomServicoArea">Área</label>-->
 <!--                                        <input id="nomServicoArea" name="nomServicoArea" type="text" class="validate" required>-->
-										<select name="codItem">
+										<select multiple name="codItem">
 											<%	for(int i = 0; i < registrosEncontrados.length; i++) {
 													String codItem = registrosEncontrados[i].getCodItem();
 													String desItem = registrosEncontrados[i].getDesItem();
