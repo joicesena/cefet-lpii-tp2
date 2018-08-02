@@ -26,8 +26,7 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
     }
 
     @Override
-    public boolean adiciona(int seqHospedagem, int nroQuarto, int nroAdultos, 
-            int nroCriancas, Double vlrDiaria) throws SQLException {
+    public boolean adiciona(QuartoHospedagem quartoHospedagem) throws SQLException {
         String qry = "INSERT INTO "
                 + "QuartoHospedagem("
                 + "seqHospedagem, "
@@ -36,11 +35,11 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
                 + "vlrDiaria) "
                 + "VALUES(?,?,?,?,?)";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, seqHospedagem);
-        pStmt.setInt(2, nroQuarto);
-        pStmt.setInt(3, nroAdultos);
-        pStmt.setInt(4, nroCriancas);
-        pStmt.setDouble(5, vlrDiaria);
+        pStmt.setInt(1, quartoHospedagem.getSeqHospedagem());
+        pStmt.setInt(2, quartoHospedagem.getNroQuarto());
+        pStmt.setInt(3, quartoHospedagem.getNroAdultos());
+        pStmt.setInt(4, quartoHospedagem.getNroCriancas());
+        pStmt.setDouble(5, quartoHospedagem.getVlrDiaria());
         return pStmt.executeUpdate() > 0;
     }
     
@@ -78,6 +77,17 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
+        return pStmt.executeUpdate() > 0;
+    }
+    
+    @Override
+    public boolean deleta(QuartoHospedagem quartoHospedagem) throws SQLException {
+        String qry = "DELETE FROM QuartoHospedagem "
+                + "WHERE seqHospedagem = ? AND "
+                + "nroQuarto = ? ";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setInt(1, quartoHospedagem.getSeqHospedagem());
+        pStmt.setInt(2, quartoHospedagem.getNroQuarto());
         return pStmt.executeUpdate() > 0;
     }
 }

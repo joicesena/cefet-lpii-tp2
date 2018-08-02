@@ -27,20 +27,18 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
     }
 
     @Override
-    public boolean adiciona(int seqHospedagem, int nroQuarto, Timestamp datConsumo,
-            int qtdConsumo, int seqServico, String codUsuarioRegistro)
-            throws SQLException {
+    public boolean adiciona(QuartoConsumo quartoConsumo) throws SQLException {
         String qry = "INSERT INTO "
                 + "QuartoConsumo(seqHospedagem, nroQuarto, datConsumo,"
                 + "qtdConsumo, seqServico, codUsuarioRegistro) "
                 + "VALUES(?,?,?,?,?,?)";
         PreparedStatement pStmt = con.prepareStatement(qry);
-        pStmt.setInt(1, seqHospedagem);
-        pStmt.setInt(2, nroQuarto);
-        pStmt.setTimestamp(3, datConsumo);
-        pStmt.setInt(4, qtdConsumo);
-        pStmt.setInt(5, seqServico);
-        pStmt.setString(6, codUsuarioRegistro);
+        pStmt.setInt(1, quartoConsumo.getSeqHospedagem());
+        pStmt.setInt(2, quartoConsumo.getNroQuarto());
+        pStmt.setTimestamp(3, quartoConsumo.getDatConsumo());
+        pStmt.setInt(4, quartoConsumo.getQtdConsumo());
+        pStmt.setInt(5, quartoConsumo.getSeqServico());
+        pStmt.setString(6, quartoConsumo.getCodUsuarioRegistro());
         return pStmt.executeUpdate() > 0;
     }
 
@@ -79,6 +77,17 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
         pStmt.setTimestamp(3, datConsumo);
+        return pStmt.executeUpdate() > 0;
+    }
+    
+    @Override
+    public boolean deleta(QuartoConsumo quartoConsumo) throws SQLException {
+        String qry = "DELETE FROM QuartoConsumo "
+                + "WHERE seqHospedagem = ? AND nroQuarto = ? AND datConsumo = ?";
+        PreparedStatement pStmt = con.prepareStatement(qry);
+        pStmt.setInt(1, quartoConsumo.getSeqHospedagem());
+        pStmt.setInt(2, quartoConsumo.getNroQuarto());
+        pStmt.setTimestamp(3, quartoConsumo.getDatConsumo());
         return pStmt.executeUpdate() > 0;
     }
 }
