@@ -1,16 +1,19 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.exception.PKRepetidaException;
+import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.CargoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
+import br.cefetmg.inf.model.bd.dao.rel.impl.QuartoConsumoDAOImpl;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.Cargo;
 import br.cefetmg.inf.model.pojo.Usuario;
+import br.cefetmg.inf.model.pojo.rel.QuartoConsumo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.servlet.ServletException;
@@ -42,9 +45,10 @@ public class UsuarioControllerServlet extends HttpServlet {
 
         operacaoRegistro = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
         JsonObject retorno;
+        
         try {
             if (operacaoRegistro == 1) {
-                codRegistroSelecionado = request.getParameter("seqServico");
+                codRegistroSelecionado = request.getParameter("codItem");
                 retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
@@ -67,18 +71,22 @@ public class UsuarioControllerServlet extends HttpServlet {
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
             }
-        } catch (SQLException exc) {
-            //
-            //
-            //
-        } catch (NoSuchAlgorithmException ex) {
-            //
-            //
-            //
-        } catch (UnsupportedEncodingException ex) {
-            //
-            //
-            //
+        } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException exc ) {
+            retorno = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
+        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
+            retorno = Json.createObjectBuilder()
+                .add("success", true)
+                .add("mensagem", ex.getMessage())
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
     }
 
@@ -92,8 +100,6 @@ public class UsuarioControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-    
-    
     
     //
     // MÉTODOS DE CONTROLE
@@ -118,7 +124,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
 
-    private JsonObject inserirRegistro () throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private JsonObject inserirRegistro () throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, PKRepetidaException {
         String codUsuario;
         String nomUsuario;
         String nomCargo;
@@ -132,6 +138,15 @@ public class UsuarioControllerServlet extends HttpServlet {
         nomCargo = requestInterno.getParameter("nomCargo");
         
         desSenha = UtilidadesBD.stringParaSHA256(requestInterno.getParameter("desSenha"));
+        
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        Usuario [] registrosBuscados = usuario.busca("codUsuario", codUsuario);
+        if (registrosBuscados.length > 0)
+            throw new PKRepetidaException("inserir");
+        //
+        //
         
         CargoDAO cargo = CargoDAO.getInstance();
         Cargo [] cargosPesquisados = cargo.busca("nomCargo", nomCargo);
@@ -158,7 +173,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private JsonObject editarRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private JsonObject editarRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, PKRepetidaException {
         String codUsuario;
         String nomUsuario;
         String nomCargo;
@@ -180,6 +195,18 @@ public class UsuarioControllerServlet extends HttpServlet {
         Usuario registroAtualizado = new Usuario(codUsuario, nomUsuario, codCargo, desSenha, desEmail);
         
         JsonObject dadosRegistro;
+
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        //
+        if (!codUsuario.equals(codRegistroSelecionado)) {
+            Usuario [] registrosBuscados = usuario.busca("codUsuario", codUsuario);
+            if (registrosBuscados.length > 0)
+                throw new PKRepetidaException("alterar");
+        }
+        //
+        //
 
         boolean testeRegistro = usuario.atualiza(codUsuario, registroAtualizado);;
         if (testeRegistro) {
@@ -205,8 +232,6 @@ public class UsuarioControllerServlet extends HttpServlet {
         Usuario [] usuariosPesquisa = usuario.busca(tipoParametroPesquisa, parametroPesquisa);
         
         requestInterno.setAttribute("listaUsuarios", usuariosPesquisa);
-        
-        return;
     }
 
     private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
@@ -214,6 +239,20 @@ public class UsuarioControllerServlet extends HttpServlet {
         codUsuario = requestInterno.getParameter("codUsuarioSelecionado");
         
         HttpSession session = requestInterno.getSession();
+        
+        //
+        // testa se o codUsuario é usado em QuartoConsumo
+        QuartoConsumoDAOImpl dao = QuartoConsumoDAOImpl.getInstance();
+        QuartoConsumo [] relacionamento = dao.busca(codUsuario, "codUsuarioRegistro");
+        if (relacionamento.length > 1) {
+            for (QuartoConsumo reg : relacionamento) {
+                dao.deleta(reg);
+                reg.setCodUsuarioRegistro(null);
+                dao.adiciona(reg);
+            }
+        }
+        //
+        //
         
         UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
         Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));

@@ -1,5 +1,7 @@
 package br.cefetmg.inf.controller;
 
+import br.cefetmg.inf.exception.PKRepetidaException;
+import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.HospedeDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
@@ -23,9 +25,9 @@ import javax.servlet.http.HttpSession;
 public class HospedeControllerServlet extends HttpServlet {
 
     private HttpServletRequest requestInterno;
-    private int operacaoItem;
+    private int operacaoRegistro;
     
-    private String codItemSelecionado;
+    private String codRegistroSelecionado;
     
     private HospedeDAO hospede;
     
@@ -37,55 +39,54 @@ public class HospedeControllerServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         this.requestInterno = request;
-        operacaoItem = 0;
+        operacaoRegistro = 0;
 
-        operacaoItem = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
+        operacaoRegistro = Integer.parseInt(requestInterno.getParameter("operacaoItem"));
         JsonObject retorno;
         
-//        String caminhoTela = "http://localhost:8080/cefet-lpii-tp2/view/itens-conforto.jsp";
-        
         try {
-            if (operacaoItem == 1) {
-                codItemSelecionado = request.getParameter("codItem");
-                retorno = retornarDadosRegistro(codItemSelecionado);
+            if (operacaoRegistro == 1) {
+                codRegistroSelecionado = request.getParameter("codItem");
+                retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-            } else if (operacaoItem == 2) {
+            } else if (operacaoRegistro == 2) {
                 retorno = inserirRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//                response.sendRedirect(caminhoTela);
-            } else if (operacaoItem == 3) {
+            } else if (operacaoRegistro == 3) {
                 pesquisarRegistro();
-            } else if (operacaoItem == 4) {
+            } else if (operacaoRegistro == 4) {
                 retorno = editarRegistro();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-            } else if (operacaoItem == 5) {
-                retorno = removerRegistro();
-                response.setContentType("text/json");
-                PrintWriter out = response.getWriter();
-                out.print(retorno);
-//                response.sendRedirect(caminhoTela);
+//            } else if (operacaoRegistro == 5) {
+//                retorno = removerRegistro();
+//                response.setContentType("text/json");
+//                PrintWriter out = response.getWriter();
+//                out.print(retorno);
             }
-        } catch (SQLException exc) {
-            //
-            //
-            //
-        } catch (NoSuchAlgorithmException ex) {
-            //
-            //
-            //
-        } catch (UnsupportedEncodingException ex) {
-            //
-            //
-            //
+        } catch (SQLException | UnsupportedEncodingException exc ) {
+            retorno = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
+        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
+            retorno = Json.createObjectBuilder()
+                .add("success", true)
+                .add("mensagem", ex.getMessage())
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
     }
-
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -115,7 +116,7 @@ public class HospedeControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
 
-    private JsonObject inserirRegistro () throws SQLException {
+    private JsonObject inserirRegistro () throws SQLException, PKRepetidaException {
         String codCPF;
         String nomHospede;
         String desTelefone;
@@ -128,6 +129,16 @@ public class HospedeControllerServlet extends HttpServlet {
         
         JsonObject dadosRegistro;
 
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        Hospede [] registrosBuscados = hospede.busca("codCPF", codCPF);
+        if (registrosBuscados.length > 0)
+            throw new PKRepetidaException("inserir");
+        //
+        //
+        
+        
         Hospede hospedeAdicionar = new Hospede(codCPF, nomHospede, desTelefone, desEmail);
 
         boolean testeRegistro = hospede.adiciona(hospedeAdicionar);
@@ -155,11 +166,9 @@ public class HospedeControllerServlet extends HttpServlet {
         Hospede [] hospedesPesquisa = hospede.busca(tipoParametroPesquisa, parametroPesquisa);
         
         requestInterno.setAttribute("listaHospedes", hospedesPesquisa);
-        
-        return;
     }
 
-    private JsonObject editarRegistro() throws SQLException {
+    private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
         String codCPF;
         String nomHospede;
         String desTelefone;
@@ -173,7 +182,19 @@ public class HospedeControllerServlet extends HttpServlet {
         Hospede hospedeAtualizado = new Hospede(codCPF, nomHospede, desTelefone, desEmail);
         
         JsonObject dadosRegistro;
-        
+
+        //
+        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
+        // LANÇA EXCEÇÃO
+        //
+        if (!codCPF.equals(codRegistroSelecionado)) {
+            Hospede [] registrosBuscados = hospede.busca("codCPF", codCPF);
+            if (registrosBuscados.length > 0)
+                throw new PKRepetidaException("alterar");
+        }
+        //
+        //
+
         boolean testeRegistro = hospede.atualiza(codCPF, hospedeAtualizado);
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
@@ -191,42 +212,42 @@ public class HospedeControllerServlet extends HttpServlet {
     }
     
     
-    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String codCPFHospede;
-        codCPFHospede = requestInterno.getParameter("codCPF");
-        
-        JsonObject dadosRegistro;
-        
-        HttpSession session = requestInterno.getSession();
-        
-        UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-        Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
-        System.out.println("usuarios.length "+usuarios.length);
-        
-        String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
-        String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
-        
-        if ((usuarios[0].getDesSenha()).equals(senha)) {
-            boolean testeExclusaoRegistro = hospede.deleta(codCPFHospede);
-            
-            if (testeExclusaoRegistro) {
-                dadosRegistro = Json.createObjectBuilder()
-                    .add("sucesso", true)
-                    .add("mensagem", "Registro excluído com sucesso!")
-                    .build();
-            } else {
-                dadosRegistro = Json.createObjectBuilder()
-                    .add("sucesso", false)
-                    .add("mensagem", "Ocorreu erro ao excluir o registro. Repita a operação.")
-                    .build();
-            }
-        } else {
-            dadosRegistro = Json.createObjectBuilder()
-                .add("sucesso", false)
-                .add("mensagem", "Senha inválida")
-                .build();
-        }
-
-        return dadosRegistro;
-    }
+//    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+//        String codCPFHospede;
+//        codCPFHospede = requestInterno.getParameter("codCPF");
+//        
+//        JsonObject dadosRegistro;
+//        
+//        HttpSession session = requestInterno.getSession();
+//        
+//        UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
+//        Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
+//        System.out.println("usuarios.length "+usuarios.length);
+//        
+//        String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
+//        String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
+//        
+//        if ((usuarios[0].getDesSenha()).equals(senha)) {
+//            boolean testeExclusaoRegistro = hospede.deleta(codCPFHospede);
+//            
+//            if (testeExclusaoRegistro) {
+//                dadosRegistro = Json.createObjectBuilder()
+//                    .add("sucesso", true)
+//                    .add("mensagem", "Registro excluído com sucesso!")
+//                    .build();
+//            } else {
+//                dadosRegistro = Json.createObjectBuilder()
+//                    .add("sucesso", false)
+//                    .add("mensagem", "Ocorreu erro ao excluir o registro. Repita a operação.")
+//                    .build();
+//            }
+//        } else {
+//            dadosRegistro = Json.createObjectBuilder()
+//                .add("sucesso", false)
+//                .add("mensagem", "Senha inválida")
+//                .build();
+//        }
+//
+//        return dadosRegistro;
+//    }
 }
