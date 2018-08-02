@@ -63,6 +63,7 @@ function showEditDialog (ACodCategoria) {
 //			$('#frmEditItem').form('load', responseText);
 			
 			// modifica o valor dos inputs no formulário para os dados existentes
+                        $("#frmEditItem #codCategoria").val(responseText.codCategoria);
 			$("#frmEditItem #nomCategoria").val(responseText.nomCategoria);
 			$("#frmEditItem #vlrDiaria").val(responseText.vlrDiaria);
 			$("#frmEditItem #desItem").val(responseText.desItem);

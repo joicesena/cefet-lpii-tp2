@@ -75,6 +75,17 @@
                             <div class="row">
                                 <div class="col s12 form-input">
                                     <div class="input-field">
+                                        <i class="material-icons prefix">filter_3</i>
+										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+										<!-- ID USADO NO JSON -->
+                                        <label for="codCategoria">Código</label>
+                                        <input id="codCategoria" name="codCategoria" type="number" class="validate" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 form-input">
+                                    <div class="input-field">
                                         <i class="material-icons prefix">description</i>
 										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
 										<!-- ID USADO NO JSON -->
@@ -133,6 +144,17 @@
 						<!-- INPUT TYPE HIDDEN PARA ESPECIFICAR A OPERAÇÃO; 4->editar -->
 						<input type="hidden" id="operacaoItem" name="operacaoItem" value="4">
                         <div id="modal-container">
+                            <div class="row">
+                                <div class="col s12 form-input">
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">filter_3</i>
+										<!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
+										<!-- ID USADO NO JSON -->
+                                        <label for="codCategoria">Código</label>
+                                        <input id="codCategoria" name="codCategoria" type="number" class="validate" required>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col s12 form-input">
                                     <div class="input-field">

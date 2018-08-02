@@ -23,6 +23,11 @@
             <thead>
                 <tr>
                     <th>
+                        Código
+                        <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
+                        <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
+                    </th>
+                    <th>
                         Nome
                         <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
                         <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
@@ -49,6 +54,7 @@
 
                 %>
                 <tr>
+                    <td><% out.print(codCategoria); %></td>
                     <td><% out.print(nomCategoria); %></td>
                     <td>R$ <% out.print(vlrDiaria); %></td>
                     <td>
