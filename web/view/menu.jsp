@@ -1,4 +1,15 @@
+<%@page import="br.cefetmg.inf.model.bd.dao.UsuarioDAO"%>
+<%@page import="br.cefetmg.inf.model.pojo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<% 
+    UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();  
+    Usuario [] usuarioLogado = usuarioDAO.busca(); 
+            
+    String nomUsuario = usuarioLogado[0].getNomUsuario();
+    String desEmail = usuarioLogado[0].getDesEmail();
+%>
+
 <!DOCTYPE html>
 <nav class="white">
     <div class="nav-wrapper container">
@@ -15,27 +26,15 @@
             <div class="background">
                 <img src="../imgs/sidenav-background.jpg"/>
             </div>
-            <a href="#!name"><span class="white-text name">Dominique DiPierro</span></a>
-            <a href="#!email"><span class="white-text email">gerentedohotel@gmail.com</span></a>
+            <a href="#!name"><span class="white-text name"><% out.print(nomUsuario); %></span></a>
+            <a href="#!email"><span class="white-text email"><% out.print(desEmail); %></span></a>
         </div>
     <li>
 
     <li><a class="collapsible-header waves-effect" href="cargos.jsp"><i class="material-icons grey-text text-darken-3">business_center</i>Cargos</a></li>
-
-    <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-            <li>
-                <a class="collapsible-header waves-effect" href="#"><i class="material-icons grey-text text-darken-3">assignment_ind</i>Funcionários<i class="material-icons right dropdown-icon">arrow_drop_down</i></a>
-                <div class="collapsible-body">
-                    <ul>
-                        <li><a href="funcionarios-visualizacao.jsp"><i class="material-icons">search</i>Visualizar funcionários</a></li>
-                        <li><a href="funcionarios-cadastro.jsp"><i class="material-icons">person_add</i>Cadastrar novo funcionário</a></li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </li>
-
+    <li><a class="collapsible-header waves-effect" href="funcionarios.jsp"><i class="material-icons grey-text text-darken-3">assignment_ind</i>Funcionários</a></li>
+    <li><a class="collapsible-header waves-effect" href="hospedes.jsp"><i class="material-icons grey-text text-darken-3">people</i>Hóspedes</a></li>
+    
     <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
             <li>
@@ -60,20 +59,6 @@
                     <ul>
                         <li><a href="servicos.jsp"><i class="material-icons">search</i>Visualizar serviços</a></li>
                         <li><a href="servicos-areas.jsp"><i class="material-icons">search</i>Visualizar áreas de serviço</a></li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </li>
-
-    <li class="no-padding">
-        <ul class="collapsible collapsible-accordion">
-            <li>
-                <a class="collapsible-header waves-effect" href="#"><i class="material-icons grey-text text-darken-3">people</i>Hóspedes<i class="material-icons right dropdown-icon">arrow_drop_down</i></a>
-                <div class="collapsible-body">
-                    <ul>
-                        <li><a href="hospedes-visualizacao.jsp"><i class="material-icons">search</i>Visualizar hóspedes</a></li>
-                        <li><a href="hospedes-cadastro.jsp"><i class="material-icons">person_add</i>Cadastrar novo hóspede</a></li>
                     </ul>
                 </div>
             </li>
