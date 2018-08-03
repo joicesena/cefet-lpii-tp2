@@ -5,10 +5,12 @@ import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.ServicoAreaDAO;
 import br.cefetmg.inf.model.bd.dao.ServicoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
+import br.cefetmg.inf.model.bd.dao.rel.impl.QuartoConsumoDAOImpl;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.Servico;
 import br.cefetmg.inf.model.pojo.ServicoArea;
 import br.cefetmg.inf.model.pojo.Usuario;
+import br.cefetmg.inf.model.pojo.rel.QuartoConsumo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -177,7 +179,6 @@ public class ServicoControllerServlet extends HttpServlet {
         Servico [] servicosPesquisa = servico.busca(tipoParametroPesquisa, parametroPesquisa);
         
         requestInterno.setAttribute("listaServicos", servicosPesquisa);
-        return;
     }
 
     private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
@@ -198,12 +199,6 @@ public class ServicoControllerServlet extends HttpServlet {
         
         JsonObject dadosRegistro;
         
-        //
-        // testa se o serviço é usado em QuartoConsumo
-        // update cascade
-        //
-        //
-
         boolean testeRegistro = servico.atualiza(codRegistroSelecionado, registroAtualizado);
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
@@ -237,6 +232,11 @@ public class ServicoControllerServlet extends HttpServlet {
         //
         // testa se o seqservico é utilizado em quartoconsumo
         // lança exceção
+        QuartoConsumoDAOImpl dao = QuartoConsumoDAOImpl.getInstance();
+        QuartoConsumo [] daoBusca = dao.busca(codRegistroSelecionado, "seqservico");
+        if (daoBusca.length > 1) {
+            throw new RegistroUtilizadoExternamenteException("excluir", "registro de consumo");
+        }
         //
         //
 

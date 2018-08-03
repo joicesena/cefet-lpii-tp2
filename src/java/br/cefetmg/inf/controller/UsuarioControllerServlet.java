@@ -79,7 +79,7 @@ public class UsuarioControllerServlet extends HttpServlet {
             response.setContentType("text/json");
             PrintWriter out = response.getWriter();
             out.print(retorno);
-        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
+        } catch (PKRepetidaException ex) {
             retorno = Json.createObjectBuilder()
                 .add("success", true)
                 .add("mensagem", ex.getMessage())

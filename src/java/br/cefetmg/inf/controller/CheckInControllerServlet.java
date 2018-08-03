@@ -7,6 +7,7 @@ import br.cefetmg.inf.model.bd.dao.rel.impl.QuartoHospedagemDAOImpl;
 import br.cefetmg.inf.model.pojo.CategoriaQuarto;
 import br.cefetmg.inf.model.pojo.Hospedagem;
 import br.cefetmg.inf.model.pojo.Quarto;
+import br.cefetmg.inf.model.pojo.rel.QuartoHospedagem;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -76,7 +77,8 @@ public class CheckInControllerServlet extends HttpServlet {
             Hospedagem[] hospEncontrada = hospDAO.busca(hosp);
             
             QuartoHospedagemDAOImpl quartoHosp = QuartoHospedagemDAOImpl.getInstance();
-            quartoHosp.adiciona(hospEncontrada[0].getSeqHospedagem(), nroQuarto, nroAdultos, nroCriancas, valorDiaria);
+            QuartoHospedagem objAdicionar = new QuartoHospedagem(hospEncontrada[0].getSeqHospedagem(), nroQuarto, nroAdultos, nroCriancas, valorDiaria);
+            quartoHosp.adiciona(objAdicionar);
         } catch (SQLException ex) {
             //
             //
