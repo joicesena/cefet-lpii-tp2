@@ -3,6 +3,7 @@ package br.cefetmg.inf.controller;
 import br.cefetmg.inf.model.login.LoginAutenticador;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -54,7 +55,13 @@ public class LoginControllerServlet extends HttpServlet {
             response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp");
         } else {
             // retorna para a página de login
-            response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
+//            response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
+            response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script type=\"text/javascript\">");
+            out.println("location='http://localhost:8080/cefet-lpii-tp2/view/login.jsp';");
+            out.println("alert('Email ou senha incorretos');");
+            out.println("</script>");            
         }
     }
 }
