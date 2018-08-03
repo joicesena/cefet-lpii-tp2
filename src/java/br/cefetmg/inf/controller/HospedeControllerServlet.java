@@ -46,7 +46,7 @@ public class HospedeControllerServlet extends HttpServlet {
         
         try {
             if (operacaoRegistro == 1) {
-                codRegistroSelecionado = request.getParameter("codItem");
+                codRegistroSelecionado = request.getParameter("codCPF");
                 retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
@@ -63,11 +63,6 @@ public class HospedeControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(retorno);
-//            } else if (operacaoRegistro == 5) {
-//                retorno = removerRegistro();
-//                response.setContentType("text/json");
-//                PrintWriter out = response.getWriter();
-//                out.print(retorno);
             }
         } catch (SQLException | UnsupportedEncodingException exc ) {
             retorno = Json.createObjectBuilder()
@@ -174,10 +169,10 @@ public class HospedeControllerServlet extends HttpServlet {
         String desTelefone;
         String desEmail;
         
-        codCPF = requestInterno.getParameter("codCPFSelecionado");
-        nomHospede = requestInterno.getParameter("nomHospedeSelecionado");
-        desTelefone = requestInterno.getParameter("desTelefoneSelecionado");
-        desEmail = requestInterno.getParameter("desEmailSelecionado");
+        codCPF = requestInterno.getParameter("codCPF");
+        nomHospede = requestInterno.getParameter("nomHospede");
+        desTelefone = requestInterno.getParameter("desTelefone");
+        desEmail = requestInterno.getParameter("desEmail");
         
         Hospede hospedeAtualizado = new Hospede(codCPF, nomHospede, desTelefone, desEmail);
         
@@ -195,7 +190,7 @@ public class HospedeControllerServlet extends HttpServlet {
         //
         //
 
-        boolean testeRegistro = hospede.atualiza(codCPF, hospedeAtualizado);
+        boolean testeRegistro = hospede.atualiza(codRegistroSelecionado, hospedeAtualizado);
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)

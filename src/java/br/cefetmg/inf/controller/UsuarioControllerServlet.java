@@ -48,7 +48,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         
         try {
             if (operacaoRegistro == 1) {
-                codRegistroSelecionado = request.getParameter("codItem");
+                codRegistroSelecionado = request.getParameter("codUsuario");
                 retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
@@ -208,7 +208,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         //
         //
 
-        boolean testeRegistro = usuario.atualiza(codUsuario, registroAtualizado);;
+        boolean testeRegistro = usuario.atualiza(codRegistroSelecionado, registroAtualizado);;
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)
@@ -235,15 +235,12 @@ public class UsuarioControllerServlet extends HttpServlet {
     }
 
     private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String codUsuario;
-        codUsuario = requestInterno.getParameter("codUsuarioSelecionado");
-        
         HttpSession session = requestInterno.getSession();
         
         //
         // testa se o codUsuario é usado em QuartoConsumo
         QuartoConsumoDAOImpl dao = QuartoConsumoDAOImpl.getInstance();
-        QuartoConsumo [] relacionamento = dao.busca(codUsuario, "codUsuarioRegistro");
+        QuartoConsumo [] relacionamento = dao.busca(codRegistroSelecionado, "codUsuarioRegistro");
         if (relacionamento.length > 1) {
             for (QuartoConsumo reg : relacionamento) {
                 dao.deleta(reg);
@@ -264,7 +261,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         JsonObject dadosRegistro;
 
         if ((usuarios[0].getDesSenha()).equals(senha)) {
-            boolean testeExclusaoItem = usuario.deleta(codUsuario);
+            boolean testeExclusaoItem = usuario.deleta(codRegistroSelecionado);
             
             if (testeExclusaoItem) {
                 dadosRegistro = Json.createObjectBuilder()

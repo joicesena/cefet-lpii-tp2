@@ -48,7 +48,7 @@ public class CargoControllerServlet extends HttpServlet {
         
         try {
             if (operacaoRegistro == 1) {
-                codRegistroSelecionado = request.getParameter("codCategoria");
+                codRegistroSelecionado = request.getParameter("codCargo");
                 retorno = retornarDadosRegistro(codRegistroSelecionado);
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
@@ -110,24 +110,10 @@ public class CargoControllerServlet extends HttpServlet {
 
         Cargo registroRetorno = registros[0];
         
-//        // buscar os programas que se relacionam com o cargo
-//        CargoProgramaDAOImpl relDAO = CargoProgramaDAOImpl.getInstance();
-//        CargoPrograma[] vetorRel = relDAO.busca(codRegistro, "codCargo");
-//        // montar uma string com as descrições dos itens
-//        String programas = "";
-//
-//        String codCargo = null;
-//        for (CargoPrograma cic : vetorRel) {
-//            codCargo = cic.getCodCargo();
-//            CargoPrograma [] buscaCargo = CargoPrograma.busca("codCargo", codCategoria);
-//            programas += buscaCargo[0].getNomCargo() + "; ";
-//        }
-
         JsonObject dadosRegistro = Json.createObjectBuilder()
             .add("codCargo", registroRetorno.getCodCargo())
             .add("nomCargo", registroRetorno.getNomCargo())
             .add("idtMaster", registroRetorno.isIdtMaster())
-//            .add("itensConforto", itensConforto)
             .build();
 
         return dadosRegistro;
@@ -137,16 +123,12 @@ public class CargoControllerServlet extends HttpServlet {
         String codCargo;
         String nomCargo;
         boolean idtMaster;
-//        String [] programas;
-//        String codPrograma;
         String [] codProgramasSelecionados;
         
         codCargo = requestInterno.getParameter("codCargo");
         nomCargo = requestInterno.getParameter("nomCargo");
-//        idtMaster = Boolean.getBoolean(requestInterno.getParameter("idtMaster"));
         idtMaster = false;
 
-//        programas = requestInterno.getParameterValues("programas");
         codProgramasSelecionados = requestInterno.getParameterValues("codPrograma");
         
         Cargo cargoAdicionar = new Cargo(codCargo, nomCargo, idtMaster);
@@ -204,8 +186,8 @@ public class CargoControllerServlet extends HttpServlet {
 //        String codPrograma;
         String [] codProgramasSelecionados;
         
-        codCargo = requestInterno.getParameter("codCargoSelecionado");
-        nomCargo = requestInterno.getParameter("nomCargoSelecionado");
+        codCargo = requestInterno.getParameter("codCargo");
+        nomCargo = requestInterno.getParameter("nomCargo");
 //        idtMaster = Boolean.getBoolean(requestInterno.getParameter("idtMasterSelecionado"));
         idtMaster = false;
         codProgramasSelecionados = requestInterno.getParameterValues("codPrograma");
