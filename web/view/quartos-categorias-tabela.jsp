@@ -19,7 +19,7 @@
 
 <html>
     <body>
-        <table id="#fixedheight" class="striped">
+        <table class="striped">
             <thead>
                 <tr>
                     <th>

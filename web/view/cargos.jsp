@@ -43,61 +43,10 @@
                 </div>
             </div>
             
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>
-                            Nome
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>Telas com acesso permitido</th>
-                        <th><center>Ações</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Camareiro</td>
-                        <td>Categorias de Quartos</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Garçom</td>
-                        <td>Áreas de Serviço</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Massagista</td>
-                        <td>Lançamento de Despesas</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Recepcionista</td>
-                        <td>Check-in</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <jsp:include page="cargos-tabela.jsp"></jsp:include>
+            </div>
+            
             <div class="card-action right-align button-box">
                 <button id="add-button" class="btn waves-effect waves-light" onclick="addItem()"><i class="material-icons left">add_circle_outline</i>Novo Cargo</button>
             </div>
