@@ -79,7 +79,7 @@ public class UsuarioControllerServlet extends HttpServlet {
             response.setContentType("text/json");
             PrintWriter out = response.getWriter();
             out.print(retorno);
-        } catch (PKRepetidaException ex) {
+        } catch (PKRepetidaException | RegistroUtilizadoExternamenteException ex) {
             retorno = Json.createObjectBuilder()
                 .add("success", true)
                 .add("mensagem", ex.getMessage())
@@ -127,7 +127,6 @@ public class UsuarioControllerServlet extends HttpServlet {
     private JsonObject inserirRegistro () throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, PKRepetidaException {
         String codUsuario;
         String nomUsuario;
-        String nomCargo;
         String codCargo;
         String desSenha;
         String desEmail;
@@ -135,7 +134,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         codUsuario = requestInterno.getParameter("codUsuario");
         nomUsuario = requestInterno.getParameter("nomUsuario");
         desEmail = requestInterno.getParameter("desEmail");
-        nomCargo = requestInterno.getParameter("nomCargo");
+        codCargo = requestInterno.getParameter("codCargo");
         
         desSenha = UtilidadesBD.stringParaSHA256(requestInterno.getParameter("desSenha"));
         
@@ -147,10 +146,6 @@ public class UsuarioControllerServlet extends HttpServlet {
             throw new PKRepetidaException("inserir");
         //
         //
-        
-        CargoDAO cargo = CargoDAO.getInstance();
-        Cargo [] cargosPesquisados = cargo.busca("nomCargo", nomCargo);
-        codCargo = cargosPesquisados[0].getCodCargo();
         
         Usuario usuarioAdicionar = new Usuario(codUsuario, nomUsuario, codCargo, desSenha, desEmail);
         
@@ -173,10 +168,9 @@ public class UsuarioControllerServlet extends HttpServlet {
         return dadosRegistro;
     }
     
-    private JsonObject editarRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, PKRepetidaException {
+    private JsonObject editarRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, PKRepetidaException, RegistroUtilizadoExternamenteException {
         String codUsuario;
         String nomUsuario;
-        String nomCargo;
         String codCargo;
         String desSenha;
         String desEmail;
@@ -184,13 +178,9 @@ public class UsuarioControllerServlet extends HttpServlet {
         codUsuario = requestInterno.getParameter("codUsuario");
         nomUsuario = requestInterno.getParameter("nomUsuario");
         desEmail = requestInterno.getParameter("desEmail");
-        nomCargo = requestInterno.getParameter("nomCargo");
+        codCargo = requestInterno.getParameter("codCargo");
         
         desSenha = UtilidadesBD.stringParaSHA256(requestInterno.getParameter("desSenha"));
-        
-        CargoDAO cargo = CargoDAO.getInstance();
-        Cargo [] cargosPesquisados = cargo.busca("nomCargo", nomCargo);
-        codCargo = cargosPesquisados[0].getCodCargo();
         
         Usuario registroAtualizado = new Usuario(codUsuario, nomUsuario, codCargo, desSenha, desEmail);
         
@@ -206,8 +196,15 @@ public class UsuarioControllerServlet extends HttpServlet {
                 throw new PKRepetidaException("alterar");
         }
         //
+        // testa se o usuario tentando modificar é o mesmo sendo modificado
+        HttpSession session = requestInterno.getSession();
+        String codUsuarioLogado = (String) session.getAttribute("codUsuario");
+        if (codRegistroSelecionado.equals(codUsuarioLogado)) {
+            throw new RegistroUtilizadoExternamenteException("Não é possível alterar seu próprio código!");
+        }
         //
-
+        //
+        
         boolean testeRegistro = usuario.atualiza(codRegistroSelecionado, registroAtualizado);;
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
@@ -234,7 +231,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         requestInterno.setAttribute("listaUsuarios", usuariosPesquisa);
     }
 
-    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException, RegistroUtilizadoExternamenteException {
         HttpSession session = requestInterno.getSession();
         
         //
@@ -249,11 +246,16 @@ public class UsuarioControllerServlet extends HttpServlet {
             }
         }
         //
+        // testa se o usuario que quer remover é o mesmo a ser removido
+        String codUsuarioLogado = (String) session.getAttribute("codUsuario");
+        if (codRegistroSelecionado.equals(codUsuarioLogado)) {
+            throw new RegistroUtilizadoExternamenteException("Não é possível se excluir do sistema!");
+        }
+        //
         //
         
         UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
         Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
-        System.out.println("usuarios.length "+usuarios.length);
         
         String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
         String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
