@@ -28,10 +28,13 @@ import javax.servlet.http.HttpServletResponse;
 public class DetalhesContaControllerServlet extends HttpServlet {
     private int nroQuarto;
     
+    private int operacaoRegistro;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         JsonObject [] retorno;
         try {
+            operacaoRegistro = Integer.parseInt((String)request.getParameter("operacaoRegistro"));
             nroQuarto = Integer.parseInt((String)request.getParameter("nroQuarto"));
             int seqHospedagem = UtilidadesBD.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
             
@@ -73,7 +76,13 @@ public class DetalhesContaControllerServlet extends HttpServlet {
             // coloca o array json no request, para que ele possa ser acessado na página jsp
             request.setAttribute("quartoConsumo", retorno);
             
-            RequestDispatcher rd = request.getRequestDispatcher("http://localhost:8080/cefet-lpii-tp2/view/conta-detalhes.jsp");
+            String caminho;
+            if (operacaoRegistro == 1)
+               caminho = "http://localhost:8080/cefet-lpii-tp2/view/conta-detalhes.jsp";
+            else
+                caminho = "http://localhost:8080/cefet-lpii-tp2/view/checkout.jsp";
+            
+            RequestDispatcher rd = request.getRequestDispatcher(caminho);
             rd.forward(request, response);
         } catch (SQLException ex) {
             //

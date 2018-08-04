@@ -59,10 +59,10 @@ public class DespesasPDFControllerServlet extends HttpServlet {
 
     private void montaArquivo() throws DocumentException, SQLException {
         int seqHospedagem = Integer.parseInt(requestInterno.getParameter("seqHospedagem"));
+        int nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
         
         // busca a view
         // retorna um resultSet
-        int nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
         ResultSet rs = UtilidadesBD.retornaRelatorioDespesas(seqHospedagem, nroQuarto);
 
         // monta o arquivo

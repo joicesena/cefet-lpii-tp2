@@ -122,6 +122,11 @@ public class CheckInControllerServlet extends HttpServlet {
         QuartoHospedagem objAdicionar = new QuartoHospedagem(hospEncontrada[0].getSeqHospedagem(), nroQuarto, nroAdultos, nroCriancas, valorDiaria);
         quartoHosp.adiciona(objAdicionar);
         
+        // atualiza o idtOcupado do quarto pra ocupado
+        Quarto quartoAtualizado = quarto[0];
+        quartoAtualizado.setIdtOcupado(true);
+        quartoDAO.atualiza(nroQuarto, quartoAtualizado);
+        
         dadosRegistro = Json.createObjectBuilder()
             .add("success", false)
             .add("mensagem", "Ocorreu erro ao adicionar o registro. Repita a operação.")

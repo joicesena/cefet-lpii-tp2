@@ -1,8 +1,10 @@
 package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.model.bd.dao.HospedagemDAO;
+import br.cefetmg.inf.model.bd.dao.QuartoDAO;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.Hospedagem;
+import br.cefetmg.inf.model.pojo.Quarto;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -21,18 +23,18 @@ public class CheckOutControllerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        nroQuarto = Integer.parseInt(request.getParameter("nroQuarto"));
-        
-        String caminhoArquivo = "/view/check-out.jsp";
-        
-        RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
-        rd.forward(request, response);
-
+        processRequest(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        processRequest(request, response);
+    }
+    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        nroQuarto = Integer.parseInt(request.getParameter("nroQuarto"));
+        
         try {
             // buscar o seqHospedagem atual pelo numero do quarto e pela última data de check-in
             int seqHospedagem = UtilidadesBD.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
@@ -47,6 +49,13 @@ public class CheckOutControllerServlet extends HttpServlet {
             
             // atualiza a data de check-out da hospedagem
             hospDAO.atualiza(seqHospedagem, hospedagemAtualizado);
+            
+            // muda o idtQuarto pra livre
+            QuartoDAO quartoDAO = QuartoDAO.getInstance();
+            Quarto [] quarto = quartoDAO.busca("nroQuarto", nroQuarto);
+            Quarto quartoAtualizado = quarto[0];
+            quartoAtualizado.setIdtOcupado(false);
+            quartoDAO.atualiza(nroQuarto, quartoAtualizado);
             
             // colocar o seqHospedagem como atributo do request
             request.setAttribute("seqHospedagem", seqHospedagem);
