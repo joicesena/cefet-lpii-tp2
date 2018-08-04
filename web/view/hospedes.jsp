@@ -45,67 +45,10 @@
                 </div>
             </div>
             
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>
-                            CPF
-                        </th>
-                        <th>
-                            Nome
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Email
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Telefone                        
-                        </th>
-                        <th><center>Ações</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>568.856.143-27</td>
-                        <td>Bruna Duarte</td>
-                        <td>bruduarte@gmail.com</td>
-                        <td>(31)98606-0045</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>462.869.375-27</td>
-                        <td>Florence Welch</td>
-                        <td>florence@gmail.com</td>
-                        <td>(31)99009-9900</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>643.528.433-14</td>
-                        <td>Gabriel Antunes</td>
-                        <td>bielantunes13@gmail.com</td>
-                        <td>(21)98342-4502</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <jsp:include page="hospedes-tabela.jsp"></jsp:include>
+            </div>
+            
             <div class="card-action right-align button-box">
                 <a href="hospedes-cadastro.jsp"><button id="add-button" class="btn waves-effect waves-light"><i class="material-icons left">add_circle_outline</i>Novo Hóspede</button></a>
             </div>
