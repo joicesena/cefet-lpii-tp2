@@ -1,7 +1,7 @@
 /*
  * Controla a edição de despesa
  * Controla a exclusão de despesa
- * Redireciona para o lançamento de despesa
+ * Controla o lançamento de despesa
  */
 package br.cefetmg.inf.controller;
 
