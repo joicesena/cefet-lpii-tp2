@@ -144,15 +144,6 @@ public class ServicoControllerServlet extends HttpServlet {
         
         JsonObject dadosRegistro;
         
-        //
-        // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
-        // LANÇA EXCEÇÃO
-        Servico [] registrosBuscados = servico.busca("seqservico", Integer.parseInt(codRegistroSelecionado));
-        if (registrosBuscados.length > 0)
-            throw new PKRepetidaException("inserir");
-        //
-        //
-        
         Servico servicoAdicionar = new Servico(desServico, vlrUnit, codServicoArea);
         boolean testeRegistro = servico.adiciona(servicoAdicionar);
         
