@@ -50,8 +50,6 @@
                         
                         CategoriaItemConfortoDAOImpl categoriaItemDAO = CategoriaItemConfortoDAOImpl.getInstance();
                         CategoriaItemConforto [] codItens = categoriaItemDAO.busca(codCategoria, "codcategoria"); 
-                            
-
                 %>
                 <tr>
                     <td><% out.print(codCategoria); %></td>

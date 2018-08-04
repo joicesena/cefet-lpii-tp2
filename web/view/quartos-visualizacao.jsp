@@ -139,9 +139,9 @@
                                         <i class="material-icons prefix">local_offer</i>
 										<select name="codCategoria">
 											<%	for(int i = 0; i < registrosEncontrados.length; i++) {
-													String codItem = registrosEncontrados[i].getCodCategoria();
-													String desItem = registrosEncontrados[i].getNomCategoria();
-											%>	<option value="<% out.print(codItem); %>"><% out.print(desItem);%></option>
+													String codCategoria = registrosEncontrados[i].getCodCategoria();
+													String nomCategoria = registrosEncontrados[i].getNomCategoria();
+											%>	<option value="<% out.print(codCategoria); %>"><% out.print(nomCategoria);%></option>
 											<% } // for  
 											%>
 										</select>
