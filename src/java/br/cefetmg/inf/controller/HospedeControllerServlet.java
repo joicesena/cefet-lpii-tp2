@@ -205,44 +205,4 @@ public class HospedeControllerServlet extends HttpServlet {
 
         return dadosRegistro;
     }
-    
-    
-//    private JsonObject removerRegistro() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
-//        String codCPFHospede;
-//        codCPFHospede = requestInterno.getParameter("codCPF");
-//        
-//        JsonObject dadosRegistro;
-//        
-//        HttpSession session = requestInterno.getSession();
-//        
-//        UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
-//        Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
-//        System.out.println("usuarios.length "+usuarios.length);
-//        
-//        String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
-//        String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
-//        
-//        if ((usuarios[0].getDesSenha()).equals(senha)) {
-//            boolean testeExclusaoRegistro = hospede.deleta(codCPFHospede);
-//            
-//            if (testeExclusaoRegistro) {
-//                dadosRegistro = Json.createObjectBuilder()
-//                    .add("sucesso", true)
-//                    .add("mensagem", "Registro excluído com sucesso!")
-//                    .build();
-//            } else {
-//                dadosRegistro = Json.createObjectBuilder()
-//                    .add("sucesso", false)
-//                    .add("mensagem", "Ocorreu erro ao excluir o registro. Repita a operação.")
-//                    .build();
-//            }
-//        } else {
-//            dadosRegistro = Json.createObjectBuilder()
-//                .add("sucesso", false)
-//                .add("mensagem", "Senha inválida")
-//                .build();
-//        }
-//
-//        return dadosRegistro;
-//    }
 }

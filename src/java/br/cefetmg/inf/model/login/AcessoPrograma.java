@@ -16,9 +16,7 @@ public final class AcessoPrograma {
         String qryMaster = "SELECT idtMaster FROM cargo WHERE codCargo = '" + codCargo + "' ";
         ResultSet rscargo = stmt0.executeQuery(qryMaster);
         if(rscargo.next()) {
-            System.out.println("executou query de busca do idtMaster do cargo");
             boolean teste = rscargo.getBoolean("idtMaster");
-            System.out.println("idtMaster = "+teste);
             if (teste) {
                 return true;
             } else {

@@ -6,9 +6,12 @@ import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.Hospedagem;
 import br.cefetmg.inf.model.pojo.Quarto;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -66,9 +69,13 @@ public class CheckOutControllerServlet extends HttpServlet {
             rd.forward(request, response);
             
         } catch (SQLException ex) {
-            //
-            //
-            //
+            JsonObject retorno = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
     }
 

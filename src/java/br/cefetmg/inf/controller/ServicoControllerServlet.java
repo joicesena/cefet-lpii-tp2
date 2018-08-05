@@ -131,16 +131,10 @@ public class ServicoControllerServlet extends HttpServlet {
         String desServico;
         Double vlrUnit;
         String codServicoArea;
-//        String nomServicoArea;
         
         desServico = requestInterno.getParameter("desServico");
         vlrUnit = Double.parseDouble(requestInterno.getParameter("vlrUnit"));
         codServicoArea = requestInterno.getParameter("codServicoArea");
-        
-//        nomServicoArea = requestInterno.getParameter("nomServicoArea");
-//        ServicoAreaDAO areaDAO = ServicoAreaDAO.getInstance();
-//        ServicoArea[] areas = areaDAO.busca("nomServicoArea", nomServicoArea);
-//        codServicoArea = areas[0].getCodServicoArea();
         
         JsonObject dadosRegistro;
         
@@ -181,14 +175,9 @@ public class ServicoControllerServlet extends HttpServlet {
         vlrUnit = Double.parseDouble(requestInterno.getParameter("vlrUnit"));
         codServicoArea = requestInterno.getParameter("codServicoArea");
 
-//        String nomServicoArea = requestInterno.getParameter("nomServicoArea");
-//        ServicoAreaDAO areaDAO = ServicoAreaDAO.getInstance();
-//        ServicoArea[] areas = areaDAO.busca("nomServicoArea", nomServicoArea);
-//        codServicoArea = areas[0].getCodServicoArea();
+        JsonObject dadosRegistro;
 
         Servico registroAtualizado = new Servico(desServico, vlrUnit, codServicoArea);
-        
-        JsonObject dadosRegistro;
         
         boolean testeRegistro = servico.atualiza(codRegistroSelecionado, registroAtualizado);
         if (testeRegistro) {
@@ -213,7 +202,6 @@ public class ServicoControllerServlet extends HttpServlet {
         
         UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
         Usuario[] usuarios = usuarioDAO.busca("codUsuario", session.getAttribute("codUsuario"));
-        System.out.println("usuarios.length "+usuarios.length);
         
         String senhaSHA256 = requestInterno.getParameter("senhaFuncionario");
         String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);

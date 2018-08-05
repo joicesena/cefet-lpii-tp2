@@ -180,19 +180,7 @@ public class AreaServicoControllerServlet extends HttpServlet {
             if (registrosBuscados.length > 0)
                 throw new PKRepetidaException("alterar");
         }
-//        //
-//        // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM SERVIÇO
-//        // LANÇA EXCEÇÃO
-//        //
-//        ServicoDAO dao = ServicoDAO.getInstance();
-//        if (!codArea.equals(codRegistroSelecionado)) {
-//            Servico [] registrosExternosBuscados = dao.busca("codServicoArea", codRegistroSelecionado);
-//            if (registrosExternosBuscados.length > 0)
-//                throw new RegistroUtilizadoExternamenteException("modificar", "serviço");
-//        }
-//        //
-//        //
-        
+
         boolean testeRegistro = servicoArea.atualiza(codRegistroSelecionado, servicoAreaAtualizado);
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
@@ -221,8 +209,6 @@ public class AreaServicoControllerServlet extends HttpServlet {
         String senha = UtilidadesBD.stringParaSHA256(senhaSHA256);
         
         if ((usuarios[0].getDesSenha()).equals(senha)) {
-            System.out.println("senha correta");
-
             //
             // TESTA SE O CÓDIGO ATUAL É UTILIZADO EM SERVIÇO
             // LANÇA EXCEÇÃO
@@ -234,10 +220,8 @@ public class AreaServicoControllerServlet extends HttpServlet {
             //
 
             boolean testeExclusaoItem = servicoArea.deleta(codRegistroSelecionado);
-            System.out.println("testeExclusaoItem - "+testeExclusaoItem);
             
             if (testeExclusaoItem) {
-                System.out.println("vai excluir");
                 dadosRegistro = Json.createObjectBuilder()
                     .add("sucesso", true)
                     .add("mensagem", "Registro excluído com sucesso!")

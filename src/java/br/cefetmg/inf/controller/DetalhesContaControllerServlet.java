@@ -12,6 +12,7 @@ import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.Servico;
 import br.cefetmg.inf.model.pojo.rel.QuartoConsumo;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class DetalhesContaControllerServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        JsonObject [] retorno;
+        JsonObject [] retorno = null;
         try {
             operacaoRegistro = Integer.parseInt((String)request.getParameter("operacaoRegistro"));
             nroQuarto = Integer.parseInt((String)request.getParameter("nroQuarto"));
@@ -85,9 +86,13 @@ public class DetalhesContaControllerServlet extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher(caminho);
             rd.forward(request, response);
         } catch (SQLException ex) {
-            //
-            //
-            //
+            retorno[0] = Json.createObjectBuilder()
+                .add("success", false)
+                .add("mensagem", "Erro! Tente novamente")
+                .build();
+            response.setContentType("text/json");
+            PrintWriter out = response.getWriter();
+            out.print(retorno);
         }
         
     }

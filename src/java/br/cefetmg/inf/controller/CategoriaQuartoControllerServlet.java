@@ -112,24 +112,10 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
 
         CategoriaQuarto registroRetorno = registros[0];
         
-//        // buscar os itens de conforto que se relacionam com a categoria
-//        CategoriaItemConfortoDAOImpl relDAO = CategoriaItemConfortoDAOImpl.getInstance();
-//        CategoriaItemConforto[] vetorRel = relDAO.busca(codRegistro, "codCategoria");
-//        // montar uma string com as descrições dos itens
-//        String itensConforto = "";
-//
-//        String codCategoria = null;
-//        for (CategoriaItemConforto cic : vetorRel) {
-//            codCategoria = cic.getCodCategoria();
-//            CategoriaQuarto [] buscaCategoria = categoriaQuarto.busca("codCategoria", codCategoria);
-//            itensConforto += buscaCategoria[0].getNomCategoria() + "; ";
-//        }
-
         JsonObject dadosRegistro = Json.createObjectBuilder()
             .add("codCategoria", registroRetorno.getCodCategoria())
             .add("nomCategoria", registroRetorno.getNomCategoria())
             .add("vlrDiaria", registroRetorno.getVlrDiaria())
-//            .add("itensConforto", itensConforto)
             .build();
 
         return dadosRegistro;
@@ -216,18 +202,6 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
             if (registrosBuscados.length > 0)
                 throw new PKRepetidaException("alterar");
         }
-//        //
-//        // TESTA SE O CÓDIGO ATUAL É USADO EM QUARTO
-//        // LANÇA EXCEÇÃO
-//        //
-//        QuartoDAO dao1 = QuartoDAO.getInstance();
-//        if (!codCategoria.equals(codRegistroSelecionado)) {
-//            Quarto [] registrosExternosBuscados = dao1.busca("codServicoArea", codRegistroSelecionado);
-//            if (registrosExternosBuscados.length > 0)
-//                throw new RegistroUtilizadoExternamenteException("modificar", "quarto");
-//        }
-//        //
-//        //
         
         CategoriaItemConfortoDAOImpl relacaoCategItem = CategoriaItemConfortoDAOImpl.getInstance();
 
@@ -287,7 +261,6 @@ public class CategoriaQuartoControllerServlet extends HttpServlet {
             }
 
             boolean testeExclusaoItem = categoriaQuarto.deleta(codRegistroSelecionado);
-//            if (testeExclusaoItem) {
             if (testeExclusaoItem && testeExclusaoCatRel) {
                 dadosRegistro = Json.createObjectBuilder()
                     .add("sucesso", true)

@@ -129,7 +129,7 @@ public class CheckInControllerServlet extends HttpServlet {
         
         dadosRegistro = Json.createObjectBuilder()
             .add("success", false)
-            .add("mensagem", "Ocorreu erro ao adicionar o registro. Repita a operação.")
+            .add("mensagem", "Check-in efetuado com sucesso!")
             .build();
         
         return dadosRegistro;

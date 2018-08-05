@@ -164,7 +164,6 @@ public class UsuarioControllerServlet extends HttpServlet {
         String codUsuario;
         String nomUsuario;
         String codCargo;
-        String desSenha;
         String desEmail;
         
         codUsuario = requestInterno.getParameter("codUsuario");
@@ -174,8 +173,6 @@ public class UsuarioControllerServlet extends HttpServlet {
         String senha = requestInterno.getParameter("desSenha");
 
         Usuario registroAtualizado = new Usuario(codUsuario, nomUsuario, codCargo, senha, desEmail);
-        
-        System.out.println("senha registroAtualizado: " + registroAtualizado.getDesSenha());
         
         JsonObject dadosRegistro;
 

@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,9 +35,13 @@ public class LoginControllerServlet extends HttpServlet {
             try {
                 loginVerificado = verificaLogin.loginValido(email, senha);
             } catch (SQLException | NoSuchAlgorithmException ex) {
-                //
-                //
-                //
+                JsonObject retorno = Json.createObjectBuilder()
+                    .add("success", false)
+                    .add("mensagem", "Erro! Tente novamente")
+                    .build();
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retorno);
             }
 
         if (loginVerificado) {
@@ -47,7 +53,6 @@ public class LoginControllerServlet extends HttpServlet {
             response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp");
         } else {
             // retorna para a página de login
-//            response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<script type=\"text/javascript\">");

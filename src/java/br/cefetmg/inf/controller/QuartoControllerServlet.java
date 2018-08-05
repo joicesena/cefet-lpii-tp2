@@ -126,17 +126,10 @@ public class QuartoControllerServlet extends HttpServlet {
 
     private JsonObject inserirRegistro () throws SQLException, PKRepetidaException {
         int nroQuarto;
-//        String nomCategoria;
         String codCategoria;
         
         nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
         codCategoria = requestInterno.getParameter("codCategoria");
-        
-//        nomCategoria = requestInterno.getParameter("nomCategoria");
-//        
-//        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
-//        CategoriaQuarto[] categoria = categoriaDAO.busca("nomCategoria", nomCategoria);
-//        codCategoria = categoria[0].getCodCategoria();
         
         Quarto quartoAdicionar = new Quarto(nroQuarto, codCategoria, false);
 
@@ -176,24 +169,15 @@ public class QuartoControllerServlet extends HttpServlet {
         Quarto [] quartosPesquisa = quarto.busca(tipoParametroPesquisa, parametroPesquisa);
         
         requestInterno.setAttribute("listaCategorias", quartosPesquisa);
-        
-        return;
     }
 
     private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
         int nroQuarto;
-//        String nomCategoria;
         String codCategoria;
         
         nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
         codCategoria = requestInterno.getParameter("codCategoria");
 
-//        nomCategoria = requestInterno.getParameter("nomCategoria");
-//        
-//        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
-//        CategoriaQuarto[] categoria = categoriaDAO.busca("nomCategoria", nomCategoria);
-//        codCategoria = categoria[0].getCodCategoria();
-        
         Quarto quartoAdicionar = new Quarto(nroQuarto, codCategoria, false);
         
         JsonObject dadosRegistro;
@@ -211,8 +195,6 @@ public class QuartoControllerServlet extends HttpServlet {
 
         boolean testeRegistro = quarto.atualiza(codRegistroSelecionado, quartoAdicionar);
         
-        System.out.println(testeRegistro);
-
         if (testeRegistro) {
             dadosRegistro = Json.createObjectBuilder()
                 .add("sucesso", true)
@@ -244,7 +226,6 @@ public class QuartoControllerServlet extends HttpServlet {
         QuartoHospedagem [] registrosExternosBuscados = dao.busca(Integer.toString(codRegistroSelecionado), "nroQuarto");
         if (registrosExternosBuscados.length > 0)
             throw new RegistroUtilizadoExternamenteException("modificar", "categoria de quarto");
-        
         //
         //
 
