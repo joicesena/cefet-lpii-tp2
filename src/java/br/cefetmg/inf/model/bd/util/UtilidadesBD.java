@@ -45,13 +45,16 @@ public final class UtilidadesBD {
                 + "FROM Hospedagem A "
                 + "JOIN QuartoHospedagem B ON A.seqHospedagem = B.seqHospedagem "
                 + "WHERE B.nroQuarto = ? "
-                + "ORDER BY A.datCheckIn DESC"
+                + "ORDER BY A.datCheckIn DESC "
                 + "LIMIT 1";
         PreparedStatement pStmt = con.prepareStatement(qry);
         pStmt.setInt(1, nroQuarto);
         ResultSet rs = pStmt.executeQuery();
 
-        return rs.getInt(1);
+        if (rs.next())
+            return rs.getInt(1);
+        else
+            return 0;
     }
     
     public static ResultSet retornaRelatorioDespesas(int seqHospedagem, int nroQuarto) throws SQLException {

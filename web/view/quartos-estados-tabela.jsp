@@ -1,3 +1,4 @@
+<%@page import="br.cefetmg.inf.model.bd.util.UtilidadesBD"%>
 <%@page import="br.cefetmg.inf.model.bd.dao.QuartoDAO"%>
 <%@page import="br.cefetmg.inf.model.pojo.Quarto"%>
 <%@page import="br.cefetmg.inf.model.bd.dao.rel.impl.QuartoHospedagemDAOImpl"%>
@@ -50,32 +51,30 @@
                        boolean idtOcupado = quartosEncontrados[i].isIdtOcupado();
 
                        String estadoQuarto = null;
-                       String datCheckOutString = null;
+                       String datCheckOut = null;
 
                        if (idtOcupado) {
                             estadoQuarto = "Ocupado";
 
                             //Acha o seqhospedagem que está em quarto hospedagem
-                            QuartoHospedagemDAOImpl quartoHospedagemDAO = QuartoHospedagemDAOImpl.getInstance();
-                            QuartoHospedagem [] quartoHospedagemEncontrados = quartoHospedagemDAO.busca(Integer.toString(nroQuarto), "nroquarto"); 
-                            int seqHospedagem = quartoHospedagemEncontrados[0].getSeqHospedagem();
+                            int seqHospedagem = UtilidadesBD.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
                             //Usa o seqhospedagem para obter o datcheckout de hospedagem
                             HospedagemDAO hospedagemDAO = HospedagemDAO.getInstance(); 
-                            Hospedagem [] hospedagens = hospedagemDAO.busca("seqhospedagem", Integer.toString(seqHospedagem)); 
-                            Timestamp datCheckOut = hospedagens[0].getDatCheckOut();
+                            Hospedagem [] hospedagens = hospedagemDAO.busca("seqhospedagem", seqHospedagem); 
+                            Timestamp datCheckOutTS = hospedagens[0].getDatCheckOut();
                             //Passa datCheckOut de Timestamp para String
-                            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            datCheckOutString = formato.format(datCheckOut);
+                            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                            datCheckOut = formato.format(datCheckOutTS);
 
                        } else {
                            estadoQuarto = "Livre";
-                           datCheckOutString = " - ";
+                           datCheckOut = " - ";
                        }
                 %>
                 <tr>
                     <td><% out.print(nroQuarto); %></td>
                     <td><% out.print(estadoQuarto); %></td>
-                    <td><% out.print(datCheckOutString); %></td>
+                    <td><% out.print(datCheckOut); %></td>
                     <td>
                         <center>
                             <% if(idtOcupado){  %>
