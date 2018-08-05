@@ -1,4 +1,8 @@
+<jsp:include page="/WEB-INF/controleAcesso.jsp" flush="false">
+    <jsp:param name="nomePagina" value="Tela de Visualização de Estado dos Quartos"/>
+</jsp:include>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -11,8 +15,8 @@
         <!-- Google Icon Font -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Materialize CSS -->
-        <link type="text/css" rel="stylesheet" href="../css/materialize/materialize.css"/>
-        <link type="text/css" rel="stylesheet" href="../css/quartos-estados.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/materialize/materialize.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/quartos-estados.css"/>
     </head>
     
     <body>
@@ -44,72 +48,10 @@
                 </div>
             </div>
             
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>
-                            Número
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Estado
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Data Limite da Estadia (prevista)
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th><center>Ações</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>101</td>
-                        <td>Ocupado</td>
-                        <td>20/07/2018</td>
-                        <td>
-                            <center>
-                                <a href="conta-detalhes.jsp" id="info-button" class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Detalhes</a>
-                                <a href="checkout.jsp" id="checkout-button" class="waves-effect waves-light btn"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>102</td>
-                        <td>Ocupado</td>
-                        <td>12/07/2018</td>
-                        <td>
-                            <center>
-                                <a href="conta-detalhes.jsp" id="info-button" class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Detalhes</a>
-                                <a href="checkout.jsp" id="checkout-button" class="waves-effect waves-light btn"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>103</td>
-                        <td>Livre</td>
-                        <td><center>-</center></td>
-                        <td>
-                            <center>
-                                <a href="checkin.jsp" id="checkin-button" class="waves-effect waves-light btn"><i class="material-icons left">add_circle_outline</i>Check-in</a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>104</td>
-                        <td>Livre</td>
-                        <td><center>-</center></td>
-                        <td>
-                            <center>
-                                <a href="checkin.jsp" id="checkin-button" class="waves-effect waves-light btn"><i class="material-icons left">add_circle_outline</i>Check-in</a>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div>
+                <jsp:include page="quartos-estados-tabela.jsp"></jsp:include>
+            </div>
+            
         </main>
 
         <footer>
@@ -123,7 +65,7 @@
         <!--  Script -->
         <!-- Import jQuery before Materialize JS  -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="../js/materialize/materialize.js"></script>
-        <script type="text/javascript" src="../js/quartos-estados.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/materialize/materialize.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/quartos-estados.js"></script>
     </body>
 </html>
