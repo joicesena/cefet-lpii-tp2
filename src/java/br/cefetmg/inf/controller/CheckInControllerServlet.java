@@ -40,16 +40,15 @@ public class CheckInControllerServlet extends HttpServlet {
         operacaoRegistro = Integer.parseInt(requestInterno.getParameter("operacaoRegistro"));
         JsonObject retorno;
         
-        
-        // operação 2 --> efetuar o check-in
         try {
             if (operacaoRegistro == 1) {
                 // operacao 1 --> salvar o nroQuarto e forward para a tela de check-in
                 nroQuarto = Integer.parseInt(request.getParameter("nroQuarto"));
-                String caminhoArquivo = "/view/check-in.jsp";
+                String caminhoArquivo = "/view/checkin.jsp";
                 RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
                 rd.forward(request, response);
             } else if (operacaoRegistro == 2) {
+                // operação 2 --> efetuar o check-in
                 retorno = efetuarCheckIn();
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
