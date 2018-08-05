@@ -46,11 +46,9 @@ public class DetalhesContaControllerServlet extends HttpServlet {
             QuartoConsumo [] registrosBuscados = dao.busca(seqHospedagem, "seqHospedagem");
             
             JsonArrayBuilder builder = Json.createArrayBuilder();
-//            JsonArray detalhesConta= null;
             
             if (registrosBuscados.length > 1) {
                 int i = 0;
-//                retorno = new JsonObject [i];
                 for (QuartoConsumo reg : registrosBuscados) {
                     if (reg.getNroQuarto() == nroQuarto) {
                         ServicoDAO servicoDAO = ServicoDAO.getInstance();
@@ -81,6 +79,11 @@ public class DetalhesContaControllerServlet extends HttpServlet {
                 response.setContentType("text/json");
                 PrintWriter out = response.getWriter();
                 out.print(linhasQuartoConsumo);
+            } else {
+                JsonObject retorno = null;
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retorno);
             }
 
         } catch (SQLException ex) {
