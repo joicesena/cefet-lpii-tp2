@@ -29,14 +29,16 @@ function executaCheckIn() {
             data: dados + "&operacaoRegistro=2" + "&codCPF="+codCPF,
             // mostra mensagem pro usuário
             success: function(data) {
-                    alert(data.mensagem);
+                alert(data.mensagem);
+                window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp");
             },
             error: function(data) {
-                    if (data.mensagem == null) {
-                            alert("Não foi possível inserir o registro");
-                    } else {
-                            alert(data.mensagem);
-                    }
+                if (data.mensagem == null) {
+                        alert("Não foi possível inserir o registro");
+                } else {
+                        alert(data.mensagem);
+                }
+                window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp");
             }
     });
 }

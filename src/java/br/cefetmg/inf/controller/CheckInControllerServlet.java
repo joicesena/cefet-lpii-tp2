@@ -29,7 +29,7 @@ public class CheckInControllerServlet extends HttpServlet {
     private HttpServletRequest requestInterno;
     private int operacaoRegistro;
     
-    private int nroQuarto;
+    private static int nroQuarto;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -78,9 +78,6 @@ public class CheckInControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-//        
-//        String caminhoArquivo = "http://localhost:8080/cefet-lpii-tp2/view/quartos-estados.jsp";
-//        response.sendRedirect(caminhoArquivo);
     }
     
     protected JsonObject efetuarCheckIn() throws SQLException {
@@ -101,34 +98,41 @@ public class CheckInControllerServlet extends HttpServlet {
             calendario.setTime(dataAtual);
             calendario.add(Calendar.DATE, +diasDeEstadia);
             Timestamp dataCheckOut = new Timestamp(calendario.getTimeInMillis());
-        
+            
         // número de hóspedes
         int nroAdultos = Integer.parseInt(requestInterno.getParameter("nroAdultos"));
         int nroCriancas = Integer.parseInt(requestInterno.getParameter("nroCriancas"));
         
         // vlrDiaria
         QuartoDAO quartoDAO = QuartoDAO.getInstance();
-        Quarto[] quarto;
-        quarto = quartoDAO.busca("nroQuarto", nroQuarto);
-        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
-        CategoriaQuarto[] categorias = categoriaDAO.busca("codCategoria", quarto[0].getCodCategoria());
-        Double valorDiaria = categorias[0].getVlrDiaria();
+        Quarto[] quarto = quartoDAO.busca("nroQuarto", nroQuarto);
 
+        String codCategoria = quarto[0].getCodCategoria();
+        
+        CategoriaQuartoDAO categoriaDAO = CategoriaQuartoDAO.getInstance();
+        CategoriaQuarto[] categorias = categoriaDAO.busca("codCategoria", codCategoria);
+        Double valorDiaria = categorias[0].getVlrDiaria();
+        
+        double valorTotal = valorDiaria*diasDeEstadia;
+        
+        // ----------------------------------------------------------------------------------------------------------------------------------------
         // realiza a operação de check-in
-        Hospedagem hosp = new Hospedagem(dataCheckIn, dataCheckOut, (valorDiaria*diasDeEstadia), cpfHospede);
+        Hospedagem hosp = new Hospedagem(dataCheckIn, dataCheckOut, valorTotal, cpfHospede);
         HospedagemDAO hospDAO = HospedagemDAO.getInstance();
         hospDAO.adiciona(hosp);
+        
         Hospedagem[] hospEncontrada = hospDAO.busca(hosp);
 
         QuartoHospedagemDAOImpl quartoHosp = QuartoHospedagemDAOImpl.getInstance();
-        QuartoHospedagem objAdicionar = new QuartoHospedagem(hospEncontrada[0].getSeqHospedagem(), nroQuarto, nroAdultos, nroCriancas, valorDiaria);
-        quartoHosp.adiciona(objAdicionar);
-        
+        int seqHospedagem = hospEncontrada[0].getSeqHospedagem();
+        QuartoHospedagem objAdicionar = new QuartoHospedagem(seqHospedagem, nroQuarto, nroAdultos, nroCriancas, valorDiaria);
+        boolean testeAddQuarto = quartoHosp.adiciona(objAdicionar);
+
         // atualiza o idtOcupado do quarto pra ocupado
         Quarto quartoAtualizado = quarto[0];
         quartoAtualizado.setIdtOcupado(true);
-        quartoDAO.atualiza(nroQuarto, quartoAtualizado);
-        
+        boolean testeAtualizaQuarto = quartoDAO.atualiza(nroQuarto, quartoAtualizado);
+
         dadosRegistro = Json.createObjectBuilder()
             .add("success", false)
             .add("mensagem", "Check-in efetuado com sucesso!")
