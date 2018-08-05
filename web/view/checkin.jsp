@@ -1,4 +1,8 @@
+<jsp:include page="/WEB-INF/controleAcesso.jsp" flush="false">
+    <jsp:param name="nomePagina" value="Tela de Check-in"/>
+</jsp:include>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -11,8 +15,8 @@
         <!-- Google Icon Font -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Materialize CSS -->
-        <link type="text/css" rel="stylesheet" href="../css/materialize/materialize.css"/>
-        <link type="text/css" rel="stylesheet" href="../css/checkin.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/materialize/materialize.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/checkin.css"/>
     </head>
     
     <body>
@@ -45,89 +49,45 @@
                 </div>
             </div>
             
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>
-                            CPF
-                        </th>
-                        <th>
-                            Nome
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Email
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Telefone                        
-                        </th>
-                        <th><center>Ações</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>568.856.143-27</td>
-                        <td>Bruna Duarte</td>
-                        <td>bruduarte@gmail.com</td>
-                        <td>(31)98606-0045</td>
-                        <td>
-                            <center>
-                                <input name="radio-group" type="radio" id="hospede1"/>
-                                <label for="hospede1">Selecionar hóspede</label>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>462.869.375-27</td>
-                        <td>Florence Welch</td>
-                        <td>florence@gmail.com</td>
-                        <td>(31)99009-9900</td>
-                        <td>
-                            <center>
-                                <input name="radio-group" type="radio" id="hospede2"/>
-                                <label for="hospede2">Selecionar hóspede</label>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div id="container">
-                <div class="row">
-                    <div class="col s12 form-input">
-                        <div class="input-field">
-                            <i class="material-icons prefix">date_range</i>
-                            <label for="dias-estadia">Dias de estadia</label>
-                            <input id="dias-estadia" type="number">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 form-input">
-                        <div class="input-field">
-                            <i class="material-icons prefix">wc</i>
-                            <label for="qtd-adultos">Quantidade de adultos</label>
-                            <input id="qtd-adultos" type="number">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 form-input">
-                        <div class="input-field">
-                            <i class="material-icons prefix">face</i>
-                            <label for="qtd-criancas">Quantidade de crianças</label>
-                            <input id="qtd-criancas" type="number">
-                        </div>
-                    </div>
-                </div>
+            <div>
+                <jsp:include page="checkin-tabela.jsp"></jsp:include>
             </div>
             
-            <div class="card-action right-align button-box">
-                <button id="checkin-button" class="btn waves-effect waves-light" onclick="checkin()"><i class="material-icons left">person_add</i>Check-in</button>
-            </div>
+            <form id="frmCheckIn" method="post">                
+                <div id="container">
+                    <div class="row">
+                        <div class="col s12 form-input">
+                            <div class="input-field">
+                                <i class="material-icons prefix">date_range</i>
+                                <label for="diasDeEstadia">Dias de estadia</label>
+                                <input id="diasDeEstadia" name="diasDeEstadia" type="number" class="validate" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 form-input">
+                            <div class="input-field">
+                                <i class="material-icons prefix">wc</i>
+                                <label for="nroAdultos">Quantidade de adultos</label>
+                                <input id="nroAdultos" name="nroAdultos" type="number" class="validate" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 form-input">
+                            <div class="input-field">
+                                <i class="material-icons prefix">face</i>
+                                <label for="nroCriancas">Quantidade de crianças</label>
+                                <input id="nroCriancas" name="nroCriancas" type="number" class="validate" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-action right-align button-box">
+                    <button id="checkin-button" class="btn waves-effect waves-light" onclick="executaCheckIn()"><i class="material-icons left">person_add</i>Check-in</button>
+                </div>
+            </form>
         </main>
 
         <footer>
@@ -141,7 +101,7 @@
         <!--  Script -->
         <!-- Import jQuery before Materialize JS  -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="../js/materialize/materialize.js"></script>
-        <script type="text/javascript" src="../js/checkin.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/materialize/materialize.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/checkin.js"></script>
     </body>
 </html>
