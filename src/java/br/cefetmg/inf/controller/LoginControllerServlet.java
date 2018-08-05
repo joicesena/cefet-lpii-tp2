@@ -27,24 +27,16 @@ public class LoginControllerServlet extends HttpServlet {
             
             HttpSession session = request.getSession();
             
-            if (email == null || senha == null) {
-                response.sendRedirect("http://localhost:8080/cefet-lpii-tp2/view/login.jsp");
-            }
-
             LoginAutenticador verificaLogin = new LoginAutenticador();
             boolean loginVerificado = false;
             
             try {
                 loginVerificado = verificaLogin.loginValido(email, senha);
-            } catch (SQLException ex) {
+            } catch (SQLException | NoSuchAlgorithmException ex) {
                 //
                 //
                 //
-            } catch (NoSuchAlgorithmException ex) {
-            //
-            //
-            //
-        }
+            }
 
         if (loginVerificado) {
             session.setAttribute("email", email);

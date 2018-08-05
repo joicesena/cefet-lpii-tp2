@@ -2,11 +2,9 @@ package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.exception.PKRepetidaException;
 import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
-import br.cefetmg.inf.model.bd.dao.CargoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
 import br.cefetmg.inf.model.bd.dao.rel.impl.QuartoConsumoDAOImpl;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
-import br.cefetmg.inf.model.pojo.Cargo;
 import br.cefetmg.inf.model.pojo.Usuario;
 import br.cefetmg.inf.model.pojo.rel.QuartoConsumo;
 import java.io.IOException;
@@ -106,19 +104,14 @@ public class UsuarioControllerServlet extends HttpServlet {
     //
     private JsonObject retornarDadosRegistro (String codRegistro) throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
         Usuario [] registros = usuario.busca("codUsuario", codRegistro);
-
         Usuario registroRetorno = registros[0];
-
-        CargoDAO cargoDAO = CargoDAO.getInstance();
-        Cargo [] cargos = cargoDAO.busca("codCargo", registroRetorno.getCodCargo());
-        String nomCargo = cargos[0].getNomCargo();
-
+        
         JsonObject dadosRegistro = Json.createObjectBuilder()
-            .add("codUsuario", registroRetorno.getCodUsuario())
+            .add("codUsuario", codRegistro)
             .add("nomUsuario", registroRetorno.getNomUsuario())
-            .add("nomCargo", nomCargo)
             .add("desSenha", registroRetorno.getDesSenha())
             .add("desEmail", registroRetorno.getDesEmail())
+            .add("codCargo", registroRetorno.getCodCargo())
             .build();
 
         return dadosRegistro;
@@ -128,7 +121,6 @@ public class UsuarioControllerServlet extends HttpServlet {
         String codUsuario;
         String nomUsuario;
         String codCargo;
-        String desSenha;
         String desEmail;
         
         codUsuario = requestInterno.getParameter("codUsuario");
@@ -136,8 +128,8 @@ public class UsuarioControllerServlet extends HttpServlet {
         desEmail = requestInterno.getParameter("desEmail");
         codCargo = requestInterno.getParameter("codCargo");
         
-        desSenha = UtilidadesBD.stringParaSHA256(requestInterno.getParameter("desSenha"));
-        
+        String senha = requestInterno.getParameter("desSenha");
+
         //
         // TESTA SE JÁ EXISTE ALGUM REGISTRO COM AQUELA PK
         // LANÇA EXCEÇÃO
@@ -147,7 +139,7 @@ public class UsuarioControllerServlet extends HttpServlet {
         //
         //
         
-        Usuario usuarioAdicionar = new Usuario(codUsuario, nomUsuario, codCargo, desSenha, desEmail);
+        Usuario usuarioAdicionar = new Usuario(codUsuario, nomUsuario, codCargo, senha, desEmail);
         
         JsonObject dadosRegistro;
         
@@ -178,11 +170,12 @@ public class UsuarioControllerServlet extends HttpServlet {
         codUsuario = requestInterno.getParameter("codUsuario");
         nomUsuario = requestInterno.getParameter("nomUsuario");
         desEmail = requestInterno.getParameter("desEmail");
-        codCargo = requestInterno.getParameter("codCargo");
+        codCargo = requestInterno.getParameter("codCargo");        
+        String senha = requestInterno.getParameter("desSenha");
+
+        Usuario registroAtualizado = new Usuario(codUsuario, nomUsuario, codCargo, senha, desEmail);
         
-        desSenha = UtilidadesBD.stringParaSHA256(requestInterno.getParameter("desSenha"));
-        
-        Usuario registroAtualizado = new Usuario(codUsuario, nomUsuario, codCargo, desSenha, desEmail);
+        System.out.println("senha registroAtualizado: " + registroAtualizado.getDesSenha());
         
         JsonObject dadosRegistro;
 
@@ -200,7 +193,9 @@ public class UsuarioControllerServlet extends HttpServlet {
         HttpSession session = requestInterno.getSession();
         String codUsuarioLogado = (String) session.getAttribute("codUsuario");
         if (codRegistroSelecionado.equals(codUsuarioLogado)) {
-            throw new RegistroUtilizadoExternamenteException("Não é possível alterar seu próprio código!");
+            if (!codUsuario.equals(codUsuarioLogado)) {
+                throw new RegistroUtilizadoExternamenteException("Não é possível alterar seu próprio código!");
+            }
         }
         //
         //

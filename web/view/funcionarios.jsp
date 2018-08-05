@@ -79,7 +79,7 @@
                                         <!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
                                         <!-- ID USADO NO JSON -->
                                         <label for="codUsuario">Código</label>
-                                        <input id="codUsuario" name="codUsuario" type="number" class="validate" required>
+                                        <input id="codUsuario" name="codUsuario" type="text" class="validate" required>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                                         <!-- O ID E O NAME DEVEM SER OS MESMOS QUE SERÃO INFORMADOS NO SERVLET! MANTER PADRAO CAMEL CASE-->
                                         <!-- ID USADO NO JSON -->
                                         <label for="codUsuario">Código</label>
-                                        <input id="codUsuario" name="codUsuario" type="number" class="validate" required>
+                                        <input id="codUsuario" name="codUsuario" type="text" class="validate" required>
                                     </div>
                                 </div>
                             </div>
