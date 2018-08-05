@@ -17,8 +17,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,23 +33,24 @@ public class DetalhesContaControllerServlet extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        JsonObject [] retorno = null;
+
         try {
-            operacaoRegistro = Integer.parseInt((String)request.getParameter("operacaoRegistro"));
-            nroQuarto = Integer.parseInt((String)request.getParameter("nroQuarto"));
+            operacaoRegistro = Integer.parseInt(request.getParameter("operacaoRegistro"));
+            nroQuarto = Integer.parseInt(request.getParameter("nroQuarto"));
             int seqHospedagem = UtilidadesBD.buscaUltimoRegistroRelacionadoAoQuarto(nroQuarto);
             
             request.setAttribute("nroQuarto", nroQuarto);
             request.setAttribute("seqHospedagem", seqHospedagem);
             
             QuartoConsumoDAOImpl dao = QuartoConsumoDAOImpl.getInstance();
-            QuartoConsumo [] registrosBuscados = dao.busca(Integer.toString(seqHospedagem), "seqHospedagem");
+            QuartoConsumo [] registrosBuscados = dao.busca(seqHospedagem, "seqHospedagem");
+            
+            JsonArrayBuilder builder = Json.createArrayBuilder();
+//            JsonArray detalhesConta= null;
             
             if (registrosBuscados.length > 1) {
                 int i = 0;
-                
-                retorno = new JsonObject [i];
-                i = 0;
+//                retorno = new JsonObject [i];
                 for (QuartoConsumo reg : registrosBuscados) {
                     if (reg.getNroQuarto() == nroQuarto) {
                         ServicoDAO servicoDAO = ServicoDAO.getInstance();
@@ -59,34 +60,31 @@ public class DetalhesContaControllerServlet extends HttpServlet {
                         
                         Date dataConsumo = new Date(reg.getDatConsumo().getTime());
                         
+                        JsonObject consumo;
                         // monta o array json com as informações para construir a tabela
-                        retorno[i] = Json.createObjectBuilder()
+                        consumo = Json.createObjectBuilder()
+                            .add("nroQuarto", reg.getNroQuarto())
+                            .add("seqHospedagem", reg.getSeqHospedagem())
                             .add("seqServico", servico[0].getSeqServico())
                             .add("desServico", servico[0].getDesServico())
                             .add("datConsumo", sdf.format(dataConsumo))
                             .add("vlrUnit", servico[0].getVlrUnit())
                             .add("qtdConsumo", reg.getQtdConsumo())
                             .build();
+                        builder.add(consumo);
                         i++;
                     }
                 }
-            } else {
-                retorno = null;
+                
+                JsonObject linhasQuartoConsumo = Json.createObjectBuilder().add("linhas", builder).build();
+
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(linhasQuartoConsumo);
             }
-            
-            // coloca o array json no request, para que ele possa ser acessado na página jsp
-            request.setAttribute("quartoConsumo", retorno);
-            
-            String caminho;
-            if (operacaoRegistro == 1)
-               caminho = "http://localhost:8080/cefet-lpii-tp2/view/conta-detalhes.jsp";
-            else
-                caminho = "http://localhost:8080/cefet-lpii-tp2/view/checkout.jsp";
-            
-            RequestDispatcher rd = request.getRequestDispatcher(caminho);
-            rd.forward(request, response);
+
         } catch (SQLException ex) {
-            retorno[0] = Json.createObjectBuilder()
+            JsonObject retorno = Json.createObjectBuilder()
                 .add("success", false)
                 .add("mensagem", "Erro! Tente novamente")
                 .build();

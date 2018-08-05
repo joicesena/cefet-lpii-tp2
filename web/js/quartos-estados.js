@@ -40,13 +40,23 @@ function forwardAccountDetails(ANroQuarto) {
         type: "POST",
         data: "operacaoRegistro=1" + "&nroQuarto="+ANroQuarto,
         success: function(data) {
+            for (var i = 0; i < data.linhas.length; i++) {
+                item = data.linhas[i];
+                // item.nroQuarto --> hidden
+                // item.seqHospedagem --> hidden
+                // item.seqServico
+                // item.desServico
+                // item.datConsumo
+                // item.vlrUnit
+                // item.qtdConsumo
+            }
             window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/conta-detalhes.jsp");
         },
         error: function(data) {
             if (data.mensagem === null) {
-                    alert("Não foi possível executar a operação");
+                alert("Não foi possível executar a operação");
             } else {
-                    alert(data.mensagem);
+                alert(data.mensagem);
             }
         }
     });

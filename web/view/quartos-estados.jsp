@@ -1,6 +1,3 @@
-<jsp:include page="/WEB-INF/controleAcesso.jsp" flush="false">
-    <jsp:param name="nomePagina" value="Tela de Visualização de Estado dos Quartos"/>
-</jsp:include>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
