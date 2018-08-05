@@ -104,6 +104,42 @@ public class HospedagemDAOTest {
     }
 
     @Test
+    public void testBusca2() throws SQLException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        System.out.println("--Testa HospedagemDAO.busca2()--");
+
+        hospedeDAO.adiciona(new Hospede("           ".replace(" ", "" + i + ""), "Hospede" + i,
+                "319        ".replace(" ", "" + i + ""), "pablo" + i + "@email.com"));
+
+        Hospedagem expResult = new Hospedagem(
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * i)),
+                new Timestamp(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * (i + 1))),
+                100.00 * i,
+                "           ".replace(" ", "" + i + ""));
+
+        try {
+            hospedagemDAO.adiciona(expResult);
+        } catch (SQLException e) {
+            fail("--!! O teste falhou -> 1 !!--");
+        }
+
+        try {
+            Hospedagem[] result = hospedagemDAO.busca(expResult);
+            if ((1 == result[0].getSeqHospedagem())
+                    && (expResult.getDatCheckIn().equals(result[0].getDatCheckIn()))
+                    && (expResult.getDatCheckOut().equals(result[0].getDatCheckOut()))
+                    && (Double.compare(expResult.getVlrPago(), result[0].getVlrPago()) == 0)
+                    && (expResult.getCodCPF().equals(result[0].getCodCPF()))) {
+                System.out.println("-->> Teste finalizado com sucesso <<--");
+                assert true;
+            } else {
+                fail("--!! O teste falhou -> 2 !!--");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testAtualiza() throws Exception {
         System.out.println("--Testa HospedagemDAO.atualiza()--");
 

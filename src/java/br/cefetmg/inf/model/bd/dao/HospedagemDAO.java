@@ -94,13 +94,11 @@ public class HospedagemDAO extends BaseDAO<Hospedagem> {
     }
 
     public Hospedagem[] busca(Hospedagem hospedagem) throws SQLException {
-        Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-                ResultSet.CONCUR_UPDATABLE);
-
         String qry = "SELECT * FROM Hospedagem WHERE "
                 + "datCheckIn=? AND datCheckOut=? AND vlrPago=? AND codCPF=?";
 
-        PreparedStatement pStmt = con.prepareStatement(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
         pStmt.setTimestamp(1, hospedagem.getDatCheckIn());
         pStmt.setTimestamp(2, hospedagem.getDatCheckOut());
         pStmt.setDouble(3, hospedagem.getVlrPago());

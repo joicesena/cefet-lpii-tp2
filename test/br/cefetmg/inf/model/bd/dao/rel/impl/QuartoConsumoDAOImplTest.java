@@ -19,6 +19,8 @@ import br.cefetmg.inf.model.pojo.Quarto;
 import br.cefetmg.inf.model.pojo.Servico;
 import br.cefetmg.inf.model.pojo.ServicoArea;
 import br.cefetmg.inf.model.pojo.Usuario;
+import br.cefetmg.inf.model.pojo.rel.QuartoConsumo;
+import br.cefetmg.inf.model.pojo.rel.QuartoHospedagem;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -112,19 +114,19 @@ public class QuartoConsumoDAOImplTest {
         Servico servico1 = new Servico("Serviço 1", 2.00, "001");
         SERVICO_DAO.adiciona(servico1);
         
-        QUARTO_HOSPEDAGEM_DAO_IMPL.adiciona(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
+        QUARTO_HOSPEDAGEM_DAO_IMPL.adiciona(new QuartoHospedagem(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
                 quarto1.getNroQuarto(), 
                 2, 
                 1, 
-                10.00);
+                10.00));
 
         try {
-            QUARTO_CONSUMO_DAO_IMPL.adiciona(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
+            QUARTO_CONSUMO_DAO_IMPL.adiciona(new QuartoConsumo(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
                     quarto1.getNroQuarto(),
                     new Timestamp(System.currentTimeMillis()),
                     1,
                     SERVICO_DAO.busca()[0].getSeqServico(),
-                    usuario1.getCodUsuario());
+                    usuario1.getCodUsuario()));
             assert true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,20 +168,20 @@ public class QuartoConsumoDAOImplTest {
         Servico servico1 = new Servico("Serviço 1", 2.00, "001");
         SERVICO_DAO.adiciona(servico1);
         
-        QUARTO_HOSPEDAGEM_DAO_IMPL.adiciona(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
+        QUARTO_HOSPEDAGEM_DAO_IMPL.adiciona(new QuartoHospedagem(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
                 quarto1.getNroQuarto(), 
                 2, 
                 1, 
-                10.00);
+                10.00));
 
         Timestamp timestamp1 = new Timestamp(System.currentTimeMillis());
 
-        QUARTO_CONSUMO_DAO_IMPL.adiciona(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
+        QUARTO_CONSUMO_DAO_IMPL.adiciona(new QuartoConsumo(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
                 quarto1.getNroQuarto(),
                 timestamp1,
                 1,
                 SERVICO_DAO.busca()[0].getSeqServico(),
-                usuario1.getCodUsuario());
+                usuario1.getCodUsuario()));
         try {
             QUARTO_CONSUMO_DAO_IMPL.deleta(HOSPEDAGEM_DAO.busca()[0].getSeqHospedagem(),
                     quarto1.getNroQuarto(),
