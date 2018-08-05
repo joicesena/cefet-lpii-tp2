@@ -8,7 +8,8 @@ public interface QuartoConsumoDAO {
 
     boolean adiciona(QuartoConsumo quartoConsumo) throws SQLException;
 
-    QuartoConsumo[] busca(String cod, String coluna) throws SQLException;
+//    QuartoConsumo[] busca(String cod, String coluna) throws SQLException;
+    QuartoConsumo[] busca(Object dadoBusca, String coluna) throws SQLException;
     
     //atualiza();
     

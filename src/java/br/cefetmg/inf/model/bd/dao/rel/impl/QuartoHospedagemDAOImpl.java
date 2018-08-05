@@ -44,14 +44,18 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
     }
     
     @Override
-    public QuartoHospedagem[] busca(String cod, String coluna) throws SQLException {
+    public QuartoHospedagem[] busca(Object dadoBusca, String coluna) throws SQLException {
         String qry = "SELECT * "
                 + "FROM QuartoHospedagem "
                 + "WHERE " + coluna + " = ?";
 
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, cod);
+        if (dadoBusca instanceof String) {
+            pStmt.setString(1, dadoBusca.toString());
+        } else {
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        }
 
         ResultSet rs = pStmt.executeQuery();
 
@@ -90,4 +94,5 @@ public class QuartoHospedagemDAOImpl implements QuartoHospedagemDAO {
         pStmt.setInt(2, quartoHospedagem.getNroQuarto());
         return pStmt.executeUpdate() > 0;
     }
+
 }

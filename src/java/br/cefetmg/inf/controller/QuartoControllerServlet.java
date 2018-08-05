@@ -223,12 +223,13 @@ public class QuartoControllerServlet extends HttpServlet {
         // testa se o nroQuarto está sendo usado em QuartoHospedagem
         // lança exceção
         QuartoHospedagemDAOImpl dao = QuartoHospedagemDAOImpl.getInstance();
-        QuartoHospedagem [] registrosExternosBuscados = dao.busca(Integer.toString(codRegistroSelecionado), "nroQuarto");
-        if (registrosExternosBuscados.length > 0)
+        QuartoHospedagem [] registrosExternosBuscados = dao.busca(codRegistroSelecionado, "nroQuarto");
+        if (registrosExternosBuscados.length > 0) {
             throw new RegistroUtilizadoExternamenteException("modificar", "categoria de quarto");
+        }
         //
         //
-
+        
         HttpSession session = requestInterno.getSession();
         
         JsonObject dadosRegistro;

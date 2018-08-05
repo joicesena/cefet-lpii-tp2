@@ -42,14 +42,19 @@ public class QuartoConsumoDAOImpl implements QuartoConsumoDAO {
         return pStmt.executeUpdate() > 0;
     }
 
-    public QuartoConsumo[] busca(String cod, String coluna) throws SQLException {
+    @Override
+    public QuartoConsumo[] busca(Object dadoBusca, String coluna) throws SQLException {
         String qry = "SELECT * "
                 + "FROM QuartoConsumo "
                 + "WHERE " + coluna + " = ?";
 
         PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
                 ResultSet.CONCUR_UPDATABLE);
-        pStmt.setString(1, cod);
+        if (dadoBusca instanceof String) {
+            pStmt.setString(1, dadoBusca.toString());
+        } else {
+            pStmt.setInt(1, Integer.parseInt(dadoBusca.toString()));
+        }
 
         ResultSet rs = pStmt.executeQuery();
 

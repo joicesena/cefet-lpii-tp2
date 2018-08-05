@@ -7,8 +7,8 @@ public interface QuartoHospedagemDAO {
 
     boolean adiciona(QuartoHospedagem quartoHospedagem) throws SQLException;
 
-    QuartoHospedagem[] busca(String cod, String coluna) throws SQLException;
-
+//    QuartoHospedagem[] busca(String cod, String coluna) throws SQLException;
+    QuartoHospedagem[] busca(Object dadoBusca, String coluna) throws SQLException;
     //atualiza();
     
     boolean deleta(int seqHospedagem, int nroQuarto) throws SQLException;
