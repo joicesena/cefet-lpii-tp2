@@ -18,7 +18,17 @@ function forwardCheckIn(ANroQuarto) {
         url: "http://localhost:8080/cefet-lpii-tp2/check-in",
         type: "POST",
         // manda como parâmetro de operação 1 --> salvar o nroQuarto e forward para a tela de check-in
-        data: "operacaoRegistro=1" + "&nroQuarto="+ANroQuarto
+        data: "operacaoRegistro=1" + "&nroQuarto="+ANroQuarto,
+        success: function(data) {
+            window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/checkin.jsp");
+        },
+        error: function(data) {
+            if (data.mensagem === null) {
+                    alert("Não foi possível executar a operação");
+            } else {
+                    alert(data.mensagem);
+            }
+        }
     });
 }
 

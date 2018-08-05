@@ -18,7 +18,6 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,9 +43,13 @@ public class CheckInControllerServlet extends HttpServlet {
             if (operacaoRegistro == 1) {
                 // operacao 1 --> salvar o nroQuarto e forward para a tela de check-in
                 nroQuarto = Integer.parseInt(request.getParameter("nroQuarto"));
-                String caminhoArquivo = "/view/checkin.jsp";
-                RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
-                rd.forward(request, response);
+                retorno = Json.createObjectBuilder()
+                    .add("success", true)
+                    .add("mensagem", "Redirecionando para checkin")
+                    .build();
+                response.setContentType("text/json");
+                PrintWriter out = response.getWriter();
+                out.print(retorno);
             } else if (operacaoRegistro == 2) {
                 // operação 2 --> efetuar o check-in
                 retorno = efetuarCheckIn();
