@@ -32,3 +32,42 @@ function forwardCheckIn(ANroQuarto) {
     });
 }
 
+// método para efetuar o redirecionamento para a tela de detalhes da conta
+function forwardAccountDetails(ANroQuarto) {
+    // envia a requisição para o servlet
+    $.ajax({
+        url: "http://localhost:8080/cefet-lpii-tp2/detalhes-da-conta",
+        type: "POST",
+        data: "operacaoRegistro=1" + "&nroQuarto="+ANroQuarto,
+        success: function(data) {
+            window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/conta-detalhes.jsp");
+        },
+        error: function(data) {
+            if (data.mensagem === null) {
+                    alert("Não foi possível executar a operação");
+            } else {
+                    alert(data.mensagem);
+            }
+        }
+    });
+}
+
+// método para efetuar o redirecionamento para a tela de checkout
+function forwardCheckOut(ANroQuarto) {
+    // envia a requisição para o servlet
+    $.ajax({
+        url: "http://localhost:8080/cefet-lpii-tp2/detalhes-da-conta",
+        type: "POST",
+        data: "operacaoRegistro=2" + "&nroQuarto="+ANroQuarto,
+        success: function(data) {
+            window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/checkout.jsp");
+        },
+        error: function(data) {
+            if (data.mensagem === null) {
+                    alert("Não foi possível executar a operação");
+            } else {
+                    alert(data.mensagem);
+            }
+        }
+    });
+}

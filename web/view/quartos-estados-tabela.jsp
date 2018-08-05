@@ -78,8 +78,8 @@
                     <td>
                         <center>
                             <% if(idtOcupado){  %>
-                                <a href="conta-detalhes.jsp" id="info-button" class="waves-effect waves-light btn"><i class="material-icons left">info_outline</i>Detalhes</a>
-                                <a href="checkout.jsp" id="checkout-button" class="waves-effect waves-light btn"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
+                                <a href="#" id="info-button" class="waves-effect waves-light btn" onclick="forwardAccountDetails('<% out.print(nroQuarto); %>')"><i class="material-icons left">info_outline</i>Detalhes</a>
+                                <a href="#" id="checkout-button" class="waves-effect waves-light btn" onclick="forwardCheckOut('<% out.print(nroQuarto); %>')"><i class="material-icons left">remove_circle_outline</i>Check-out</a>
                             <% } else {  %>
                                 <a href="#" id="checkin-button" class="waves-effect waves-light btn" onclick="forwardCheckIn('<% out.print(nroQuarto); %>')"><i class="material-icons left">add_circle_outline</i>Check-in</a>
                             <% } // if  %>        
