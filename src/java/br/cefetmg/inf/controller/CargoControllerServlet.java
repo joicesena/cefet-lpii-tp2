@@ -182,18 +182,13 @@ public class CargoControllerServlet extends HttpServlet {
         String codCargo;
         String nomCargo;
         boolean idtMaster;
-//        String [] programas;
-//        String codPrograma;
         String [] codProgramasSelecionados;
         
         codCargo = requestInterno.getParameter("codCargo");
         nomCargo = requestInterno.getParameter("nomCargo");
-//        idtMaster = Boolean.getBoolean(requestInterno.getParameter("idtMasterSelecionado"));
         idtMaster = false;
         codProgramasSelecionados = requestInterno.getParameterValues("codPrograma");
 
-//        programas = request.getParameterValues("programasSelecionados");
-        
         Cargo cargoAtualizado = new Cargo(codCargo, nomCargo, idtMaster);
         
         //
@@ -261,8 +256,9 @@ public class CargoControllerServlet extends HttpServlet {
         //
         UsuarioDAO dao1 = UsuarioDAO.getInstance();
         Usuario [] registrosExternosBuscados1 = dao1.busca("codCargo", codRegistroSelecionado);
-        if (registrosExternosBuscados1.length > 0)
+        if (registrosExternosBuscados1.length > 0) {
             throw new RegistroUtilizadoExternamenteException("excluir", "registro de funcionário");
+        }
         //
         //
         
@@ -272,11 +268,10 @@ public class CargoControllerServlet extends HttpServlet {
             
             boolean testeExclusaoCatRel = true;
             if (registrosExternosBuscados.length > 0) {
-                testeExclusaoCatRel = relacaoCargoPrograma.deleta(codRegistroSelecionado, "codCategoria");
+                testeExclusaoCatRel = relacaoCargoPrograma.deleta(codRegistroSelecionado, "codCargo");
             }
 
             boolean testeExclusaoItem = cargo.deleta(codRegistroSelecionado);
-//            if (testeExclusaoItem) {
             if (testeExclusaoItem && testeExclusaoCatRel) {
                 dadosRegistro = Json.createObjectBuilder()
                     .add("sucesso", true)

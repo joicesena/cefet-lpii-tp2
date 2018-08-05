@@ -3,14 +3,10 @@ package br.cefetmg.inf.controller;
 import br.cefetmg.inf.exception.PKRepetidaException;
 import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
 import br.cefetmg.inf.model.bd.dao.HospedeDAO;
-import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
-import br.cefetmg.inf.model.bd.util.UtilidadesBD;
 import br.cefetmg.inf.model.pojo.Hospede;
-import br.cefetmg.inf.model.pojo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -19,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @WebServlet(name = "HospedeControllerServlet", urlPatterns = {"/hospede"})
 public class HospedeControllerServlet extends HttpServlet {

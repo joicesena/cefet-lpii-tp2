@@ -159,7 +159,6 @@ public class AreaServicoControllerServlet extends HttpServlet {
         ServicoArea [] areasPesquisa = servicoArea.busca(tipoParametroPesquisa, parametroPesquisa);
         
         requestInterno.setAttribute("listaAreas", areasPesquisa);
-        return;
     }
 
     private JsonObject editarRegistro() throws SQLException, PKRepetidaException, RegistroUtilizadoExternamenteException {
