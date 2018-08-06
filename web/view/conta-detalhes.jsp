@@ -11,8 +11,8 @@
         <!-- Google Icon Font -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Materialize CSS -->
-        <link type="text/css" rel="stylesheet" href="../css/materialize/materialize.css"/>
-        <link type="text/css" rel="stylesheet" href="../css/padrao-tipo-1.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/materialize/materialize.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/padrao-tipo-1.css"/>
     </head>
     
     <body>
@@ -45,83 +45,10 @@
                 </div>
             </div>
             
-            <table class="striped">
-                <thead>
-                    <tr>
-                        <th>
-                            Serviço
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Quantidade
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Data consumo
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th>
-                            Valor
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
-                        <th><center>Ações</center></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Café da manhã</td>
-                        <td>1</td>
-                        <td>20/07/2018</td>
-                        <td>R$ 15,00</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Limpeza de pele</td>
-                        <td>1</td>
-                        <td>21/07/2018</td>
-                        <td>R$ 40,00</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Massagem</td>
-                        <td>1</td>
-                        <td>21/07/2018</td>
-                        <td>R$ 50,00</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Refeição</td>
-                        <td>1</td>
-                        <td>20/07/2018</td>
-                        <td>R$ 30,00</td>
-                        <td>
-                            <center>
-                                <a href="#"><i class="material-icons table-icon-edit" onclick="editItem()">create</i></a>
-                                <a href="#"><i class="material-icons table-icon-delete" onclick="deleteItem()">delete</i></a>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+-            <div>
+                <jsp:include page="conta-detalhes-tabela.jsp"></jsp:include>
+            </div>
+
             <div class="card-action right-align button-box">
                 <a href="despesas.jsp"><button id="add-button" class="btn waves-effect waves-light"><i class="material-icons left">add_circle_outline</i>Nova Despesa</button></a>
             </div>
@@ -138,7 +65,8 @@
         <!--  Script -->
         <!-- Import jQuery before Materialize JS  -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script type="text/javascript" src="../js/materialize/materialize.js"></script>
-        <script type="text/javascript" src="../js/conta-detalhes.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/materialize/materialize.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/js/conta-detalhes.js"></script>
     </body>
 </html>

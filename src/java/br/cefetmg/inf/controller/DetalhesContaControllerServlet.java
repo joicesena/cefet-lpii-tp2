@@ -47,7 +47,7 @@ public class DetalhesContaControllerServlet extends HttpServlet {
             
             JsonArrayBuilder builder = Json.createArrayBuilder();
             
-            if (registrosBuscados.length > 1) {
+            if (registrosBuscados.length > 0) {
                 int i = 0;
                 for (QuartoConsumo reg : registrosBuscados) {
                     if (reg.getNroQuarto() == nroQuarto) {
