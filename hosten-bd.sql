@@ -6,7 +6,7 @@
 
 CREATE TABLE Programa(
  codPrograma Character(3) NOT NULL,
- desPrograma Character varying(40) NOT NULL
+ desPrograma Character varying(200) NOT NULL
 )
 ;
 
