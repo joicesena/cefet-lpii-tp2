@@ -7,9 +7,11 @@ package br.cefetmg.inf.controller;
 
 import br.cefetmg.inf.exception.PKRepetidaException;
 import br.cefetmg.inf.exception.RegistroUtilizadoExternamenteException;
+import br.cefetmg.inf.model.bd.dao.ServicoDAO;
 import br.cefetmg.inf.model.bd.dao.UsuarioDAO;
 import br.cefetmg.inf.model.bd.dao.rel.impl.QuartoConsumoDAOImpl;
 import br.cefetmg.inf.model.bd.util.UtilidadesBD;
+import br.cefetmg.inf.model.pojo.Servico;
 import br.cefetmg.inf.model.pojo.Usuario;
 import br.cefetmg.inf.model.pojo.rel.QuartoConsumo;
 import java.io.IOException;
@@ -121,9 +123,11 @@ public class DespesasControllerServlet extends HttpServlet {
         Double vlrUnit;
         
         seqServico = Integer.parseInt(requestInterno.getParameter("seqServico"));
-        desServico = requestInterno.getParameter("desServico");
+        ServicoDAO servicoDAO = ServicoDAO.getInstance();
+        Servico [] servico = servicoDAO.busca("seqServico", seqServico);
+        desServico = servico[0].getDesServico();
+        vlrUnit = servico[0].getVlrUnit();
         qtdConsumo = Integer.parseInt(requestInterno.getParameter("qtdConsumo"));
-        vlrUnit = Double.parseDouble(requestInterno.getParameter("vlrUnit"));
         
         // formata a data de consumo do registro atual
         String data = requestInterno.getParameter("datConsumo");
@@ -157,8 +161,6 @@ public class DespesasControllerServlet extends HttpServlet {
         
         HttpSession session = requestInterno.getSession();
         String codUsuarioRegistro = (String) session.getAttribute("codUsuario");
-        
-
         
         JsonObject dadosRegistro;
 
@@ -199,7 +201,6 @@ public class DespesasControllerServlet extends HttpServlet {
 
         HttpSession session = requestInterno.getSession();
         String codUsuarioRegistro = (String) session.getAttribute("codUsuario");
-
 
         QuartoConsumo registroAtualizado = new QuartoConsumo(seqHospedagem, nroQuarto, datConsumo, qtdConsumo, seqServico, codUsuarioRegistro);
 
