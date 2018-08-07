@@ -41,6 +41,12 @@ function forwardAccountDetails(ANroQuarto) {
         type: "POST",
         data: "operacaoRegistro=1" + "&nroQuarto="+ANroQuarto,
         success: function(data) {
+            if (localStorage.getItem('detalhesConta'))
+                localStorage.removeItem('detalhesConta');
+            if (localStorage.getItem('nroQuarto'))
+                localStorage.removeItem('nroQuarto');
+            if (localStorage.getItem('seqHospedagem'))
+                localStorage.removeItem('seqHospedagem');
 //            if (data != null) {
 //                for (var i = 0; i < data.linhas.length; i++) {
 //                    item = data.linhas[i];
@@ -53,8 +59,6 @@ function forwardAccountDetails(ANroQuarto) {
 //                    // item.qtdConsumo
 //                }
 //            }
-            if (localStorage.getItem('detalhesConta'))
-                localStorage.removeItem('detalhesConta');
             localStorage.setItem('detalhesConta', JSON.stringify(data));
             window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/conta-detalhes.jsp");
         },
@@ -79,6 +83,10 @@ function forwardCheckOut(ANroQuarto) {
         success: function(data) {
             if (localStorage.getItem('detalhesConta'))
                 localStorage.removeItem('detalhesConta');
+            if (localStorage.getItem('nroQuarto'))
+                localStorage.removeItem('nroQuarto');
+            if (localStorage.getItem('seqHospedagem'))
+                localStorage.removeItem('seqHospedagem');
             
             localStorage.setItem('detalhesConta', JSON.stringify(data));
             window.location.replace("http://localhost:8080/cefet-lpii-tp2/view/checkout.jsp");
