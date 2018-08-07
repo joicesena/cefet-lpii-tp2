@@ -8,3 +8,9 @@ O projeto implementado foi o Hosten, um sistema de gerenciamento interno de hosp
 * Joice Sena de Camargos
 * Lívia Delgado A. Carneiro
 * Nícolas Catarina Parreiras
+
+## INSTRUÇÕES PARA UTILIZAÇÃO
+email: cristiano@cefetmg.br
+senha: senha
+
+link para o projeto no github: https://github.com/joicesena/cefet-lpii-tp2
