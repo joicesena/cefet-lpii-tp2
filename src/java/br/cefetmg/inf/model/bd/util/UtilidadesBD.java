@@ -61,7 +61,8 @@ public final class UtilidadesBD {
         String qry = "SELECT * "
                 + "FROM  relatorioDespesas "
                 + "WHERE seqHospedagem = ? AND nroQuarto = ?";
-        PreparedStatement pStmt = con.prepareStatement(qry);
+        PreparedStatement pStmt = con.prepareStatement(qry, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_UPDATABLE);
         pStmt.setInt(1, seqHospedagem);
         pStmt.setInt(2, nroQuarto);
         ResultSet rs = pStmt.executeQuery();

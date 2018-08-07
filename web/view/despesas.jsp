@@ -35,9 +35,9 @@
                 <div class="col s3 select-box">
                     <div class="input-field">
                         <select>
-                            <option value="1">Descrição</option>
-                            <option value="2">Valor</option>
-                            <option value="3">Área</option>
+                            <option value="1">Área</option>
+                            <option value="2">Descrição</option>
+                            <option value="3">Valor</option>
                         </select>
                         <label>Filtro</label>
                     </div>
@@ -48,6 +48,11 @@
                 <thead>
                     <tr>
                         <th>
+                            Área
+                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
+                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
+                        </th>
+                        <th>
                             Descrição
                             <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
                             <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
@@ -57,55 +62,33 @@
                             <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
                             <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
                         </th>
-                        <th>
-                            Área
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableDESC()">arrow_drop_down</i></a>
-                            <a href="#"><i class="material-icons right table-icon-sort" onclick="sortTableASC()">arrow_drop_up</i></a>
-                        </th>
                         <th><center>Ações</center></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Massagem</td>
-                        <td>R$ 50,00</td>
-                        <td>Spa</td>
-                        <td>
-                            <center>
-                                <input name="radio-group" type="radio" id="servico1"/>
-                                <label for="servico1">Selecionar serviço</label>
-                            </center>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Limpeza de Pele</td>
-                        <td>R$ 40,00</td>
-                        <td>Spa</td>
-                        <td>
-                            <center>
-                                <input name="radio-group" type="radio" id="servico2"/>
-                                <label for="servico2">Selecionar serviço</label>
-                            </center>    
-                        </td>
-                    </tr>
-                </tbody>
+            
+            <div>
+                <jsp:include page="despesas-tabela.jsp"></jsp:include>
+            </div>
+            
             </table>
             
-            <div id="container">
-                <div class="row">
-                    <div class="col s12 form-input">
-                        <div class="input-field">
-                            <i class="material-icons prefix">shopping_cart</i>
-                            <label for="dias-estadia">Quantidade</label>
-                            <input id="dias-estadia" type="number">
+            <form id="frmInsertItem" method="post">
+                <div id="container">
+                    <div class="row">
+                        <div class="col s12 form-input">
+                            <div class="input-field">
+                                <i class="material-icons prefix">shopping_cart</i>
+                                <label for="qtdConsumo">Quantidade</label>
+                                <input id="qtdConsumo" name="qtdConsumo" type="number" class="validate" required>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="card-action right-align button-box">
-                <button id="add-button" class="btn waves-effect waves-light" onclick="addItem()"><i class="material-icons left">add_circle_outline</i>Salvar Despesa</button>
-            </div>
+
+                <div class="card-action right-align button-box">
+                    <button id="add-button" class="btn waves-effect waves-light" onclick="saveInsertDialog()"><i class="material-icons left">add_circle_outline</i>Salvar Despesa</button>
+                </div>
+            </form>
         </main>
 
         <footer>

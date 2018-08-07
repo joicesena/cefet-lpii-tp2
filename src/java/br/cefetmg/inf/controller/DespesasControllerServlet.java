@@ -83,6 +83,8 @@ public class DespesasControllerServlet extends HttpServlet {
                 out.print(retorno);
             }
         } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException exc ) {
+            exc.printStackTrace();
+            
             retorno = Json.createObjectBuilder()
                 .add("success", false)
                 .add("mensagem", "Erro! Tente novamente")
@@ -152,6 +154,9 @@ public class DespesasControllerServlet extends HttpServlet {
     }
     
     private JsonObject inserirRegistro () throws SQLException, PKRepetidaException {
+        nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
+        seqHospedagem = Integer.parseInt(requestInterno.getParameter("seqHospedagem"));
+
         Date dataAtual = new Date();
         Timestamp datConsumo = new Timestamp(dataAtual.getTime());
         

@@ -11,10 +11,10 @@
         <!-- Google Icon Font -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Materialize CSS -->
-        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/materialize/materialize.css"/>
-        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath() %>/css/padrao-tipo-1.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath()%>/css/materialize/materialize.css"/>
+        <link type="text/css" rel="stylesheet" href="<%= request.getContextPath()%>/css/padrao-tipo-1.css"/>
     </head>
-    
+
     <body>
         <header>
             <%@include file="menu.jsp"%>
@@ -22,7 +22,7 @@
 
         <main>            
             <h4 class="title">Visualização de Detalhes da Conta</h4>
-            
+
             <div id="container" class="row">
                 <div class="col s9 search-box">
                     <div class="input-field">
@@ -31,7 +31,7 @@
                         <input id="search" type="search">
                     </div>
                 </div>
-                
+
                 <div class="col s3 select-box">
                     <div class="input-field">
                         <select>
@@ -44,12 +44,13 @@
                     </div>
                 </div>
             </div>
-            
--            <div>
+
+            <div>
                 <jsp:include page="conta-detalhes-tabela.jsp"></jsp:include>
             </div>
 
             <div class="card-action right-align button-box">
+                <!--<a href="despesas.jsp"><button id="add-button" class="btn waves-effect waves-light"><i class="material-icons left">add_circle_outline</i>Nova Despesa</button></a>-->
                 <a href="despesas.jsp"><button id="add-button" class="btn waves-effect waves-light"><i class="material-icons left">add_circle_outline</i>Nova Despesa</button></a>
             </div>
         </main>
@@ -61,12 +62,12 @@
                 </div>
             </div>
         </footer>
-        
+
         <!--  Script -->
         <!-- Import jQuery before Materialize JS  -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script type="text/javascript" src="https://code.jquery.com/"></script>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/js/materialize/materialize.js"></script>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/js/conta-detalhes.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath()%>/js/materialize/materialize.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath()%>/js/conta-detalhes.js"></script>
     </body>
 </html>

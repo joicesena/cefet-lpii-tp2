@@ -8,7 +8,7 @@ public class ConnectionFactory {
 
     private final String url =  "jdbc:postgresql://localhost:5432/hosten";
     private final String usuario = "postgres";
-    private final String senha = "123456";
+    private final String senha = "l0i3v0i7";
     
     public Connection getConnection() {
         try {

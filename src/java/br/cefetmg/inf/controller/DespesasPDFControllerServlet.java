@@ -35,11 +35,8 @@ public class DespesasPDFControllerServlet extends HttpServlet {
             document.open();
             montaArquivo();
             document.close();
-        } catch (DocumentException ex) {
-            //
-            //
-            //
-        } catch (SQLException ex) {
+        } catch (DocumentException | SQLException ex) {
+            ex.printStackTrace();
             //
             //
             //
@@ -58,7 +55,7 @@ public class DespesasPDFControllerServlet extends HttpServlet {
     }
 
     private void montaArquivo() throws DocumentException, SQLException {
-        int seqHospedagem = Integer.parseInt(requestInterno.getParameter("seqHospedagem"));
+        int seqHospedagem = (Integer)(requestInterno.getAttribute("seqHospedagem"));
         int nroQuarto = Integer.parseInt(requestInterno.getParameter("nroQuarto"));
         
         // busca a view
@@ -103,7 +100,7 @@ public class DespesasPDFControllerServlet extends HttpServlet {
         // um parágrafo para cada item/servico consumido
         while (rs.next()) {
             int qtdServico = rs.getInt("qtdconsumo");
-            String desServico = rs.getString("desserviço");
+            String desServico = rs.getString("desservico");
             Double vlrServico = rs.getDouble("vlrunit");
             
             vlrTotal += vlrServico*qtdServico;
@@ -114,6 +111,7 @@ public class DespesasPDFControllerServlet extends HttpServlet {
             p.setSpacingAfter(2);
             p.setSpacingBefore(0);
             p.add(String.valueOf(qtdServico));
+            p.add(" ");
             p.add(desServico);
             p.add(c);
             p.setFont(fonteSparklingGrape);
@@ -179,7 +177,6 @@ public class DespesasPDFControllerServlet extends HttpServlet {
         p.add(c);
         p.add(strValorTotal);
         document.add(p);
-        
     }
 
 }

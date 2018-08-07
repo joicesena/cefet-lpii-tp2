@@ -47,6 +47,7 @@ public class CheckOutControllerServlet extends HttpServlet {
             
             HospedagemDAO hospDAO = HospedagemDAO.getInstance();
             Hospedagem[] hospBuscada = hospDAO.busca("seqHospedagem", seqHospedagem);
+            
             Hospedagem hospedagemAtualizado = hospBuscada[0];
             hospedagemAtualizado.setDatCheckOut(dataCheckOut);
             
@@ -64,11 +65,13 @@ public class CheckOutControllerServlet extends HttpServlet {
             request.setAttribute("seqHospedagem", seqHospedagem);
 
             // dar um forward para o DespesasPDFControllerServlet
-            String caminhoArquivo = "/despesas-pdf";
+            String caminhoArquivo = "/fatura-gerada.pdf";
             RequestDispatcher rd = request.getRequestDispatcher(caminhoArquivo);
             rd.forward(request, response);
             
         } catch (SQLException ex) {
+            ex.printStackTrace();
+            
             JsonObject retorno = Json.createObjectBuilder()
                 .add("success", false)
                 .add("mensagem", "Erro! Tente novamente")
