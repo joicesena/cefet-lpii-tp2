@@ -1,6 +1,6 @@
 INSERT INTO Categoria(codCategoria, nomCategoria, vlrDiaria) VALUES('001', 'Categoria n°1', 10.0), ('002', 'Categoria n°2', 20.0), ('003', 'Categoria n°3', 30.0), ('004', 'Categoria n°4', 40.0), ('005', 'Categoria n°5', 50.0), ('006', 'Categoria n°6', 60.0), ('007', 'Categoria n°7', 70.0), ('008', 'Categoria n°8', 80.0), ('009', 'Categoria n°9', 90.0), ('010', 'Categoria n°10', 100.0);
 
-INSERT INTO Quarto(nroQuarto, codCategoria, idtOcupado) VALUES(1, '001', true), (2, '002', false), (3, '002', true), (4, '003', false), (5, '003', true), (6, '004', false), (7, '004', true), (8, '005', false), (9, '005', true), (10, '010', false);
+INSERT INTO Quarto(nroQuarto, codCategoria, idtOcupado) VALUES(1, '001', false), (2, '002', false), (3, '002', false), (4, '003', false), (5, '003', false), (6, '004', false), (7, '004', false), (8, '005', false), (9, '005', false), (10, '010', false);
 
 INSERT INTO ItemConforto(codItem, desItem) VALUES('001', 'Item n°1'), ('002', 'Item n°2'), ('003', 'Item n°3'), ('004', 'Item n°4'), ('005', 'Item n°5'), ('006', 'Item n°6'), ('007', 'Item n°7'), ('008', 'Item n°8'), ('009', 'Item n°9'), ('010', 'Item n°10'), ('011', 'Item n°11'), ('012', 'Item n°12'), ('013', 'Item n°13'), ('014', 'Item n°14'), ('015', 'Item n°15'), ('016', 'Item n°16'), ('017', 'Item n°17'), ('018', 'Item n°18'), ('019', 'Item n°19'), ('020', 'Item n°20');
 
